@@ -9,6 +9,7 @@
 
 <ion-content>
   <ion-list>
+    <img class="center" src="../../assets/imgs/tmp-logo.png"/>
     <button ion-item *ngFor="let item of items" (click)="itemTapped($event, item)">
       <ion-icon [name]="item.icon" item-left></ion-icon>
       {{item.title}}
