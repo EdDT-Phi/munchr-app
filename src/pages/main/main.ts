@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 
+import { Filter } from '../filter/filter';
+
 @Component({
   selector: 'page-main',
   templateUrl: 'main.html'
@@ -10,8 +12,14 @@ export class Main {
   selectedItem: any;
   icons: string[];
   items: Array<{title: string, note: string, icon: string}>;
+  distance: number;
+  price: number;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+    this.distance = 5;
+
+
     // If we navigated to this page, we will have an item available as a nav param
     this.selectedItem = navParams.get('item');
 
@@ -29,10 +37,11 @@ export class Main {
     }
   }
 
-  itemTapped(event, item) {
+  search() {
     // That's right, we're pushing to ourselves!
-    this.navCtrl.push(Main, {
-      item: item
+    this.navCtrl.push(Filter, {
+      price: this.price,
+      distance: this.distance
     });
   }
 }
