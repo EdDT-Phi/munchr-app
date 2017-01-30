@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
-import {Page2} from '../page2/page2';
+import {Main} from '../main/main';
+
+import {Create} from '../create/create';
 
 @Component({
 	selector: 'page-login',
@@ -15,6 +17,10 @@ export class Login {
 	}
 
 	login = function() {
-		this.navCtrl.setRoot(Page2);
+		this.navCtrl.setRoot(Main);
+	}
+
+	create_account = function() {
+		this.navCtrl.setRoot(Create);
 	}
 }
