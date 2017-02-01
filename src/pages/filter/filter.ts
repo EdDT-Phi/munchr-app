@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 
+import { Display } from '../display/display';
+
 @Component({
 	selector: 'page-filter',
 	templateUrl: 'filter.html'
@@ -28,6 +30,7 @@ export class Filter {
 
 	getItems(ev) {
 		// Reset items back to all of the items
+		this.items = this.all;
 
 		// set val to the value of the ev target
 		var val = ev.target.value;
@@ -35,13 +38,12 @@ export class Filter {
 		// if the value is an empty string don't filter the items
 		if (val && val.trim() != '') {
 			this.items = this.all.filter((item) => {
-				console.log(item);
-				console.log(item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
 				return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
 			})
 		}
+	}
 
-		console.log(this.items);
-		console.log(this.all);
+	search() {
+		this.navCtrl.push(Display);
 	}
 }

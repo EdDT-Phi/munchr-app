@@ -5,6 +5,7 @@ import { Login } from '../pages/login/login';
 import { Main } from '../pages/main/main';
 import { Create } from '../pages/create/create';
 import { Filter } from '../pages/filter/filter';
+import { Display } from '../pages/display/display';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { Filter } from '../pages/filter/filter';
     Login,
     Main,
     Create,
-    Filter
+    Filter,
+    Display
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -23,7 +25,8 @@ import { Filter } from '../pages/filter/filter';
     Login,
     Main,
     Create,
-    Filter
+    Filter,
+    Display
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
