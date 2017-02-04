@@ -3,6 +3,7 @@
 ## Installation
 
 npm install -g ionic cordova
+npm install
 
 ## Running
 
