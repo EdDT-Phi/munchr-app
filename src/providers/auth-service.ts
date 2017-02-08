@@ -17,10 +17,10 @@ export class AuthService {
 	}
 
 	login(email, password) {
-		// if (this.data) {
-		// 	// already loaded data -- check if different user/password though!
-		// 	return Promise.resolve(this.data);
-		// }
+		if (this.data) {
+			// already loaded data -- check if different user/password though!
+			return Promise.resolve(this.data);
+		}
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -30,14 +30,11 @@ export class AuthService {
 		    return key + '=' + obj[key];
 		}).join('&');
 
-		console.log(data)
-
 		// don't have the data yet
 		return new Promise(resolve => {
 			// We're using Angular HTTP provider to request the data,
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
-			let headers = new Headers();
 
 			this.http.post('https://munchr.herokuapp.com/login/', data, options)
 			.map(res => res.json())
@@ -49,5 +46,4 @@ export class AuthService {
 			});
 		});
 	}
-
 }

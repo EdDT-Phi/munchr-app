@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 /*
@@ -10,17 +10,25 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class MunchrApi {
-	data:any;
+	data: any;
 
 	constructor(public http: Http) {
 		console.log('Hello MunchrApiLogin Provider');
 	}
 
-	categories(lat, long) {
+	filters(lat, long) {
 		if (this.data) {
 			// already loaded data
 			return Promise.resolve(this.data);
 		}
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+		let obj = {"lat": lat, "long": long}
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
 
 		// don't have the data yet
 		return new Promise(resolve => {
@@ -28,7 +36,7 @@ export class MunchrApi {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.get('http://72.182.57.42/categories/')
+			this.http.post('https://munchr.herokuapp.com/restaurants/filters', data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data

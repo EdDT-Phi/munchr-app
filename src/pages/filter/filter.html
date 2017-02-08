@@ -10,11 +10,23 @@
 <ion-content>
 	<img class="center" src="../../assets/imgs/tmp-logo.png"/>
 	<ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
-	<ion-list>
-	  <ion-item *ngFor="let item of items">
-	  	<ion-label>{{ item.name }}</ion-label>
-	  	<ion-checkbox [(ngModel)]="item.checked" item-left></ion-checkbox>
-	  </ion-item>
+	<ion-list *ngIf="items && items.cuisines && items.cuisines.length > 0">
+		<ion-list-header>
+			Cuisines
+		</ion-list-header>
+		<ion-item *ngFor="let item of items.cuisines">
+			<ion-label>{{ item.name }}</ion-label>
+			<ion-checkbox [(ngModel)]="item.checked" item-left></ion-checkbox>
+		</ion-item>
+	</ion-list>
+	<ion-list *ngIf="items && items.categories && items.categories.length > 0">
+		<ion-list-header>
+			Categories
+		</ion-list-header>
+		<ion-item *ngFor="let item of items.categories">
+			<ion-label>{{ item.name }}</ion-label>
+			<ion-checkbox [(ngModel)]="item.checked" item-left></ion-checkbox>
+		</ion-item>
 	</ion-list>
 </ion-content>
 

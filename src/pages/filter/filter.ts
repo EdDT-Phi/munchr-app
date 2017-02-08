@@ -4,40 +4,62 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { Display } from '../display/display';
 
+import { MunchrApi } from '../../providers/munchr-api';
+
 @Component({
 	selector: 'page-filter',
-	templateUrl: 'filter.html'
+	templateUrl: 'filter.html',
+	providers: [ MunchrApi ]
 })
 
 
 export class Filter {
-	all: Array<{name:string, checked:boolean}>;
-	items: Array<{name:string, checked:boolean}>;
+	all: {categories: Array<{name:string, checked:boolean}>, cuisines: Array<{name:string, checked:boolean}> };
+	items: {categories: Array<{name:string, checked:boolean}>, cuisines: Array<{name:string, checked:boolean}> };
+	lat: number;
+	long: number;
 
-	constructor(public navCtrl: NavController, public navParams: NavParams) {
+	constructor(public navCtrl: NavController, public navParams: NavParams, public munchrApi: MunchrApi) {
 		this.initialize_values();
 	}
 
 	initialize_values() {
-		let values = ['One', 'Two', 'Three'];
-		this.all = [];
-		for (let i = 0; i < values.length; i++) {
-			this.all.push({name: values[i], checked:false});
-		}
-		this.items = this.all;
-		console.log(this.items);
+		this.munchrApi.filters(this.lat, this.long)
+		.then( data => {
+			let values = data.results;
+			let categories = [];
+			let cuisines = [];
+
+			for (let i = 0; i < values.categories.length; i++) {
+				categories.push({name: values.categories[i], checked:false});
+			}
+			for (let i = 0; i < values.cuisines.length; i++) {
+				cuisines.push({name: values.cuisines[i], checked:false});
+			}
+			this.all = {
+				categories: categories,
+				cuisines: cuisines
+			}
+
+			this.items = this.all;
+		});
+
 	}
 
 	getItems(ev) {
 		// Reset items back to all of the items
-		this.items = this.all;
+		// This is modifying the all list somehow :(
+		// this.items = this.all;
 
 		// set val to the value of the ev target
 		var val = ev.target.value;
 
 		// if the value is an empty string don't filter the items
 		if (val && val.trim() != '') {
-			this.items = this.all.filter((item) => {
+			this.items.categories = this.all.categories.filter((item) => {
+				return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+			})
+			this.items.cuisines = this.all.cuisines.filter((item) => {
 				return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
 			})
 		}
