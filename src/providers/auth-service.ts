@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
 /*
@@ -17,14 +17,20 @@ export class AuthService {
 	}
 
 	login(email, password) {
-		if (this.data) {
-			// already loaded data -- check if different user/password though!
-			return Promise.resolve(this.data);
-		}
+		// if (this.data) {
+		// 	// already loaded data -- check if different user/password though!
+		// 	return Promise.resolve(this.data);
+		// }
 
-		let body = JSON.stringify({"email": email, "password": password});
 		let headers = new Headers();
-		headers.append('Content-Type', 'application/json');
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+		let obj = {"email": email, "password": password}
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		console.log(data)
 
 		// don't have the data yet
 		return new Promise(resolve => {
@@ -33,7 +39,7 @@ export class AuthService {
 			// Next, we process the data and resolve the promise with the new data.
 			let headers = new Headers();
 
-			this.http.post('http://72.182.57.42/login/', body, headers=headers)
+			this.http.post('https://munchr.herokuapp.com/login/', data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
