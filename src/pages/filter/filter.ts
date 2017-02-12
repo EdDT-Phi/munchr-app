@@ -14,16 +14,15 @@ import { MunchrApi } from '../../providers/munchr-api';
 
 
 export class Filter {
-	all: {categories: Array<{name:string, checked:boolean}>, cuisines: Array<{name:string, checked:boolean}> };
 	items: {categories: Array<{name:string, checked:boolean}>, cuisines: Array<{name:string, checked:boolean}> };
 	lat: number;
 	long: number;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams, public munchrApi: MunchrApi) {
-		this.initialize_values();
+		this.initialize_values(null);
 	}
 
-	initialize_values() {
+	initialize_values(ev) {
 		this.munchrApi.filters(this.lat, this.long)
 		.then( data => {
 			let values = data.results;
@@ -36,12 +35,12 @@ export class Filter {
 			for (let i = 0; i < values.cuisines.length; i++) {
 				cuisines.push({name: values.cuisines[i], checked:false});
 			}
-			this.all = {
+			this.items = {
 				categories: categories,
 				cuisines: cuisines
 			}
 
-			this.items = this.all;
+			this.show_items(ev);
 		});
 
 	}
@@ -49,17 +48,24 @@ export class Filter {
 	getItems(ev) {
 		// Reset items back to all of the items
 		// This is modifying the all list somehow :(
-		// this.items = this.all;
+		// this.items.categories = this.all.categories.slice();
+		// this.items.cuisines = this.all.cuisines.slice();
+		this.initialize_values(ev);
+	}
+
+	show_items(ev) {
+		if(ev == null)
+			return ;
 
 		// set val to the value of the ev target
 		var val = ev.target.value;
 
 		// if the value is an empty string don't filter the items
 		if (val && val.trim() != '') {
-			this.items.categories = this.all.categories.filter((item) => {
+			this.items.categories = this.items.categories.filter((item) => {
 				return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
 			})
-			this.items.cuisines = this.all.cuisines.filter((item) => {
+			this.items.cuisines = this.items.cuisines.filter((item) => {
 				return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
 			})
 		}
