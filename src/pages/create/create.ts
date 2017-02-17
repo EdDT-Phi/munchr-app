@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
-import {Main} from '../main/main';
+import { Main } from '../main/main';
 
 @Component({
 	selector: 'page-login',

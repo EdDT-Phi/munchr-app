@@ -8,21 +8,11 @@
 </ion-header>
 
 <ion-content>
-	<ion-slides pager>
-
-	  <ion-slide>
-	    <h2>Slide 1</h2>
-	  </ion-slide>
-
-	  <ion-slide>
-	    <h2>Slide 2</h2>
-	  </ion-slide>
-
-	  <ion-slide>
-	    <h2>Slide 3</h2>
-	  </ion-slide>
-
-	</ion-slides>
+	<td-cards>
+		<td-card ng-repeat="card in cards" on-destroy="cardDestroyed($index)" on-swipe="cardSwiped($index)">
+			<img src="{{card}}">
+		</td-card>
+	</td-cards>
 </ion-content>
 
 <ion-footer>
