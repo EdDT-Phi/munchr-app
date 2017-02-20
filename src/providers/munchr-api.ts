@@ -11,12 +11,15 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class MunchrApi {
 	data: any;
+	lat: number;
+	long: number;
 
 	constructor(public http: Http) {
 		console.log('Hello MunchrApiLogin Provider');
 	}
 
 	filters(lat, long) {
+		// check if lat long is similar
 		if (this.data) {
 			// already loaded data
 			return Promise.resolve(this.data);
@@ -45,5 +48,9 @@ export class MunchrApi {
 				resolve(this.data);
 			});
 		});
+	}
+
+	restaurants(lat, long, radius, ) {
+		
 	}
 }

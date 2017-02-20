@@ -1,18 +1,18 @@
 <ion-content padding>
-  <ion-list>
+  <!-- <ion-list> -->
 
   <img class="center" src="../../assets/imgs/tmp-logo.png"/>
-    <ion-item>
-      <ion-label floating>Email</ion-label>
-      <ion-input [(ngModel)]="email" type="text"></ion-input>
-    </ion-item>
+  <ion-item>
+    <ion-label floating>Email</ion-label>
+    <ion-input [(ngModel)]="email" type="text"></ion-input>
+  </ion-item>
 
-    <ion-item>
-      <ion-label floating>Password</ion-label>
-      <ion-input [(ngModel)]="password" type="password"></ion-input>
-    </ion-item>
+  <ion-item>
+    <ion-label floating>Password</ion-label>
+    <ion-input [(ngModel)]="password" type="password"></ion-input>
+  </ion-item>
 
-  </ion-list>
+  <!-- </ion-list> -->
 
   <button ion-button class="center" (click)="login()">Login</button>
   <a class="center" (click)="create_account()">Create Account</a> 
