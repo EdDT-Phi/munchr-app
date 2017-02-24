@@ -7,6 +7,15 @@ import { Create } from '../pages/create/create';
 import { Filter } from '../pages/filter/filter';
 import { Display } from '../pages/display/display';
 
+import {
+  StackConfig,
+  Stack,
+  Card,
+  ThrowEvent,
+  DragEvent,
+  SwingStackComponent,
+  SwingCardComponent} from 'angular2-swing';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -14,7 +23,9 @@ import { Display } from '../pages/display/display';
     Main,
     Create,
     Filter,
-    Display
+    Display,
+    SwingCardComponent,
+    SwingStackComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
