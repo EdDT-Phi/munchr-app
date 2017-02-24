@@ -42,7 +42,6 @@ export class Filter {
 
 			this.show_items(ev);
 		});
-
 	}
 
 	getItems(ev) {
@@ -72,6 +71,20 @@ export class Filter {
 	}
 
 	search() {
-		this.navCtrl.push(Display);
+
+		this.navCtrl.push(Display, {
+			price: this.navParams.get('price'),
+			radius: this.navParams.get('distance'),
+			categories: this.items.categories.filter((item) => {
+				return item.checked;
+			}).map(item => {
+				return item.name;
+			}),
+			cuisines: this.items.cuisines.filter((item) => {
+				return item.checked;
+			}).map(item => {
+				return item.name;
+			}),
+		});
 	}
 }

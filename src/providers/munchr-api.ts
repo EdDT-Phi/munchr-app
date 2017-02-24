@@ -13,9 +13,12 @@ export class MunchrApi {
 	data: any;
 	lat: number;
 	long: number;
+	url: string;
 
 	constructor(public http: Http) {
 		console.log('Hello MunchrApiLogin Provider');
+		// this.url = 'http://localhost:5000'; //dev 
+		this.url = 'https://munchr-test.herokuapp.com'; //prod
 	}
 
 	filters(lat, long) {
@@ -39,7 +42,7 @@ export class MunchrApi {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.post('https://munchr.herokuapp.com/restaurants/filters', data, options)
+			this.http.post(this.url + '/restaurants/filters', data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
@@ -50,7 +53,44 @@ export class MunchrApi {
 		});
 	}
 
-	restaurants(lat, long, radius, ) {
-		
+	restaurants(args) {
+		if (this.data) {
+			// already loaded data
+			return Promise.resolve(this.data);
+		}
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+
+		let obj = {
+			"lat": args.lat,
+			"long": args.long,
+			"radius": args.radius,
+			"categories": args.categories.join(","),
+			"cuisines": args.cuisines.join(","),
+			"price": args.price ? args.price : 2,
+			"user_id": args.user_id,
+
+		};
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/restaurants/', data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				this.data = data;
+				resolve(this.data);
+			});
+		});	
 	}
 }

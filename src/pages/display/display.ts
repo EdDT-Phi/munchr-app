@@ -3,11 +3,13 @@ import {Http} from '@angular/http';
 
 import { NavController, NavParams } from 'ionic-angular';
 
+import { MunchrApi } from '../../providers/munchr-api';
+
 import {
   StackConfig,
-  Stack,
-  Card,
-  ThrowEvent,
+  // Stack,
+  // Card,
+  // ThrowEvent,
   DragEvent,
   SwingStackComponent,
   SwingCardComponent} from 'angular2-swing';
@@ -15,6 +17,7 @@ import {
 @Component({
 	selector: 'page-display',
 	templateUrl: 'display.html',
+	providers: [ MunchrApi ],
 	entryComponents: [SwingStackComponent, SwingCardComponent]
 })
 
@@ -27,25 +30,25 @@ export class Display {
 	stackConfig: StackConfig;
 	recentCard: string = '';
 
-	constructor(public navCtrl: NavController, public navParams: NavParams, public http: Http) {
+	constructor(public munchrApi: MunchrApi, public navCtrl: NavController, public navParams: NavParams, public http: Http) {
 		this.stackConfig = {
 			throwOutConfidence: (offset, element) => {
 				return Math.min(Math.abs(offset) / (element.offsetWidth/2), 1);
 			},
-			transform: (element, x, y, r) => {
-				this.onItemMove(element, x, y, r);
-			},
+			// transform: (element, x, y, r) => {
+			// 	this.onItemMove(element, x, y, r);
+			// },
 			throwOutDistance: (d) => {
 				return 800;
 			}
 		};
-		this.cards = ['https://imgs.xkcd.com/comics/emails.png']
+		// this.cards = ['https://imgs.xkcd.com/comics/emails.png']
 	}
 
 	ngAfterViewInit() {
 		// Either subscribe in controller or set in HTML
 		this.swingStack.throwin.subscribe((event: DragEvent) => {
-		  event.target.style.background = '#ffffff';
+		  // event.target.style.background = '#ffffff';
 		});
 
 		this.cards = [{email: ''}];
@@ -53,21 +56,21 @@ export class Display {
 	}
 
 	// Called whenever we drag an element
-	onItemMove(element, x, y, r) {
-	  var color = '';
-	  var abs = Math.abs(x);
-	  let min = Math.trunc(Math.min(16*16 - abs, 16*16));
-	  let hexCode = this.decimalToHex(min, 2);
+	// onItemMove(element, x, y, r) {
+	//   // var color = '';
+	//   // var abs = Math.abs(x);
+	//   // let min = Math.trunc(Math.min(16*16 - abs, 16*16));
+	//   // let hexCode = this.decimalToHex(min, 2);
 	  
-	  if (x < 0) {
-	    color = '#FF' + hexCode + hexCode;
-	  } else {
-	    color = '#' + hexCode + 'FF' + hexCode;
-	  }
+	//   // if (x < 0) {
+	//   //   color = '#FF' + hexCode + hexCode;
+	//   // } else {
+	//   //   color = '#' + hexCode + 'FF' + hexCode;
+	//   // }
 	  
-	  element.style.background = color;
-	  element.style['transform'] = `translate3d(0, 0, 0) translate(${x}px, ${y}px) rotate(${r}deg)`;
-	}
+	//   // element.style.background = color;
+	//   element.style['transform'] = `translate3d(0, 0, 0) translate(${x}px, ${y}px) rotate(${r}deg)`;
+	// }
 	// Connected through HTML
 	voteUp(like: boolean) {
 	  let removedCard = this.cards.pop();
@@ -81,13 +84,27 @@ export class Display {
 	 
 	// Add new cards to our array
 	addNewCards(count: number) {
-	  this.http.get('https://randomuser.me/api/?results=' + count)
-	  .map(data => data.json().results)
-	  .subscribe(result => {
-	    for (let val of result) {
-	      this.cards.push(val);
-	    }
-	  })
+		let args = {
+			lat: 0,
+			long: 0,
+			radius: this.navParams.get("radius"),
+			categories: this.navParams.get("categories"),
+			cuisines: this.navParams.get("cuisines"),
+			price: this.navParams.get("price"),
+			user_id: 0
+		}
+
+		this.munchrApi.restaurants(args)
+		.then( data => {
+			this.cards = data.results
+		});
+	  // this.http.get('https://randomuser.me/api/?results=' + count)
+	  // .map(data => data.json().results)
+	  // .subscribe(result => {
+	  //   for (let val of result) {
+	  //     this.cards.push(val);
+	  //   }
+	  // })
 	}
 	 
 	// http://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hex-in-javascript

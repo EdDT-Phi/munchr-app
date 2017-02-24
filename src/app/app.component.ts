@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
-import { Display } from '../pages/display/display';
+// import { Display } from '../pages/main/main';
 import { Main } from '../pages/main/main';
 
 
@@ -12,7 +12,7 @@ import { Main } from '../pages/main/main';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = Display;
+  rootPage: any = Main;
 
   pages: Array<{title: string, component: any}>;
 
