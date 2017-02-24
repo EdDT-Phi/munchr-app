@@ -6,13 +6,16 @@
     </div>
   </ion-header-bar>
   <ion-content>
+    <center>
+      <img width="200" src="https://upload.wikimedia.org/wikipedia/commons/c/c5/Logo_FC_Bayern_M%C3%BCnchen.svg">
+    </center>
     <form ng-submit="doLogin()">
       <div class="list">
-        <label class="item item-input">
-          <span class="input-label">Username</span>
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Email</span>
           <input type="text" ng-model="loginData.username">
         </label>
-        <label class="item item-input">
+        <label class="item item-input item-floating-label">
           <span class="input-label">Password</span>
           <input type="password" ng-model="loginData.password">
         </label>
