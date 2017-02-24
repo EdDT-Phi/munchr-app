@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-	<img class="center" src="../../assets/imgs/tmp-logo.png"/>
+	<img height="200" class="center" src="../../assets/imgs/munchr.png"/>
 	<ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
 	<ion-list *ngIf="items && items.cuisines && items.cuisines.length > 0">
 		<ion-list-header>
@@ -19,7 +19,7 @@
 			<ion-checkbox [(ngModel)]="item.checked" item-left></ion-checkbox>
 		</ion-item>
 	</ion-list>
-	<ion-list *ngIf="items && items.categories && items.categories.length > 0">
+	<ion-list *ngIf="items && items.categories && items.categories.length > 0">=
 		<ion-list-header>
 			Categories
 		</ion-list-header>
