@@ -1,9 +1,9 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import {Http} from '@angular/http';
 
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ModalController } from 'ionic-angular';
 
 import { MunchrApi } from '../../providers/munchr-api';
+import { MoreInfo } from '../info/info';
 
 import {
   StackConfig,
@@ -30,7 +30,12 @@ export class Display {
 	stackConfig: StackConfig;
 	recentCard: string = '';
 
-	constructor(public munchrApi: MunchrApi, public navCtrl: NavController, public navParams: NavParams, public http: Http) {
+	constructor(
+		public munchrApi: MunchrApi, 
+		public navCtrl: NavController, 
+		public navParams: NavParams,
+		public modalCtrl: ModalController
+	) {
 		this.stackConfig = {
 			throwOutConfidence: (offset, element) => {
 				return Math.min(Math.abs(offset) / (element.offsetWidth/2), 1);
@@ -98,24 +103,10 @@ export class Display {
 		.then( data => {
 			this.cards = data.results
 		});
-	  // this.http.get('https://randomuser.me/api/?results=' + count)
-	  // .map(data => data.json().results)
-	  // .subscribe(result => {
-	  //   for (let val of result) {
-	  //     this.cards.push(val);
-	  //   }
-	  // })
 	}
 	 
-	// http://stackoverflow.com/questions/57803/how-to-convert-decimal-to-hex-in-javascript
-	decimalToHex(d, padding) {
-	  var hex = Number(d).toString(16);
-	  padding = typeof (padding) === "undefined" || padding === null ? padding = 2 : padding;
-	  
-	  while (hex.length < padding) {
-	    hex = "0" + hex;
-	  }
-	  
-	  return hex;
+	info(restaurant) {
+		let modal = this.modalCtrl.create(MoreInfo, restaurant);
+		modal.present();
 	}
 }

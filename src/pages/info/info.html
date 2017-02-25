@@ -1,0 +1,44 @@
+<ion-header>
+	<ion-navbar>
+<!-- 		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button> -->
+		<ion-title>Munchr</ion-title>
+	</ion-navbar>
+		<ion-title>{{ restaurant.name }}</ion-title>
+</ion-header>
+
+<ion-content>
+	<ion-slides [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000">
+		<ion-slide *ngFor="let photo of photos">
+			<img [src]="photo">
+		</ion-slide>
+	</ion-slides>
+	{{ restaurant.location.address }} <br>
+	{{ restaurant.location.locality }} <br>
+	<ion-icon [name]="restaurant.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+	<ion-icon [name]="restaurant.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+	<ion-icon [name]="restaurant.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+	<ion-icon [name]="restaurant.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+	<ion-icon [name]="restaurant.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br>
+	{{ restaurant.cuisines }} <br>
+
+	<ion-list>
+		<ion-item *ngFor="let review of reviews">
+			<div *ngIf="review.rating > 0">
+			<ion-icon [name]="review.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="review.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="review.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="review.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="review.rating > 4 ? 'star' : 'star-outline'"></ion-icon>
+			</div>
+			<p>{{ review.review_text }}</p>
+			<p>{{ review.review_time_friendly }}</p>
+		</ion-item>	
+	</ion-list>
+
+</ion-content>
+
+<ion-footer>
+	<button ion-button (click)="dismiss()" class="center">Back</button>
+</ion-footer>
