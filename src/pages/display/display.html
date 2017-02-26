@@ -15,11 +15,13 @@
 	 	<ion-card-content *ngIf="c.location">
 			{{ c.location.address }}<br>
 			{{ c.location.locality }} <br>
-		<ion-icon [name]="c.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="c.rating >= 1 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="c.rating >= 2 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="c.rating >= 3 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="c.rating >= 4 ? 'star' : 'star-outline'"></ion-icon>
+		<div *ngIf="c.rating != 0">
+			<ion-icon [name]="c.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="c.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="c.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="c.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="c.rating > 4 ? 'star' : 'star-outline'"></ion-icon>
+		</div>
 		<br>
 			{{ c.cuisines }}
 			

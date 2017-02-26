@@ -9,7 +9,8 @@
 </ion-header>
 
 <ion-content>
-	<ion-slides [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000">
+	<img *ngIf="!photos || photos.length == 0" [src]="restaurant.photo">
+	<ion-slides *ngIf="photos && photos.length > 0" [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000">
 		<ion-slide *ngFor="let photo of photos">
 			<img [src]="photo">
 		</ion-slide>

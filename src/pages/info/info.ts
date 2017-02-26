@@ -29,15 +29,16 @@ export class MoreInfo {
 			review_text: 'This is definitely a place that has food',
 			review_time_friendly: '10 centuries ago'
 		}];
-		this.photos = [
-			'http://parkresto.com/wp-content/themes/parkrestaurant/images/11onlinereservationpark.jpg',
-			'http://parkresto.com/wp-content/themes/parkrestaurant/images/11onlinereservationpark.jpg'
-		];
+		this.photos = [];
 
 		this.munchrApi.reviews(this.restaurant.id)
 		.then( data => {
 			this.reviews = data.results;
-			console.log(this.reviews);
+		});
+
+		this.munchrApi.photos(this.restaurant)
+		.then( data => {
+			this.photos = data.results;
 		});
 	}
 
