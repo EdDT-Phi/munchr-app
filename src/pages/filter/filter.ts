@@ -14,45 +14,35 @@ import { MunchrApi } from '../../providers/munchr-api';
 
 
 export class Filter {
-	items: {categories: Array<{name:string, checked:boolean}>, cuisines: Array<{name:string, checked:boolean}> };
+	items: Array<string>;
+	all: Array<string>;
+	marked: Object;
 	lat: number;
 	long: number;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams, public munchrApi: MunchrApi) {
 		this.initialize_values(null);
+		this.marked = {};
 	}
 
 	initialize_values(ev) {
 		this.munchrApi.filters(this.lat, this.long)
 		.then( data => {
-			let values = data.results;
-			let categories = [];
-			let cuisines = [];
-
-			for (let i = 0; i < values.categories.length; i++) {
-				categories.push({name: values.categories[i], checked:false});
-			}
-			for (let i = 0; i < values.cuisines.length; i++) {
-				cuisines.push({name: values.cuisines[i], checked:false});
-			}
-			this.items = {
-				categories: categories,
-				cuisines: cuisines
-			}
-
-			this.show_items(ev);
+			this.items = data.results;
+			this.all = data.results;
 		});
 	}
 
-	getItems(ev) {
-		// Reset items back to all of the items
-		// This is modifying the all list somehow :(
-		// this.items.categories = this.all.categories.slice();
-		// this.items.cuisines = this.all.cuisines.slice();
-		this.initialize_values(ev);
-	}
+	// getItems(ev) {
+	// 	// Reset items back to all of the items
+	// 	// This is modifying the all list somehow :(
+	// 	// this.items.categories = this.all.categories.slice();
+	// 	// this.items.cuisines = this.all.cuisines.slice();
+	// 	this.initialize_values(ev);
+	// }
 
 	show_items(ev) {
+		console.log(this.items);
 		if(ev == null)
 			return ;
 
@@ -61,12 +51,11 @@ export class Filter {
 
 		// if the value is an empty string don't filter the items
 		if (val && val.trim() != '') {
-			this.items.categories = this.items.categories.filter((item) => {
-				return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-			})
-			this.items.cuisines = this.items.cuisines.filter((item) => {
-				return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-			})
+			this.items = this.all.filter((item) => {
+				return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+			});
+		} else {
+			this.items = this.all;
 		}
 	}
 
@@ -75,15 +64,9 @@ export class Filter {
 		this.navCtrl.push(Display, {
 			price: this.navParams.get('price'),
 			radius: this.navParams.get('distance'),
-			categories: this.items.categories.filter((item) => {
-				return item.checked;
-			}).map(item => {
-				return item.name;
-			}),
-			cuisines: this.items.cuisines.filter((item) => {
-				return item.checked;
-			}).map(item => {
-				return item.name;
+			categories: this.navParams.get('categories'),
+			cuisines: this.items.filter((item) => {
+				return this.marked[item];
 			}),
 		});
 	}

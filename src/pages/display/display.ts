@@ -9,7 +9,7 @@ import {
   StackConfig,
   // Stack,
   // Card,
-  // ThrowEvent,
+  ThrowEvent,
   DragEvent,
   SwingStackComponent,
   SwingCardComponent} from 'angular2-swing';
@@ -26,9 +26,10 @@ export class Display {
 	@ViewChild('myswing1') swingStack: SwingStackComponent;
   	@ViewChildren('mycards1') swingCards: QueryList<SwingCardComponent>;
 	
-	cards: any;
+	cards: Array<Object>;
 	stackConfig: StackConfig;
-	recentCard: string = '';
+	like_opacity: number;
+	unlike_opacity: number;
 
 	constructor(
 		public munchrApi: MunchrApi, 
@@ -36,6 +37,8 @@ export class Display {
 		public navParams: NavParams,
 		public modalCtrl: ModalController
 	) {
+		this.add_cards();
+
 		this.stackConfig = {
 			throwOutConfidence: (offset, element) => {
 				return Math.min(Math.abs(offset) / (element.offsetWidth/2), 1);
@@ -47,48 +50,28 @@ export class Display {
 				return 800;
 			}
 		};
-		// this.cards = ['https://imgs.xkcd.com/comics/emails.png']
+		this.like_opacity = 0;
 	}
 
 	ngAfterViewInit() {
-		// Either subscribe in controller or set in HTML
-		this.swingStack.throwin.subscribe((event: DragEvent) => {
-		  // event.target.style.background = '#ffffff';
+		this.swingStack.dragmove.subscribe((event: DragEvent) => {
+			if(event.throwDirection == 1) {
+				this.like_opacity = event.throwOutConfidence;
+				this.unlike_opacity = 0;
+			} else {
+				this.unlike_opacity = event.throwOutConfidence;
+				this.like_opacity = 0;
+			}
 		});
 
-		this.cards = [{email: ''}];
-		this.addNewCards(1);
-	}
-
-	// Called whenever we drag an element
-	// onItemMove(element, x, y, r) {
-	//   // var color = '';
-	//   // var abs = Math.abs(x);
-	//   // let min = Math.trunc(Math.min(16*16 - abs, 16*16));
-	//   // let hexCode = this.decimalToHex(min, 2);
-	  
-	//   // if (x < 0) {
-	//   //   color = '#FF' + hexCode + hexCode;
-	//   // } else {
-	//   //   color = '#' + hexCode + 'FF' + hexCode;
-	//   // }
-	  
-	//   // element.style.background = color;
-	//   element.style['transform'] = `translate3d(0, 0, 0) translate(${x}px, ${y}px) rotate(${r}deg)`;
-	// }
-	// Connected through HTML
-	voteUp(like: boolean) {
-	  let removedCard = this.cards.pop();
-	  this.addNewCards(5);
-	  if (like) {
-	    this.recentCard = 'You liked: ' + removedCard.email;
-	  } else {
-	    this.recentCard = 'You disliked: ' + removedCard.email;
-	  }
+		this.swingStack.dragend.subscribe((event: DragEvent) => {
+			this.like_opacity = 0;
+			this.unlike_opacity = 0;
+		});
 	}
 	 
 	// Add new cards to our array
-	addNewCards(count: number) {
+	add_cards() {
 		let args = {
 			lat: 0,
 			long: 0,
@@ -109,4 +92,9 @@ export class Display {
 		let modal = this.modalCtrl.create(MoreInfo, restaurant);
 		modal.present();
 	}
+
+	throw_out(event: ThrowEvent) {
+		console.log(event);
+	}
+	
 }
