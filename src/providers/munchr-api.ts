@@ -18,9 +18,9 @@ export class MunchrApi {
 	url: string;
 
 	constructor(public http: Http) {
-		console.log('Hello MunchrApiLogin Provider');
-		this.url = 'http://localhost:5000'; //dev 
-		// this.url = 'https://munchr-test.herokuapp.com'; //prod
+		// console.log('Hello MunchrApiLogin Provider');
+		// this.url = 'http://localhost:5000'; //dev 
+		this.url = 'https://munchr-test.herokuapp.com'; //prod
 	}
 
 	filters(lat, long) {

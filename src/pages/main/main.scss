@@ -1,12 +1,11 @@
 page-main {
-
+	.item-checkbox {
+	    width:200px;
+	    border-top: 0px;
+	    padding-bottom: 0px;
+	}
+	   .item-checkbox:first-child {
+	       float:right;
+	}
 }
 
-.item-checkbox {
-    width:200px;
-    border-top: 0px;
-    padding-bottom: 0px;
-}
-   .item-checkbox:first-child {
-       float:right;
-}
