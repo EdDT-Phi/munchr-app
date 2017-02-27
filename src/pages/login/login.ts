@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import {NavController, ToastController, LoadingController, Loading} from 'ionic-angular';
+import { NavController, ToastController, LoadingController, Loading } from 'ionic-angular';
 
 import { Main } from '../main/main';
 import { Create } from '../create/create';

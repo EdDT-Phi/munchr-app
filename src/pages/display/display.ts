@@ -1,15 +1,12 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, Loading, LoadingController } from 'ionic-angular';
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { MoreInfo } from '../info/info';
 
 import {
   StackConfig,
-  // Stack,
-  // Card,
-  // ThrowEvent,
   DragEvent,
   SwingStackComponent,
   SwingCardComponent} from 'angular2-swing';
@@ -34,13 +31,16 @@ export class Display {
 	unlike_opacity: number = 0;
 	limit: number = 10;
 	offset: number = 0;
+	loading: Loading;
 
 	constructor(
 		public munchrApi: MunchrApi, 
 		public navCtrl: NavController, 
 		public navParams: NavParams,
-		public modalCtrl: ModalController
+		public modalCtrl: ModalController,
+		public loadingCtrl: LoadingController
 	) {
+
 		this.add_cards();
 
 		// TODO implemnent up throw
@@ -73,6 +73,10 @@ export class Display {
 	 
 	// Add new cards to our array
 	add_cards() {
+		this.loading = this.loadingCtrl.create({
+			content: 'Please wait...'
+		});
+		this.loading.present();
 		this.display_options = false;
 
 		let args = {
@@ -92,6 +96,7 @@ export class Display {
 			console.log("got more cards: " + new_cards.results);
 			this.cards = new_cards.results;
 			this.offset += this.limit;
+			this.loading.dismiss();
 		});
 	}
 	 

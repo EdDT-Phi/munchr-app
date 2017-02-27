@@ -60,5 +60,5 @@
 
 </ion-content>
 <ion-footer>
-	<button ion-button class="center" (click)="search()">Find Restaurant</button>
+	<button ion-button class="center" (click)="search()" [disabled]="loading" block> {{loading?  'Loading...' : 'Find Restaurant'}}</button>
 </ion-footer>
