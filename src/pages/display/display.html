@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-	<div swing-stack #myswing1 [stackConfig]="stackConfig" (throwout)="throw_out($event)" id="card-stack">
+	<div swing-stack #myswing1 [stackConfig]="stackConfig" (throwout)="throw_out($event.throwDirection)" id="card-stack">
 		<ion-card #mycards1 swing-card *ngFor="let c of cards">
 			<img (click)="info({restaurant: c})" height="300" *ngIf="c.photo" [src]="c.photo">
 			<ion-title>{{ c.name }}</ion-title>
@@ -44,10 +44,20 @@
 	<img width="200" src="https://img.clipartfest.com/728f0e37bf7467a43968046d5e5e9d53_clipart-thumbs-down-circle-thumbs-down-clipart_1809-1802.png">
 </div>
 
+<ion-content class="center" *ngIf="display_options" id="buttons">
+	<br>
+	<br>
+	<br>
+	<br>
+	<button ion-button class="center" *ngIf="liked_cards.length != 0" (click)="see_liked()">Show liked restaurants</button>
+	<button ion-button class="center" (click)="add_cards()">Show more restaurants</button>
+	<button ion-button class="center" (click)="start_over()">Start over</button>
+</ion-content>
+
 <ion-footer>
 	<ion-row>
-		<button ion-button class="center">Definitely Not!</button>
-		<button ion-button class="center">Choose</button>
-		<button ion-button class="center">Maybe..</button>
+		<button ion-button class="center" (click)="throw_out(-1)">Dislike</button>
+		<button ion-button class="center" (click)="choose()">Choose</button>
+		<button ion-button class="center" (click)="throw_out(1)">Like</button>
 	</ion-row>
 </ion-footer>

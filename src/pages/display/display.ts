@@ -9,7 +9,7 @@ import {
   StackConfig,
   // Stack,
   // Card,
-  ThrowEvent,
+  // ThrowEvent,
   DragEvent,
   SwingStackComponent,
   SwingCardComponent} from 'angular2-swing';
@@ -25,11 +25,15 @@ import {
 export class Display {
 	@ViewChild('myswing1') swingStack: SwingStackComponent;
   	@ViewChildren('mycards1') swingCards: QueryList<SwingCardComponent>;
-	
+
 	cards: Array<Object>;
+	liked_cards: Array<Object>;
 	stackConfig: StackConfig;
+	display_options: boolean;
 	like_opacity: number;
 	unlike_opacity: number;
+	limit = 10;
+	offset: number;
 
 	constructor(
 		public munchrApi: MunchrApi, 
@@ -37,20 +41,21 @@ export class Display {
 		public navParams: NavParams,
 		public modalCtrl: ModalController
 	) {
+		this.offset = 0;
 		this.add_cards();
 
+		// TODO implemnent up throw
 		this.stackConfig = {
 			throwOutConfidence: (offset, element) => {
 				return Math.min(Math.abs(offset) / (element.offsetWidth/2), 1);
 			},
-			// transform: (element, x, y, r) => {
-			// 	this.onItemMove(element, x, y, r);
-			// },
-			throwOutDistance: (d) => {
+			throwOutDistance: () => {
 				return 800;
 			}
 		};
 		this.like_opacity = 0;
+		this.display_options = false;
+		this.liked_cards = [];
 	}
 
 	ngAfterViewInit() {
@@ -64,7 +69,7 @@ export class Display {
 			}
 		});
 
-		this.swingStack.dragend.subscribe((event: DragEvent) => {
+		this.swingStack.dragend.subscribe(() => {
 			this.like_opacity = 0;
 			this.unlike_opacity = 0;
 		});
@@ -79,22 +84,48 @@ export class Display {
 			categories: this.navParams.get("categories"),
 			cuisines: this.navParams.get("cuisines"),
 			price: this.navParams.get("price"),
-			user_id: 0
-		}
+			user_id: 0,
+			offset: this.offset,
+			limit: this.limit
+		};
 
 		this.munchrApi.restaurants(args)
 		.then( data => {
-			this.cards = data.results
+			this.cards = data.results;
+			this.offset += this.limit;
 		});
 	}
 	 
-	info(restaurant) {
+	info(restaurant: Object) {
 		let modal = this.modalCtrl.create(MoreInfo, restaurant);
 		modal.present();
 	}
 
-	throw_out(event: ThrowEvent) {
-		console.log(event);
+	// TODO implement up throw
+	throw_out(direction: number) {
+		const card = this.cards.pop();
+		if (direction == 1) {
+			this.liked_cards.push(card);
+		}
+
+		if (this.cards.length == 0) {
+			this.display_options = true;
+		}
 	}
-	
+
+	see_liked() {
+		this.display_options = false;
+		this.cards = this.liked_cards;
+		this.liked_cards = [];
+
+		this.ngAfterViewInit();
+	}
+
+	choose() {
+		const chosen = this.cards.pop();
+	}
+
+	start_over() {
+		// TODO Do what?
+	}
 }

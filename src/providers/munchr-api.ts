@@ -20,8 +20,8 @@ export class MunchrApi {
 
 	constructor(public http: Http) {
 		// console.log('Hello MunchrApiLogin Provider');
-		this.url = 'http://localhost:5000'; //dev 
-		// this.url = 'https://munchr-test.herokuapp.com'; //prod
+		// this.url = 'http://localhost:5000'; //dev
+		this.url = 'https://munchr-test.herokuapp.com'; //prod
 	}
 
 	filters(lat, long) {
@@ -74,7 +74,8 @@ export class MunchrApi {
 			"cuisines": args.cuisines.join(","),
 			"price": args.price ? args.price : 2,
 			"user_id": args.user_id,
-
+			"offset": args.offset,
+			"limit": args.limit
 		};
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];
