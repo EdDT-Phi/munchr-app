@@ -26,14 +26,14 @@ export class Display {
 	@ViewChild('myswing1') swingStack: SwingStackComponent;
   	@ViewChildren('mycards1') swingCards: QueryList<SwingCardComponent>;
 
-	cards: Array<Object>;
-	liked_cards: Array<Object>;
+	cards: Array<Object> = [];
+	liked_cards: Array<Object> = [];
 	stackConfig: StackConfig;
-	display_options: boolean;
-	like_opacity: number;
-	unlike_opacity: number;
-	limit = 10;
-	offset: number;
+	display_options: boolean = false;
+	like_opacity: number = 0;
+	unlike_opacity: number = 0;
+	limit: number = 10;
+	offset: number = 0;
 
 	constructor(
 		public munchrApi: MunchrApi, 
@@ -41,7 +41,6 @@ export class Display {
 		public navParams: NavParams,
 		public modalCtrl: ModalController
 	) {
-		this.offset = 0;
 		this.add_cards();
 
 		// TODO implemnent up throw
@@ -53,9 +52,6 @@ export class Display {
 				return 800;
 			}
 		};
-		this.like_opacity = 0;
-		this.display_options = false;
-		this.liked_cards = [];
 	}
 
 	ngAfterViewInit() {
@@ -77,6 +73,8 @@ export class Display {
 	 
 	// Add new cards to our array
 	add_cards() {
+		this.display_options = false;
+
 		let args = {
 			lat: 0,
 			long: 0,
@@ -90,8 +88,9 @@ export class Display {
 		};
 
 		this.munchrApi.restaurants(args)
-		.then( data => {
-			this.cards = data.results;
+		.then( (new_cards) => {
+			console.log("got more cards: " + new_cards.results);
+			this.cards = new_cards.results;
 			this.offset += this.limit;
 		});
 	}
@@ -117,8 +116,6 @@ export class Display {
 		this.display_options = false;
 		this.cards = this.liked_cards;
 		this.liked_cards = [];
-
-		this.ngAfterViewInit();
 	}
 
 	choose() {
@@ -126,6 +123,8 @@ export class Display {
 	}
 
 	start_over() {
-		// TODO Do what?
+		this.display_options = false;
+		this.offset = 0;
+		this.add_cards();
 	}
 }

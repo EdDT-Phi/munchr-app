@@ -57,7 +57,7 @@ export class MunchrApi {
 	}
 
 	restaurants(args) {
-		if (this.restaurants_data) {
+		if (this.restaurants_data == -1) {
 			// already loaded data
 			return Promise.resolve(this.restaurants_data);
 		}
