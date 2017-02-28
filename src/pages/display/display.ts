@@ -4,6 +4,7 @@ import { NavController, NavParams, ModalController, Loading, LoadingController }
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { MoreInfo } from '../info/info';
+import { Final } from '../final/final';
 
 import {
   StackConfig,
@@ -125,7 +126,9 @@ export class Display {
 	}
 
 	choose() {
-		const chosen = this.cards.pop();
+		this.navCtrl.push(Final, {
+			restaurant: this.cards.pop()
+		})
 	}
 
 	start_over() {

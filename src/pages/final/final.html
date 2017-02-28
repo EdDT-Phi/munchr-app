@@ -1,0 +1,23 @@
+<ion-header>
+		<ion-title>{{ restaurant.name }}</ion-title>
+</ion-header>
+
+<ion-content>
+	<img height="300" [src]="restaurant.photo">
+	{{ restaurant.distance }} miles away <br>
+	{{ restaurant.location.address }} <br>
+	{{ restaurant.location.locality }} <br>
+	<ion-icon [name]="restaurant.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+	<ion-icon [name]="restaurant.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+	<ion-icon [name]="restaurant.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+	<ion-icon [name]="restaurant.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+	<ion-icon [name]="restaurant.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br>
+	{{ restaurant.cuisines }} <br>
+
+	<img [src]="map">
+
+</ion-content>
+
+<ion-footer>
+	<button ion-button (click)="done()" block>Done</button>
+</ion-footer>
