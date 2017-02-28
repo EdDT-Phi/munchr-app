@@ -28,37 +28,37 @@
 	<ion-list no-lines >	
 		<ion-item>
 			  <ion-label>Dine-out</ion-label>
-			  <ion-checkbox color="dark" ></ion-checkbox>
+			  <ion-checkbox color="dark" [(ngModel)]="marked['Dine-out']"></ion-checkbox>
 		</ion-item>
 		<ion-item>
 			  <ion-label>Breakfast</ion-label>
-			  <ion-checkbox color="dark" ></ion-checkbox>
+			  <ion-checkbox color="dark" [(ngModel)]="marked['Breakfast']"></ion-checkbox>
 		</ion-item>
 	</ion-list>
 
 	<ion-list no-lines>
 		<ion-item>
 			  <ion-label>Delivery</ion-label>
-			  <ion-checkbox color="dark" ></ion-checkbox>
+			  <ion-checkbox color="dark" [(ngModel)]="marked['Delivery']"></ion-checkbox>
 		</ion-item>
 		<ion-item>
 			  <ion-label>Lunch</ion-label>
-			  <ion-checkbox color="dark" ></ion-checkbox>
+			  <ion-checkbox color="dark" [(ngModel)]="marked['Lunch']"></ion-checkbox>
 		</ion-item>
 	</ion-list>
 
 	<ion-list no-lines>
 		<ion-item>
-			  <ion-label>Pubs & Bar</ion-label>
-			  <ion-checkbox color="dark" ></ion-checkbox>
+			  <ion-label>Pubs & Bars</ion-label>
+			  <ion-checkbox color="dark" [(ngModel)]="marked['Pubs & Bars']"></ion-checkbox>
 		</ion-item>
 		<ion-item>
 			  <ion-label>Dinner</ion-label>
-			  <ion-checkbox color="dark" ></ion-checkbox>
+			  <ion-checkbox color="dark" [(ngModel)]="marked['Dinner']"></ion-checkbox>
 		</ion-item>
 	</ion-list>
 
 </ion-content>
 <ion-footer>
-	<button ion-button class="center" (click)="search()">Find Restaurant</button>
+	<button ion-button class="center" (click)="search()" [disabled]="loading" block> {{loading?  'Loading...' : 'Find Restaurant'}}</button>
 </ion-footer>

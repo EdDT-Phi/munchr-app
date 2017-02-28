@@ -9,11 +9,6 @@ import { Display } from '../pages/display/display';
 import { MoreInfo } from '../pages/info/info';
 
 import {
-  StackConfig,
-  Stack,
-  Card,
-  ThrowEvent,
-  DragEvent,
   SwingStackComponent,
   SwingCardComponent} from 'angular2-swing';
 

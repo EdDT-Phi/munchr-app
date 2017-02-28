@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, ToastController } from 'ionic-angular';
+import { NavController, ToastController, LoadingController, Loading } from 'ionic-angular';
 
 import { Main } from '../main/main';
 import { Create } from '../create/create';
@@ -15,14 +15,24 @@ import { AuthService } from '../../providers/auth-service'
 export class Login {
 	email: string;
 	password: string;
+	loading: Loading;
 
-	constructor(public navCtrl: NavController, public toastCtrl: ToastController, public authService: AuthService) {
+	constructor(
+		public navCtrl: NavController,
+		public toastCtrl: ToastController,
+		public authService: AuthService,
+		public loadingCtrl: LoadingController
+	) { }
 
-	}
-
-	login = function() {
+	login () {
+		this.loading = this.loadingCtrl.create({
+			content: 'Please wait...'
+		});
+		
+		this.loading.present();
 		this.authService.login(this.email, this.password)
 		.then( data => {
+			this.loading.dismiss();
 			console.log(data);
 			if (data.error) {
 				let toast = this.toastCtrl.create({
@@ -36,7 +46,7 @@ export class Login {
 		});
 	}
 
-	create_account = function() {
+	create_account() {
 		this.navCtrl.push(Create);
 	}
 }

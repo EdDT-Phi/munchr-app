@@ -4,55 +4,25 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { Display } from '../display/display';
 
-import { MunchrApi } from '../../providers/munchr-api';
-
 @Component({
 	selector: 'page-filter',
 	templateUrl: 'filter.html',
-	providers: [ MunchrApi ]
 })
 
 
 export class Filter {
-	items: {categories: Array<{name:string, checked:boolean}>, cuisines: Array<{name:string, checked:boolean}> };
-	lat: number;
-	long: number;
+	items: Array<string>;
+	all: Array<string>;
+	marked: Object;
 
-	constructor(public navCtrl: NavController, public navParams: NavParams, public munchrApi: MunchrApi) {
-		this.initialize_values(null);
-	}
-
-	initialize_values(ev) {
-		this.munchrApi.filters(this.lat, this.long)
-		.then( data => {
-			let values = data.results;
-			let categories = [];
-			let cuisines = [];
-
-			for (let i = 0; i < values.categories.length; i++) {
-				categories.push({name: values.categories[i], checked:false});
-			}
-			for (let i = 0; i < values.cuisines.length; i++) {
-				cuisines.push({name: values.cuisines[i], checked:false});
-			}
-			this.items = {
-				categories: categories,
-				cuisines: cuisines
-			}
-
-			this.show_items(ev);
-		});
-	}
-
-	getItems(ev) {
-		// Reset items back to all of the items
-		// This is modifying the all list somehow :(
-		// this.items.categories = this.all.categories.slice();
-		// this.items.cuisines = this.all.cuisines.slice();
-		this.initialize_values(ev);
+	constructor(public navCtrl: NavController, public navParams: NavParams) {
+		this.all = navParams.get('cuisines');
+		this.items = navParams.get('cuisines');
+		this.marked = {};
 	}
 
 	show_items(ev) {
+		console.log(this.items);
 		if(ev == null)
 			return ;
 
@@ -61,29 +31,24 @@ export class Filter {
 
 		// if the value is an empty string don't filter the items
 		if (val && val.trim() != '') {
-			this.items.categories = this.items.categories.filter((item) => {
-				return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-			})
-			this.items.cuisines = this.items.cuisines.filter((item) => {
-				return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
-			})
+			this.items = this.all.filter((item) => {
+				return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+			});
+		} else {
+			this.items = this.all;
 		}
 	}
 
 	search() {
 
 		this.navCtrl.push(Display, {
+			lat: this.navParams.get('lat'),
+			long: this.navParams.get('long'),
 			price: this.navParams.get('price'),
 			radius: this.navParams.get('distance'),
-			categories: this.items.categories.filter((item) => {
-				return item.checked;
-			}).map(item => {
-				return item.name;
-			}),
-			cuisines: this.items.cuisines.filter((item) => {
-				return item.checked;
-			}).map(item => {
-				return item.name;
+			categories: this.navParams.get('categories'),
+			cuisines: this.items.filter((item) => {
+				return this.marked[item];
 			}),
 		});
 	}

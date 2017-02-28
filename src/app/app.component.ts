@@ -2,8 +2,8 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
-// import { Display } from '../pages/main/main';
 import { Main } from '../pages/main/main';
+import { Login } from "../pages/login/login";
 
 
 @Component({
