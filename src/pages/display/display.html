@@ -10,16 +10,18 @@
 <ion-content>
 	<div swing-stack #myswing1 [stackConfig]="stackConfig" (throwoutleft)="voteUp(true)" (throwoutright)="voteUp(false)" id="card-stack">
 	    <ion-card #mycards1 swing-card *ngFor="let c of cards">
-	    <img height="300" *ngIf="c.photo" [src]="c.photo">
+	    <img (click)="info({restaurant: c})" height="300" *ngIf="c.photo" [src]="c.photo">
 	 	<ion-title>{{ c.name }}</ion-title>
 	 	<ion-card-content *ngIf="c.location">
 			{{ c.location.address }}<br>
 			{{ c.location.locality }} <br>
-		<ion-icon [name]="c.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="c.rating >= 1 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="c.rating >= 2 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="c.rating >= 3 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="c.rating >= 4 ? 'star' : 'star-outline'"></ion-icon>
+		<div *ngIf="c.rating != 0">
+			<ion-icon [name]="c.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="c.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="c.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="c.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="c.rating > 4 ? 'star' : 'star-outline'"></ion-icon>
+		</div>
 		<br>
 			{{ c.cuisines }}
 			
