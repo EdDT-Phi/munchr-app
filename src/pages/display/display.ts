@@ -80,8 +80,8 @@ export class Display {
 		this.display_options = false;
 
 		let args = {
-			lat: 0,
-			long: 0,
+			lat: this.navParams.get("lat"),
+			long: this.navParams.get("long"),
 			radius: this.navParams.get("radius"),
 			categories: this.navParams.get("categories"),
 			cuisines: this.navParams.get("cuisines"),
@@ -93,7 +93,7 @@ export class Display {
 
 		this.munchrApi.restaurants(args)
 		.then( (new_cards) => {
-			console.log("got more cards: " + new_cards.results);
+			console.log("got more cards: ", new_cards.results);
 			this.cards = new_cards.results;
 			this.offset += this.limit;
 			this.loading.dismiss();
@@ -108,6 +108,7 @@ export class Display {
 	// TODO implement up throw
 	throw_out(direction: number) {
 		const card = this.cards.pop();
+		console.log(card['photo']);
 		if (direction == 1) {
 			this.liked_cards.push(card);
 		}
@@ -128,8 +129,6 @@ export class Display {
 	}
 
 	start_over() {
-		this.display_options = false;
-		this.offset = 0;
-		this.add_cards();
+		this.navCtrl.pop();
 	}
 }
