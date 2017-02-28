@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
+import { Geolocation } from 'ionic-native';
 
 import { Filter } from '../filter/filter';
 import { MunchrApi } from "../../providers/munchr-api";
@@ -23,10 +24,20 @@ export class Main {
 
 	constructor(public navCtrl: NavController, public munchrApi: MunchrApi) {
 
-		this.munchrApi.filters(this.lat, this.long)
-			.then( data => {
-				this.cuisines = data.results;
-				this.loading = false;
+
+
+		Geolocation.getCurrentPosition()
+			.then( resp => {
+				this.lat = resp.coords.latitude;
+				this.long = resp.coords.longitude;
+
+				this.munchrApi.filters(this.lat, this.long)
+					.then( data => {
+						this.cuisines = data.results;
+						this.loading = false;
+					});
+			}).catch((error) => {
+			  console.log('Error getting location', error);
 			});
 
 		const time = new Date().getHours();

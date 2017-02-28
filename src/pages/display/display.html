@@ -13,6 +13,7 @@
 			<img (click)="info({restaurant: c})" height="300" *ngIf="c.photo" [src]="c.photo">
 			<ion-title>{{ c.name }}</ion-title>
 			<ion-card-content *ngIf="c.location">
+				{{ c.distance }} miles away<br>
 				{{ c.location.address }}<br>
 				{{ c.location.locality }} <br>
 				<div *ngIf="c.rating != 0">
@@ -54,7 +55,7 @@
 	<button ion-button class="center" (click)="start_over()">Start over</button>
 </ion-content>
 
-<ion-footer>
+<ion-footer *ngIf="!display_options">
 	<ion-row>
 		<button ion-button class="center" (click)="throw_out(-1)">Dislike</button>
 		<button ion-button class="center" (click)="choose()">Choose</button>

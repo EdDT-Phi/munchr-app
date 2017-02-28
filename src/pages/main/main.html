@@ -9,21 +9,6 @@
 
 <ion-content>
 	<img height="200" class="center" src="../../assets/imgs/munchr.png"/>
-	<ion-list>
-		<ion-item>
-			<ion-range min="1" max="20" pin="true" [(ngModel)]="distance">
-				<ion-icon range-left name="walk"></ion-icon>
-				<ion-icon range-right name="car"></ion-icon>
-			</ion-range>
-		</ion-item>
-		<ion-item>
-			<ion-range min="1" max="3" step="1" snaps="true" [(ngModel)]="price">
-				<ion-icon range-left name="pricetag"></ion-icon>
-				<ion-icon range-right name="pricetags"></ion-icon>
-			</ion-range>
-		</ion-item>
-
-	</ion-list>
 
 	<ion-list no-lines >	
 		<ion-item>
@@ -58,6 +43,21 @@
 		</ion-item>
 	</ion-list>
 
+	<ion-list>
+		<ion-item>
+			<ion-range min="1" max="20" pin="true" [(ngModel)]="distance">
+				<ion-icon range-left name="walk"></ion-icon>
+				<ion-icon range-right name="car"></ion-icon>
+			</ion-range>
+		</ion-item>
+		<ion-item>
+			<ion-range min="1" max="3" step="1" snaps="true" [(ngModel)]="price">
+				<ion-icon range-left name="pricetag"></ion-icon>
+				<ion-icon range-right name="pricetags"></ion-icon>
+			</ion-range>
+		</ion-item>
+
+	</ion-list>
 </ion-content>
 <ion-footer>
 	<button ion-button class="center" (click)="search()" [disabled]="loading" block> {{loading?  'Loading...' : 'Find Restaurant'}}</button>

@@ -20,12 +20,14 @@ export class MunchrApi {
 
 	constructor(public http: Http) {
 		// console.log('Hello MunchrApiLogin Provider');
-		// this.url = 'http://localhost:5000'; //dev
-		this.url = 'https://munchr-test.herokuapp.com'; //prod
+		this.url = 'http://localhost:5000'; //dev
+		// this.url = 'https://munchr-test.herokuapp.com'; //prod
 	}
 
 	filters(lat, long) {
-		// check if lat long is similar
+		console.log(lat,long);
+
+		// TODO check if lat long is similar
 		if (this.filters_data) {
 			// already loaded data
 			return Promise.resolve(this.filters_data);
