@@ -12,7 +12,7 @@ import { Login } from "../pages/login/login";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = Login;
+  rootPage: any = Main;
 
   pages: Array<{title: string, component: any}>;
 
@@ -21,7 +21,9 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: Main }
+      { title: 'Home', component: Main },
+      { title: 'Profile', component: Main },
+      { title: 'Logout', component: Login }
     ];
 
   }
