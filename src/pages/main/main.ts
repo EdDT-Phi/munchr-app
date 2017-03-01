@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 
-import {NavController, ModalController} from 'ionic-angular';
-import {Geolocation, NativeStorage} from 'ionic-native';
+import { NavController, ModalController } from 'ionic-angular';
+import { Geolocation, NativeStorage } from 'ionic-native';
 
 import { Filter } from '../filter/filter';
 import { MunchrApi } from "../../providers/munchr-api";
-import {Login} from "../login/login";
+import { Login } from "../login/login";
+
+import { Utils } from "../../utils"
 
 @Component({
 	selector: 'page-main',
@@ -21,22 +23,27 @@ export class Main {
 	lat: number = 0;
 	long: number = 0;
 	loading: boolean = true;
+	user: Object;
 
 
 	constructor(
 		public navCtrl: NavController,
 		public munchrApi: MunchrApi,
 		public modalCtrl: ModalController,
-
+		public utils: Utils,
 	) {
 
 		NativeStorage.getItem('user')
 			.then( data => {
-
+				this.user = data;
 			}, error => {
-				console.log(error);
+				this.utils.display_error(error);
 				let modal = this.modalCtrl.create(Login);
 				modal.present();
+				modal.onDidDismiss(data => {
+					this.user = data;
+					console.log(this.user);
+				});
 			});
 
 
@@ -47,11 +54,16 @@ export class Main {
 
 				this.munchrApi.filters(this.lat, this.long)
 					.then( data => {
-						this.cuisines = data.results;
+
+						if(data.error) {
+							this.utils.display_error(data.error);
+						} else {
+							this.cuisines = data.results;
+						}
 						this.loading = false;
 					});
 			}).catch((error) => {
-			  console.log('Error getting location', error);
+			  this.utils.display_error('Error getting location: ' + error);
 			});
 
 		const time = new Date().getHours();

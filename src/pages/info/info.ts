@@ -4,6 +4,8 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 import { MunchrApi } from '../../providers/munchr-api';
 
+import {Utils} from "../../utils";
+
 @Component({
 	selector: 'page-info',
 	templateUrl: 'info.html',
@@ -20,7 +22,8 @@ export class MoreInfo {
 	constructor(
 		public munchrApi: MunchrApi, 
 		public navParams: NavParams,
-		public viewCtrl: ViewController
+		public viewCtrl: ViewController,
+		public utils: Utils,
 	) {
 		this.restaurant = this.navParams.get('restaurant');
 		console.log(this.restaurant);
@@ -33,12 +36,20 @@ export class MoreInfo {
 
 		this.munchrApi.reviews(this.restaurant.id)
 		.then( data => {
-			this.reviews = data.results;
+			if (data.error) {
+				this.utils.display_error(data.error);
+			} else {
+				this.reviews = data.results;
+			}
 		});
 
 		this.munchrApi.photos(this.restaurant)
 		.then( data => {
-			this.photos = data.results;
+			if (data.error) {
+				this.utils.display_error(data.error);
+			} else {
+				this.photos = data.results;
+			}
 		});
 	}
 

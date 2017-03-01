@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 
-import { NavController, ToastController, LoadingController, Loading } from 'ionic-angular';
+import { NavController, LoadingController, Loading, ViewController } from 'ionic-angular';
+import { Facebook} from "ionic-native";
 
-import { Main } from '../main/main';
 import { Create } from '../create/create';
 
 import { AuthService } from '../../providers/auth-service'
-import {Facebook, NativeStorage} from "ionic-native";
+
+import { Utils } from '../../utils'
 
 @Component({
 	selector: 'page-login',
@@ -14,70 +15,88 @@ import {Facebook, NativeStorage} from "ionic-native";
 	providers: [ AuthService ]
 })
 export class Login {
-	email: string = '';
-	password: string = '';
-	loading: Loading;
-	FB_APP_ID: number = 326434787728030;
+	email:string = '';
+	password:string = '';
+	loading:Loading;
+	FB_APP_ID:number = 326434787728030;
 
 	constructor(
 		public navCtrl: NavController,
-		public toastCtrl: ToastController,
 		public authService: AuthService,
-		public loadingCtrl: LoadingController
+		public loadingCtrl: LoadingController,
+		public utils: Utils,
+		public viewCtrl: ViewController,
 	) {
 
 		Facebook.browserInit(this.FB_APP_ID, "v2.8");
 	}
 
-	login () {
+	login() {
 		this.loading = this.loadingCtrl.create({
 			content: 'Please wait...'
 		});
-		
+
 		this.loading.present();
 		this.authService.login(this.email, this.password)
-		.then( data => {
-			this.loading.dismiss();
-			console.log(data);
-			if (data.error) {
-				let toast = this.toastCtrl.create({
-				  message: data.error,
-				  duration: 3000
-				});
-				toast.present();
-			} else {
-				this.navCtrl.setRoot(Main);
-			}
-		});
+			.then(data => {
+				this.loading.dismiss();
+				console.log(data);
+				if (data.error) {
+					this.utils.display_error(data.error);
+				} else {
+					this.save_and_login( {
+						user_id: data.result.user_id,
+						fb_id: data.result.fb_id,
+						first_name: data.result.first_name,
+						last_name: data.result.last_name,
+						email: data.result.email,
+						photo: data.result.picture,
+					});
+				}
+			});
 	}
 
 	facebook_login() {
 		const permissions = [];
 
 		Facebook.login(permissions)
-			.then( response => {
+			.then(response => {
 				let fb_id = response.authResponse.userID;
 
-				Facebook.api('/me', ['public_profile', 'user_friends', 'email'])
-					.then( user => {
+				Facebook.api('/me?fields=id,first_name,last_name,email,picture', ['public_profile', 'user_friends', 'email'])
+					.then(user => {
 						console.log(user);
 						user.picture = `https://graph.facebook.com/${fb_id}/picture?type=large`;
-						NativeStorage.setItem('user', {
-							name: user.name,
-							gender: user.gender,
-							picture: user.picture
-						}).then( () => {
-							this.navCtrl.push(Main);
-						}, error => {
-							console.log(error);
-						});
-					})
+						Facebook.api('/me/friends', ['user_friends'])
+							.then(data => {
+								// send friends data to back end
+							});
+
+						// send this to back end and get user_id
+						this.save_and_login({
+							// user_id: data.results.user_id,
+							fb_id: fb_id,
+							first_name: user.first_name,
+							last_name: user.last_name,
+							email: user.email,
+							photo: user.picture,
+						})
+					});
 			}, error => {
-				console.log(error);
+				this.utils.display_error(error);
 			});
 	}
 
 	create_account() {
 		this.navCtrl.push(Create);
+	}
+	
+	save_and_login(user) {
+		// Uncomment this for production
+		// NativeStorage.setItem('user', user).then(() => {
+			this.viewCtrl.dismiss(user);
+		// }, error => {
+		// 	this.utils.display_error(error);
+		// });
 	}
 }

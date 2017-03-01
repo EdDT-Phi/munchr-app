@@ -55,6 +55,8 @@ export class MunchrApi {
 				// and save the data for later reference
 				this.filters_data = data;
 				resolve(this.filters_data);
+			}, error => {
+				resolve({ error });
 			});
 		});
 	}
@@ -97,6 +99,8 @@ export class MunchrApi {
 				// and save the data for later reference
 				this.restaurants_data = data;
 				resolve(this.restaurants_data);
+			}, error => {
+				resolve({ error });
 			});
 		});	
 	}
@@ -120,6 +124,8 @@ export class MunchrApi {
 				// and save the data for later reference
 				this.reviews_data = data;
 				resolve(this.reviews_data);
+			}, error => {
+				resolve({ error });
 			});
 		});	
 	}
@@ -148,6 +154,8 @@ export class MunchrApi {
 				// and save the data for later reference
 				this.photos_data = data;
 				resolve(this.photos_data);
+			}, error => {
+				resolve({ error });
 			});
 		});	
 	}

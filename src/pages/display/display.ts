@@ -6,6 +6,8 @@ import { MunchrApi } from '../../providers/munchr-api';
 import { MoreInfo } from '../info/info';
 import { Final } from '../final/final';
 
+import {Utils} from "../../utils";
+
 import {
   StackConfig,
   DragEvent,
@@ -39,7 +41,8 @@ export class Display {
 		public navCtrl: NavController, 
 		public navParams: NavParams,
 		public modalCtrl: ModalController,
-		public loadingCtrl: LoadingController
+		public loadingCtrl: LoadingController,
+		public utils: Utils,
 	) {
 
 		this.add_cards();
@@ -93,10 +96,13 @@ export class Display {
 		};
 
 		this.munchrApi.restaurants(args)
-		.then( (new_cards) => {
-			console.log("got more cards: ", new_cards.results);
-			this.cards = new_cards.results;
-			this.offset += this.limit;
+		.then( (data) => {
+			if(data.error) {
+				this.utils.display_error(data);
+			} else {
+				this.cards = data.results;
+				this.offset += this.limit;
+			}
 			this.loading.dismiss();
 		});
 	}

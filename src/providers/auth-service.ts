@@ -47,6 +47,8 @@ export class AuthService {
 				// and save the data for later reference
 				this.data = data;
 				resolve(this.data);
+			}, error => {
+				resolve({ error });
 			});
 		});
 	}
@@ -60,7 +62,7 @@ export class AuthService {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		let options = new RequestOptions({ headers: headers });
-		let obj = {"firstName": firstName, "lastName": lastName, "email": email, "password": password}
+		let obj = {"firstName": firstName, "lastName": lastName, "email": email, "password": password};
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];
 		}).join('&');
@@ -78,6 +80,8 @@ export class AuthService {
 				// and save the data for later reference
 				this.data = data;
 				resolve(this.data);
+			}, error => {
+				resolve({ error });
 			});
 		});
 	}

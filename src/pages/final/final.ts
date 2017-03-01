@@ -41,6 +41,6 @@ export class Final {
 			url: `https://munchr-test.herokuapp.com/restaurant/${this.restaurant.id}`
 		}).then(()=> {
 
-		})
+		});
 	}
 }
