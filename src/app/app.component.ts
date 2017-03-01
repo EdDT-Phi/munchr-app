@@ -3,6 +3,7 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { Main } from '../pages/main/main';
+import { Login } from '../pages/login/login';
 
 
 @Component({
