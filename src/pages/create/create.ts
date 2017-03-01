@@ -39,8 +39,9 @@ export class Create {
 			return this.generate_error('Password must be 8-16 characters.');
 		} 
 
-		else {
-			this.navCtrl.setRoot(Main);
+		// Check if valid email
+		if(!this.validateEmail(this.email)){
+			return this.generate_error('Email must be a valid email address.');
 		}
 
 		// this.loading = this.loadingCtrl.create({
@@ -48,7 +49,11 @@ export class Create {
 		// });
 		
 		// this.loading.present();
+		// this.authService.create_account(this.firstName, this.lastName, this.email, this.password);
 
+		else {
+			this.navCtrl.setRoot(Main);
+		}
 
 	}
 
@@ -61,7 +66,9 @@ export class Create {
 		toast.present();
 	}
 
-	// create_account = function() {
-	// 	this.navCtrl.setRoot(Main);
-	// }
+	validateEmail(email) {
+  		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  		return re.test(email);
+	}
+
 }
