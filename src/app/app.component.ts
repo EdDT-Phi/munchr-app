@@ -12,7 +12,7 @@ import { Login } from "../pages/login/login";
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = Main;
+  rootPage: any = Login;
 
   pages: Array<{title: string, component: any}>;
 
