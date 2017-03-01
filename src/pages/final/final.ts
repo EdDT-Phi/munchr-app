@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavParams, NavController } from 'ionic-angular';
+import { SocialSharing } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
 
@@ -31,5 +32,15 @@ export class Final {
 
 	done() {
 		this.navCtrl.setRoot(Main)
+	}
+
+	share() {
+		SocialSharing.shareWithOptions({
+			message: 'Come eat at this place!',
+			subject: 'Munchr: going out to eat',
+			url: `https://munchr-test.herokuapp.com/restaurant/${this.restaurant.id}`
+		}).then(()=> {
+
+		})
 	}
 }
