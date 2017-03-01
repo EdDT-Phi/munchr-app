@@ -11,9 +11,13 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AuthService {
 	data: any;
+	url: string;
 
 	constructor(public http: Http) {
 		console.log('Hello AuthService Provider');
+		this.url = 'http://localhost:5000'; // dev
+		// this.url = 'https://munchr-test.herokuapp.com'; // prod
+		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
 	login(email, password) {
@@ -36,7 +40,7 @@ export class AuthService {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.post('https://munchr.herokuapp.com/login/', data, options)
+			this.http.post(this.url + '/login/', data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
@@ -67,7 +71,7 @@ export class AuthService {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.post('https://munchr.herokuapp.com/login/', data, options)
+			this.http.post(this.url + '/login/', data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data

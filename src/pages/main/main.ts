@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
-import { Geolocation } from 'ionic-native';
+import {NavController, ModalController} from 'ionic-angular';
+import {Geolocation, NativeStorage} from 'ionic-native';
 
 import { Filter } from '../filter/filter';
 import { MunchrApi } from "../../providers/munchr-api";
+import {Login} from "../login/login";
 
 @Component({
 	selector: 'page-main',
@@ -22,8 +23,21 @@ export class Main {
 	loading: boolean = true;
 
 
-	constructor(public navCtrl: NavController, public munchrApi: MunchrApi) {
+	constructor(
+		public navCtrl: NavController,
+		public munchrApi: MunchrApi,
+		public modalCtrl: ModalController,
 
+	) {
+
+		NativeStorage.getItem('user')
+			.then( data => {
+
+			}, error => {
+				console.log(error);
+				let modal = this.modalCtrl.create(Login);
+				modal.present();
+			});
 
 
 		Geolocation.getCurrentPosition()
