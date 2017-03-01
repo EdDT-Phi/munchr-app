@@ -7,6 +7,7 @@ import { Create } from '../pages/create/create';
 import { Filter } from '../pages/filter/filter';
 import { Display } from '../pages/display/display';
 import { MoreInfo } from '../pages/info/info';
+import { Final } from '../pages/final/final';
 
 import {
   SwingStackComponent,
@@ -21,6 +22,7 @@ import {
     Filter,
     Display,
     MoreInfo,
+    Final,
     SwingCardComponent,
     SwingStackComponent
   ],
@@ -35,7 +37,8 @@ import {
     Create,
     Filter,
     Display,
-    MoreInfo
+    MoreInfo,
+    Final
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
