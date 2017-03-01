@@ -10,6 +10,11 @@
     <ion-input [(ngModel)]="password" type="password"></ion-input>
   </ion-item>
 
-  <button ion-button class="center" (click)="login()">Login</button>
-  <a class="center" (click)="create_account()">Create Account</a> 
+
 </ion-content>
+
+<ion-footer>
+  <button ion-button (click)="login()" block>Login</button>
+  <button ion-button (click)="login()" block>Login with Facebook</button>
+  <button ion-button (click)="create_account()" block>Create Account</button>
+</ion-footer>
