@@ -37,13 +37,9 @@ export class Main {
 			.then( data => {
 				this.user = data;
 			}, error => {
+				
 				this.utils.display_error(error);
-				let modal = this.modalCtrl.create(Login);
-				modal.present();
-				modal.onDidDismiss(data => {
-					this.user = data;
-					console.log(this.user);
-				});
+				this.get_user();
 			});
 
 
@@ -87,6 +83,18 @@ export class Main {
 			cuisines: this.cuisines
 		},  {
 			animation: 'ios-transition'
+		});
+	}
+
+	get_user() {
+		let modal = this.modalCtrl.create(Login);
+		modal.present();
+		modal.onDidDismiss(data => {
+			if (!data){
+				return this.get_user();
+			}
+			this.user = data;
+			console.log(this.user);
 		});
 	}
 }
