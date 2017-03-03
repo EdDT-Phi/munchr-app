@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { NavController, ToastController, LoadingController, Loading } from 'ionic-angular';
+import { NavController, ToastController, LoadingController, Loading, ViewController } from 'ionic-angular';
+import { NativeStorage } from "ionic-native";
 
 import { Main } from '../main/main';
 
@@ -14,8 +15,8 @@ import { Utils } from '../../utils'
 	providers: [ AuthService ]
 })
 export class Create {
-	firstName: string ='';
-	lastName: string ='';
+	first_name: string ='';
+	last_name: string ='';
 	email: string ='';
 	password: string ='';
 	repeatPassword: string =''; 
@@ -24,12 +25,14 @@ export class Create {
 	constructor(
 		public navCtrl: NavController,
 		public loadingCtrl: LoadingController,
+		public authService: AuthService,
+		public viewCtrl: ViewController,
 		public utils: Utils,
 	) {}
 
 	create_account() {
 		//Check all fields are filled
-		if(!this.firstName || !this.lastName || !this.email || !this.password || !this.repeatPassword){
+		if(!this.first_name || !this.last_name || !this.email || !this.password || !this.repeatPassword){
 			return this.utils.display_error('All fields must be filled.');
 		} 
 
@@ -48,17 +51,38 @@ export class Create {
 			return this.utils.display_error('Email must be a valid email address.');
 		}
 
-		// this.loading = this.loadingCtrl.create({
-		// 	content: 'Please wait...'
-		// });
+		this.loading = this.loadingCtrl.create({
+			content: 'Please wait...'
+		});
 		
-		// this.loading.present();
-		// this.authService.create_account(this.firstName, this.lastName, this.email, this.password);
+		this.loading.present();
+		this.authService.create_account(this.first_name, this.last_name, this.email, this.password, null, null)
+		.then(data => {
+			this.loading.dismiss();
+				console.log(data);
+				if (data.error) {
+					this.utils.display_error(data.error);
+				} else {
+					this.save_and_login( {
+						user_id: data.result.user_id,
+						fb_id: data.result.fb_id,
+						first_name: data.result.first_name,
+						last_name: data.result.last_name,
+						email: data.result.email,
+						photo: data.result.picture,
+					});
+				}
+		});
+	}
 
-		else {
-			this.navCtrl.setRoot(Main);
-		}
-
+	save_and_login(user) {
+		// Uncomment this for production
+		NativeStorage.setItem('user', user).then(() => {
+			this.viewCtrl.dismiss(user);
+		}, error => {
+			this.utils.display_error(error);
+			this.viewCtrl.dismiss(user);
+		});
 	}
 
 
@@ -66,5 +90,7 @@ export class Create {
   		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   		return re.test(email);
 	}
+
+
 
 }

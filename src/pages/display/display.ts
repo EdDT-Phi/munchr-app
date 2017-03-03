@@ -115,7 +115,6 @@ export class Display {
 	// TODO implement up throw
 	throw_out(direction: number) {
 		const card = this.cards.pop();
-		console.log(card['photo']);
 		if (direction == 1) {
 			this.liked_cards.push(card);
 		}

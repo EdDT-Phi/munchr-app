@@ -14,9 +14,8 @@ export class AuthService {
 	url: string;
 
 	constructor(public http: Http) {
-		console.log('Hello AuthService Provider');
-		// this.url = 'http://localhost:5000'; // dev
-		this.url = 'https://munchr-test.herokuapp.com'; // prod
+		this.url = 'http://localhost:5000'; // dev
+		// this.url = 'https://munchr-test.herokuapp.com'; // test
 		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
@@ -53,7 +52,7 @@ export class AuthService {
 		});
 	}
 
-	create_account(firstName, lastName, email, password) {
+	create_account(first_name, last_name, email, password, fb_id, photo) {
 		if (this.data) {
 			// already loaded data -- check if different user/password though!
 			return Promise.resolve(this.data);
@@ -62,7 +61,14 @@ export class AuthService {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		let options = new RequestOptions({ headers: headers });
-		let obj = {"firstName": firstName, "lastName": lastName, "email": email, "password": password};
+		let obj = {
+			"first_name": first_name,
+			"last_name": last_name,
+			"email": email,
+			"password": password,
+			"fb_id": fb_id,
+			"photo": photo,
+		};
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];
 		}).join('&');
@@ -73,7 +79,7 @@ export class AuthService {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.post(this.url + '/login/', data, options)
+			this.http.post(this.url + '/users/', data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
@@ -81,6 +87,7 @@ export class AuthService {
 				this.data = data;
 				resolve(this.data);
 			}, error => {
+				console.log(error);
 				resolve({ error });
 			});
 		});

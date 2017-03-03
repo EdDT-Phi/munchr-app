@@ -6,6 +6,7 @@ import { SocialSharing } from 'ionic-native';
 import { MunchrApi } from '../../providers/munchr-api';
 
 import { Main } from '../main/main';
+import { Utils } from '../../utils';
 
 @Component({
 	selector: 'page-final',
@@ -22,12 +23,16 @@ export class Final {
 	constructor(
 		public navParams: NavParams,
 		public navCtrl: NavController, 
+		public utils: Utils, 
 	) {
 		this.restaurant = this.navParams.get('restaurant');
 		this.map = `https://maps.googleapis.com/maps/api/staticmap
 		?size=500x300
-		&markers=${this.navParams.get('lat')},${this.navParams.get('lat')}
+		&markers=${this.restaurant.location.lat},${this.restaurant.location.lon}
 		&key=AIzaSyC5D3VgliMud60vD_BSasm_9Ru2qOAzJ_s`
+
+		console.log(this.map);
+		console.log(this.restaurant);
 	}
 
 	done() {
@@ -41,6 +46,8 @@ export class Final {
 			url: `https://munchr-test.herokuapp.com/restaurant/${this.restaurant.id}`
 		}).then(()=> {
 
+		}, (error) => {
+			this.utils.display_error(error);
 		});
 	}
 }

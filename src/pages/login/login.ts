@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, ViewController } from 'ionic-angular';
-import { Facebook} from "ionic-native";
+import { NavController, LoadingController, Loading, ViewController, ModalController } from 'ionic-angular';
+import { Facebook, NativeStorage } from "ionic-native";
 
 import { Create } from '../create/create';
 
@@ -23,12 +23,14 @@ export class Login {
 	constructor(
 		public navCtrl: NavController,
 		public authService: AuthService,
+		public modalCtrl: ModalController,
 		public loadingCtrl: LoadingController,
 		public utils: Utils,
 		public viewCtrl: ViewController,
 	) {
 
 		Facebook.browserInit(this.FB_APP_ID, "v2.8");
+
 	}
 
 	login() {
@@ -71,16 +73,32 @@ export class Login {
 							.then(data => {
 								// send friends data to back end
 							});
-
+						this.authService.create_account(user.first_name, user.last_name, user.email, null, fb_id, user.picture)
+						.then(data => {
+							this.loading.dismiss();
+								console.log(data);
+								if (data.error) {
+									this.utils.display_error(data.error);
+								} else {
+									this.save_and_login( {
+										user_id: data.result.user_id,
+										fb_id: data.result.fb_id,
+										first_name: data.result.first_name,
+										last_name: data.result.last_name,
+										email: data.result.email,
+										photo: data.result.picture,
+									});
+								}
+						});
 						// send this to back end and get user_id
-						this.save_and_login({
-							// user_id: data.results.user_id,
-							fb_id: fb_id,
-							first_name: user.first_name,
-							last_name: user.last_name,
-							email: user.email,
-							photo: user.picture,
-						})
+						// this.save_and_login({
+						// 	// user_id: data.results.user_id,
+						// 	fb_id: fb_id,
+						// 	first_name: user.first_name,
+						// 	last_name: user.last_name,
+						// 	email: user.email,
+						// 	photo: user.picture,
+						// })
 					});
 			}, error => {
 				this.utils.display_error(error);
@@ -88,15 +106,20 @@ export class Login {
 	}
 
 	create_account() {
-		this.navCtrl.push(Create);
+		let modal = this.modalCtrl.create(Create);
+		modal.present();
+		modal.onDidDismiss(data => {
+			this.viewCtrl.dismiss(data);
+		});
 	}
 	
 	save_and_login(user) {
 		// Uncomment this for production
-		// NativeStorage.setItem('user', user).then(() => {
+		NativeStorage.setItem('user', user).then(() => {
 			this.viewCtrl.dismiss(user);
-		// }, error => {
-		// 	this.utils.display_error(error);
-		// });
+		}, error => {
+			this.utils.display_error(error);
+			this.viewCtrl.dismiss(user);
+		});
 	}
 }

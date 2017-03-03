@@ -19,6 +19,7 @@ export class Filter {
 		this.all = navParams.get('cuisines');
 		this.items = navParams.get('cuisines');
 		this.marked = {};
+		this.marked[this.all[Math.floor(Math.random()*this.all.length)]] = true;
 	}
 
 	show_items(ev) {
