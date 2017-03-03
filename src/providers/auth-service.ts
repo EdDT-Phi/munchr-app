@@ -14,8 +14,8 @@ export class AuthService {
 	url: string;
 
 	constructor(public http: Http) {
-		this.url = 'http://localhost:5000'; // dev
-		// this.url = 'https://munchr-test.herokuapp.com'; // test
+		// this.url = 'http://localhost:5000'; // dev
+		this.url = 'https://munchr-test.herokuapp.com'; // test
 		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
