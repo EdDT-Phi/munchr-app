@@ -34,33 +34,33 @@ export class Main {
 	) {
 
 		NativeStorage.getItem('user')
-			.then( data => {
-				this.user = data;
-			}, error => {
-				
-				this.utils.display_error(error);
-				this.get_user();
-			});
+		.then( data => {
+			this.user = data;
+		}, error => {
+			
+			this.utils.display_error(error);
+			this.get_user();
+		});
 
 
 		Geolocation.getCurrentPosition()
-			.then( resp => {
-				this.lat = resp.coords.latitude;
-				this.long = resp.coords.longitude;
+		.then( resp => {
+			this.lat = resp.coords.latitude;
+			this.long = resp.coords.longitude;
 
-				this.munchrApi.filters(this.lat, this.long)
-					.then( data => {
+			this.munchrApi.filters(this.lat, this.long)
+			.then( data => {
 
-						if(data.error) {
-							this.utils.display_error(data.error);
-						} else {
-							this.cuisines = data.results;
-						}
-						this.loading = false;
-					});
-			}).catch((error) => {
-			  this.utils.display_error('Error getting location: ' + error);
+				if(data.error) {
+					this.utils.display_error(data.error);
+				} else {
+					this.cuisines = data.results;
+				}
+				this.loading = false;
 			});
+		}).catch((error) => {
+		  this.utils.display_error('Error getting location: ' + error);
+		});
 
 		const time = new Date().getHours();
 		if(time <= 10)

@@ -12,6 +12,12 @@ import 'rxjs/add/operator/map';
 export class AuthService {
 	data: any;
 	url: string;
+	email: string;
+	password: string;
+	first_name: string;
+	last_name: string;
+	fb_id: string;
+	photo: string;
 
 	constructor(public http: Http) {
 		// this.url = 'http://localhost:5000'; // dev
@@ -19,11 +25,14 @@ export class AuthService {
 		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
-	login(email, password) {
-		if (this.data) {
+	login(email: string, password: string) {
+		if (this.data && this.password == password && this.email == email) {
 			// already loaded data -- check if different user/password though!
 			return Promise.resolve(this.data);
 		}
+
+		this.email = email;
+		this.password = password;
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -47,16 +56,37 @@ export class AuthService {
 				this.data = data;
 				resolve(this.data);
 			}, error => {
-				resolve({ error });
+				this.data = {error: JSON.parse(error._body).error};
+				resolve(this.data);
 			});
 		});
 	}
 
-	create_account(first_name, last_name, email, password, fb_id, photo) {
-		if (this.data) {
-			// already loaded data -- check if different user/password though!
+	create_account(
+		first_name: string,
+		last_name: string,
+		email: string,
+		password: string,
+		fb_id: string,
+		photo: string ) {
+
+		if (this.data && 
+			this.first_name == first_name &&
+			this.last_name == last_name &&
+			this.email == email &&
+			this.fb_id == fb_id &&
+			this.password == password &&
+			this.photo == photo) {
+
 			return Promise.resolve(this.data);
 		}
+
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.email = email;
+		this.password = password;
+		this.fb_id = fb_id;
+		this.photo = photo;
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -87,8 +117,8 @@ export class AuthService {
 				this.data = data;
 				resolve(this.data);
 			}, error => {
-				console.log(error);
-				resolve({ error });
+				this.data = {error: JSON.parse(error._body).error};
+				resolve(this.data);
 			});
 		});
 	}

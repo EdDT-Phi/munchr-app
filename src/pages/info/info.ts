@@ -4,7 +4,7 @@ import { NavParams, ViewController } from 'ionic-angular';
 
 import { MunchrApi } from '../../providers/munchr-api';
 
-import {Utils} from "../../utils";
+import { Utils } from "../../utils";
 
 @Component({
 	selector: 'page-info',

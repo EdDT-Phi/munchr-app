@@ -2,6 +2,15 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
+
+function round_7(num: number) {
+	return Math.floor(num * 10000000) * 10000000;
+}
+
+function are_similar(lat1: number, long1: number, lat2: number, long2: number) {
+	return round_7(lat1) == round_7(lat2) && round_7(long1) == round_7(long2);
+}
+
 /*
   Generated class for the MunchrApiLogin provider.
 
@@ -10,13 +19,17 @@ import 'rxjs/add/operator/map';
 */
 @Injectable()
 export class MunchrApi {
-	restaurants_data: any;
+	url: string;
+
+	photos_data: any;
 	reviews_data: any;
 	filters_data: any;
-	photos_data: any;
+	restaurants_data: any;
+	
 	lat: number;
 	long: number;
-	url: string;
+	limit: number;
+	offset: number;
 
 	constructor(public http: Http) {
 		// console.log('Hello MunchrApiLogin Provider');
@@ -25,14 +38,14 @@ export class MunchrApi {
 		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
-	filters(lat, long) {
-		console.log(lat,long);
-
-		// TODO check if lat long is similar
-		if (this.filters_data) {
+	filters(lat: number, long: number) {
+		if (this.filters_data && are_similar(lat, long, this.lat, this.long)) {
 			// already loaded data
 			return Promise.resolve(this.filters_data);
 		}
+
+		this.lat = lat;
+		this.long = long;
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
@@ -61,26 +74,44 @@ export class MunchrApi {
 		});
 	}
 
-	restaurants(args) {
-		if (this.restaurants_data == -1) {
+	restaurants(
+		lat:number, 
+		long:number, 
+		radius: number, 
+		limit: number, 
+		offset: number,
+		price: number,
+		user_id: number,
+		cuisines: Array<string>,
+		categories: Array<string> ) {
+		
+		if (this.restaurants_data && 
+			are_similar(lat, long, this.lat, this.long) &&
+			this.limit == limit &&
+			this.offset == offset) {
 			// already loaded data
 			return Promise.resolve(this.restaurants_data);
 		}
+
+		this.lat = lat;
+		this.long = long;
+		this.limit = limit;
+		this.offset = offset;
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		let options = new RequestOptions({ headers: headers });
 
 		let obj = {
-			"lat": args.lat,
-			"long": args.long,
-			"radius": args.radius,
-			"categories": args.categories.join(","),
-			"cuisines": args.cuisines.join(","),
-			"price": args.price ? args.price : 2,
-			"user_id": args.user_id,
-			"offset": args.offset,
-			"limit": args.limit
+			lat: lat,
+			long: long,
+			radius: radius,
+			limit: limit,
+			offset: offset,
+			price: price ? price : 2,
+			user_id: user_id,
+			cuisines: cuisines.join(","),
+			categories: categories.join(","),
 		};
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];

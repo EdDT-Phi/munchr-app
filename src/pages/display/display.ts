@@ -34,7 +34,6 @@ export class Display {
 	unlike_opacity: number = 0;
 	limit: number = 10;
 	offset: number = 0;
-	loading: Loading;
 
 	constructor(
 		public munchrApi: MunchrApi, 
@@ -77,25 +76,22 @@ export class Display {
 	 
 	// Add new cards to our array
 	add_cards() {
-		this.loading = this.loadingCtrl.create({
+		const loading = this.loadingCtrl.create({
 			content: 'Please wait...'
 		});
-		this.loading.present();
+		loading.present();
 		this.display_options = false;
 
-		let args = {
-			lat: this.navParams.get("lat"),
-			long: this.navParams.get("long"),
-			radius: this.navParams.get("radius"),
-			categories: this.navParams.get("categories"),
-			cuisines: this.navParams.get("cuisines"),
-			price: this.navParams.get("price"),
-			user_id: 0,
-			offset: this.offset,
-			limit: this.limit
-		};
-
-		this.munchrApi.restaurants(args)
+		this.munchrApi.restaurants(
+			this.navParams.get("lat"),
+			this.navParams.get("long"),
+			this.navParams.get("radius"),
+			this.limit,
+			this.offset,
+			this.navParams.get("price"),
+			this.navParams.get("user_id"),
+			this.navParams.get("cuisines"),
+			this.navParams.get("categories") )
 		.then( (data) => {
 			if(data.error) {
 				this.utils.display_error(data);
@@ -103,7 +99,7 @@ export class Display {
 				this.cards = data.results;
 				this.offset += this.limit;
 			}
-			this.loading.dismiss();
+			loading.dismiss();
 		});
 	}
 	 
