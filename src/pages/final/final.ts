@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavParams, NavController } from 'ionic-angular';
+import { LaunchNavigator, LaunchNavigatorOptions } from 'ionic-native';
 import { SocialSharing } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
@@ -33,6 +34,18 @@ export class Final {
 
 		console.log(this.map);
 		console.log(this.restaurant);
+	}
+
+	navigate() {
+		let options: LaunchNavigatorOptions = {
+			start: ""
+		}
+
+		LaunchNavigator.navigate([this.restaurant.location.lat, this.restaurant.location.lon], options)
+			.then (
+				success => alert('Launched navigator'),
+            	error => alert('Error launching navigator: ' + error)
+			);
 	}
 
 	done() {

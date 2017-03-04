@@ -48,8 +48,10 @@ export class Main {
 			this.lat = resp.coords.latitude;
 			this.long = resp.coords.longitude;
 
+
 			this.munchrApi.filters(this.lat, this.long)
 			.then( data => {
+				console.log('got cuisines: ', data);
 
 				if(data.error) {
 					this.utils.display_error(data.error);
