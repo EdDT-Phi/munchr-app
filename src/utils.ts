@@ -9,6 +9,7 @@ export class Utils {
 	) {}
 
 	display_error(error) {
+		console.log(error);
 		let toast = this.toastCtrl.create({
 			message: error,
 			duration: 3000

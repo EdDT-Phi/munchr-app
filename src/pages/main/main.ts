@@ -44,23 +44,26 @@ export class Main {
 
 
 		Geolocation.getCurrentPosition()
-			.then( resp => {
-				this.lat = resp.coords.latitude;
-				this.long = resp.coords.longitude;
+		.then( resp => {
+			this.lat = resp.coords.latitude;
+			this.long = resp.coords.longitude;
 
-				this.munchrApi.filters(this.lat, this.long)
-					.then( data => {
+			console.log('got latlong: ',this.lat, this.long);
 
-						if(data.error) {
-							this.utils.display_error(data.error);
-						} else {
-							this.cuisines = data.results;
-						}
-						this.loading = false;
-					});
-			}).catch((error) => {
-			  this.utils.display_error('Error getting location: ' + error);
+			this.munchrApi.filters(this.lat, this.long)
+			.then( data => {
+				console.log('got cuisines: ', data);
+
+				if(data.error) {
+					this.utils.display_error(data.error);
+				} else {
+					this.cuisines = data.results;
+				}
+				this.loading = false;
 			});
+		}).catch((error) => {
+		  this.utils.display_error('Error getting location: ' + error);
+		});
 
 		const time = new Date().getHours();
 		if(time <= 10)

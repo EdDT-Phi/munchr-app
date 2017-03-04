@@ -14,7 +14,7 @@
 	<ion-icon [name]="restaurant.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br>
 	{{ restaurant.cuisines }} <br>
 
-	<img [src]="map">
+	<img [src]="map" (click)="navigate()">
 
 </ion-content>
 
