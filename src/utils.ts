@@ -8,7 +8,7 @@ export class Utils {
 		public toastCtrl: ToastController
 	) {}
 
-	display_error(error) {
+	display_error(error: string) {
 		console.log(error);
 		let toast = this.toastCtrl.create({
 			message: error,

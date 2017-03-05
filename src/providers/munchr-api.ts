@@ -33,8 +33,8 @@ export class MunchrApi {
 
 	constructor(public http: Http) {
 		// console.log('Hello MunchrApiLogin Provider');
-		// this.url = 'http://localhost:5000'; // dev
-		this.url = 'https://munchr-test.herokuapp.com'; // prod
+		this.url = 'http://localhost:5000'; // dev
+		// this.url = 'https://munchr-test.herokuapp.com'; // prod
 		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
@@ -69,7 +69,8 @@ export class MunchrApi {
 				this.filters_data = data;
 				resolve(this.filters_data);
 			}, error => {
-				resolve({ error });
+				this.filters_data = {error: JSON.parse(error._body).error};
+				resolve(this.filters_data);
 			});
 		});
 	}
@@ -131,7 +132,8 @@ export class MunchrApi {
 				this.restaurants_data = data;
 				resolve(this.restaurants_data);
 			}, error => {
-				resolve({ error });
+				this.restaurants_data = {error: JSON.parse(error._body).error};
+				resolve(this.restaurants_data);
 			});
 		});	
 	}
@@ -156,7 +158,8 @@ export class MunchrApi {
 				this.reviews_data = data;
 				resolve(this.reviews_data);
 			}, error => {
-				resolve({ error });
+				this.reviews_data = {error: JSON.parse(error._body).error};
+				resolve(this.reviews_data);
 			});
 		});	
 	}
@@ -186,7 +189,8 @@ export class MunchrApi {
 				this.photos_data = data;
 				resolve(this.photos_data);
 			}, error => {
-				resolve({ error });
+				this.photos_data = {error: JSON.parse(error._body).error};
+				resolve(this.photos_data);
 			});
 		});	
 	}

@@ -56,4 +56,8 @@ export class MoreInfo {
 	dismiss() {
 		this.viewCtrl.dismiss();
 	}
+
+	choose() {
+		this.viewCtrl.dismiss(true);
+	}
 }

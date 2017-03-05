@@ -1,6 +1,6 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 
-import { NavController, NavParams, ModalController, Loading, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { MoreInfo } from '../info/info';
@@ -94,7 +94,7 @@ export class Display {
 			this.navParams.get("categories") )
 		.then( (data) => {
 			if(data.error) {
-				this.utils.display_error(data);
+				this.utils.display_error(data.error);
 			} else {
 				this.cards = data.results;
 				this.offset += this.limit;
@@ -106,6 +106,11 @@ export class Display {
 	info(restaurant: Object) {
 		let modal = this.modalCtrl.create(MoreInfo, restaurant);
 		modal.present();
+		modal.onDidDismiss(chosen => {
+			if (chosen){
+				this.choose();
+			}
+		});
 	}
 
 	// TODO implement up throw

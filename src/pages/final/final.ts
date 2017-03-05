@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavParams, NavController } from 'ionic-angular';
-import { LaunchNavigator, LaunchNavigatorOptions } from 'ionic-native';
+import { LaunchNavigator, LaunchNavigatorOptions, NativeStorage } from 'ionic-native';
 import { SocialSharing } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
@@ -32,20 +32,22 @@ export class Final {
 		&markers=${this.restaurant.location.lat},${this.restaurant.location.lon}
 		&key=AIzaSyC5D3VgliMud60vD_BSasm_9Ru2qOAzJ_s`
 
-		console.log(this.map);
-		console.log(this.restaurant);
+		NativeStorage.setItem('last_restaurant', this.restaurant)
+		.then( success => {}, error => {
+			this.utils.display_error(error);
+		});
+
+		this.change_time();
 	}
 
 	navigate() {
-		let options: LaunchNavigatorOptions = {
-			start: ""
-		}
+		let options: LaunchNavigatorOptions = {}
 
 		LaunchNavigator.navigate([this.restaurant.location.lat, this.restaurant.location.lon], options)
-			.then (
-				success => alert('Launched navigator'),
-            	error => alert('Error launching navigator: ' + error)
-			);
+		.then (
+			success => console.log('Yay! ', success),
+			error => this.utils.display_error(error)
+		);
 	}
 
 	done() {
@@ -57,9 +59,14 @@ export class Final {
 			message: 'Come eat at this place!',
 			subject: 'Munchr: going out to eat',
 			url: `https://munchr-test.herokuapp.com/restaurant/${this.restaurant.id}`
-		}).then(()=> {
+		}).then(success => {}, error => {
+			this.utils.display_error(error);
+		});
+	}
 
-		}, (error) => {
+	change_time() {
+		NativeStorage.setItem('last_time', Math.floor(Date.now() / (1000 * 60)))
+		.then( success => {}, error => {
 			this.utils.display_error(error);
 		});
 	}

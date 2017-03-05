@@ -39,7 +39,7 @@ export class Login {
 		});
 
 		this.loading.present();
-		this.authService.login(this.email, this.password)
+		this.authService.login(this.email.trim(), this.password)
 		.then(data => {
 			this.loading.dismiss();
 			console.log(data);
@@ -56,12 +56,12 @@ export class Login {
 				});
 			}
 		}, error => {
-			console.log(error);
+			this.utils.display_error(error);
 		});
 	}
 
 	facebook_login() {
-		const permissions = [];
+		const permissions = ['public_profile', 'user_friends', 'email'];
 
 		Facebook.login(permissions)
 		.then(response => {

@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 
-import { NavController, ToastController, LoadingController, Loading, ViewController } from 'ionic-angular';
+import { NavController, LoadingController, Loading, ViewController } from 'ionic-angular';
 import { NativeStorage } from "ionic-native";
-
-import { Main } from '../main/main';
 
 import { AuthService } from '../../providers/auth-service'
 

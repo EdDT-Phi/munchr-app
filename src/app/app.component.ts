@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, NativeStorage } from 'ionic-native';
+import { StatusBar, Splashscreen, NativeStorage, ScreenOrientation } from 'ionic-native';
 
 import { Main } from '../pages/main/main';
 
@@ -27,6 +27,10 @@ export class MyApp {
 			{ title: 'Logout', component: Main }
 		];
 
+		ScreenOrientation.lockOrientation('portrait')
+		.then(succes => {}, error => this.utils.display_error('Error setting screen orientation lock'));
+
+
 	}
 
 	initializeApp() {
@@ -42,7 +46,7 @@ export class MyApp {
 		if(page.title == 'Logout') {
 		 	NativeStorage.remove("user")
 			.then(()=>{}, (error)=> {
-				this.utils.display_error(error);
+				// this.utils.display_error(error);
 			});
 		}
 
