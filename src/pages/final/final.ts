@@ -30,7 +30,7 @@ export class Final {
 		this.map = `https://maps.googleapis.com/maps/api/staticmap
 		?size=500x300
 		&markers=${this.restaurant.location.lat},${this.restaurant.location.lon}
-		&key=AIzaSyC5D3VgliMud60vD_BSasm_9Ru2qOAzJ_s`
+		&key=AIzaSyCdSzocNEuxd52QRK9bjWcJvpgBPRWqc9w`
 
 		NativeStorage.setItem('last_restaurant', this.restaurant)
 		.then( success => {}, error => {

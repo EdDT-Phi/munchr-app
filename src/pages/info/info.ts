@@ -16,8 +16,7 @@ import { Utils } from "../../utils";
 export class MoreInfo {
 
 	restaurant: any;
-	reviews: Array<any>;
-	photos: Array<string>;
+	details: any = {};
 	
 	constructor(
 		public munchrApi: MunchrApi, 
@@ -27,28 +26,21 @@ export class MoreInfo {
 	) {
 		this.restaurant = this.navParams.get('restaurant');
 		console.log(this.restaurant);
-		this.reviews = [{
+		this.details.reviews = [{
 			rating: 3.5,
 			review_text: 'This is definitely a place that has food',
 			review_time_friendly: '10 centuries ago'
 		}];
-		this.photos = [];
+		this.details.photos = [];
 
-		this.munchrApi.reviews(this.restaurant.id)
+		this.munchrApi.details(this.restaurant.id)
 		.then( data => {
+			console.log(data);
 			if (data.error) {
 				this.utils.display_error(data.error);
 			} else {
-				this.reviews = data.results;
-			}
-		});
-
-		this.munchrApi.photos(this.restaurant)
-		.then( data => {
-			if (data.error) {
-				this.utils.display_error(data.error);
-			} else {
-				this.photos = data.results;
+				this.details = data.results;
+				console.log(this.details);
 			}
 		});
 	}
