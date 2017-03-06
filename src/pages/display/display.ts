@@ -2,6 +2,10 @@ import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 
 import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 
+import { AdMob } from 'ionic-native';
+
+
+
 import { MunchrApi } from '../../providers/munchr-api';
 import { MoreInfo } from '../info/info';
 import { Final } from '../final/final';
@@ -72,6 +76,14 @@ export class Display {
 			this.like_opacity = 0;
 			this.unlike_opacity = 0;
 		});
+	}
+
+	ionViewDidLoad() {
+		AdMob.onAdDismiss()
+		.subscribe(() => console.log('User dismissed ad'));
+		AdMob.prepareInterstitial('ca-app-pub-8261731470611823/8785759392')
+		.then(() => AdMob.showInterstitial(),
+			error => this.utils.display_error(error));
 	}
 	 
 	// Add new cards to our array
