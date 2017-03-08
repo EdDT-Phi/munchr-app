@@ -28,7 +28,7 @@ export class MyApp {
 		];
 
 		ScreenOrientation.lockOrientation('portrait')
-		.then(succes => {}, error => this.utils.display_error('Error setting screen orientation lock'));
+		.then(succes => {}, error => this.utils.display_error_obj('Error setting screen orientation lock', error));
 
 
 	}

@@ -74,7 +74,7 @@ export class Main {
 				this.loading = false;
 			});
 		}).catch((error) => {
-			this.utils.display_error('Error getting location: ' + error);
+			this.utils.display_error_obj('Error getting location: ' + error.message, error);
 		});
 
 		const time = new Date().getHours();

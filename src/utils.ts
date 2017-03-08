@@ -16,4 +16,13 @@ export class Utils {
 		});
 		toast.present();
 	}
+
+	display_error_obj(error: string, err_obj: Object) {
+		console.log(err_obj);
+		let toast = this.toastCtrl.create({
+			message: error,
+			duration: 3000
+		});
+		toast.present();
+	}
 }

@@ -1,11 +1,9 @@
 page-main {
-	.item-checkbox {
-	    width:200px;
-	    border-top: 0px;
-	    padding-bottom: 0px;
+	ion-icon {
+		color: white;
 	}
-	   .item-checkbox:first-child {
-	       float:right;
+	ion-label {
+		color: white;
 	}
 }
 
