@@ -39,21 +39,21 @@ export class MunchrApi {
 	}
 
 	filters(lat: number, long: number) {
-		if (this.filters_data && are_similar(lat, long, this.lat, this.long)) {
+		if (this.filters_data) {
 			// already loaded data
 			return Promise.resolve(this.filters_data);
 		}
 
-		this.lat = lat;
-		this.long = long;
+		// this.lat = lat;
+		// this.long = long;
 
-		let headers = new Headers();
-		headers.append('Content-Type', 'application/x-www-form-urlencoded');
-		let options = new RequestOptions({ headers: headers });
-		let obj = {"lat": lat, "long": long}
-		let data = Object.keys(obj).map(function(key) {
-		    return key + '=' + obj[key];
-		}).join('&');
+		// let headers = new Headers();
+		// headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		// let options = new RequestOptions({ headers: headers });
+		// let obj = {"lat": lat, "long": long}
+		// let data = Object.keys(obj).map(function(key) {
+		//     return key + '=' + obj[key];
+		// }).join('&');
 
 		// don't have the data yet
 		return new Promise(resolve => {
@@ -61,7 +61,7 @@ export class MunchrApi {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.post(this.url + '/restaurants/filters', data, options)
+			this.http.get(this.url + '/restaurants/filters')
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
