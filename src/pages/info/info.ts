@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavParams, ViewController } from 'ionic-angular';
+import { LaunchNavigator, LaunchNavigatorOptions, NativeStorage } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
 
@@ -16,6 +17,7 @@ import { Utils } from "../../utils";
 export class MoreInfo {
 
 	restaurant: any;
+	map: string;
 	details: any = {};
 	
 	constructor(
@@ -43,7 +45,22 @@ export class MoreInfo {
 				console.log(this.details);
 			}
 		});
+
+		this.map = `https://maps.googleapis.com/maps/api/staticmap
+		?size=500x300
+		&markers=${this.restaurant.location.lat},${this.restaurant.location.lon}
+		&key=AIzaSyCdSzocNEuxd52QRK9bjWcJvpgBPRWqc9w`
 	}
+
+	// navigate() {
+	// 	let options: LaunchNavigatorOptions = {}
+
+	// 	LaunchNavigator.navigate([this.restaurant.location.lat, this.restaurant.location.lon], options)
+	// 	.then (
+	// 		success => console.log('Yay! ', success),
+	// 		error => this.utils.display_error(error)
+	// 	);
+	// }
 
 	dismiss() {
 		this.viewCtrl.dismiss();

@@ -30,6 +30,9 @@
 	<p *ngIf="details.price > 2">$</p>
 	<p *ngIf="details.price > 3">$</p>
 	<p *ngIf="details.price > 4">$</p>
+
+	<img [src]="map" (click)="navigate()">
+
 	<ion-list>
 		<ion-item *ngFor="let review of details.reviews" text-wrap>
 			<div *ngIf="review.rating > 0">
