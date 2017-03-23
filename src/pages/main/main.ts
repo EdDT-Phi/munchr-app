@@ -51,8 +51,8 @@ export class Main {
 		}, error => {
 			// Not logged in
 			// this.utils.display_error(error);
-			// this.get_user();
-			this.user={user_id:1}
+			this.get_user();
+			// this.user={user_id:1} // for testing
 		});
 
 
@@ -78,9 +78,10 @@ export class Main {
 	}
 
 	search() {
+		const distance = this.distance;
 		this.navCtrl.push(Filter, {
 			price: this.price,
-			distance: this.distance,
+			distance: (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320,
 			categories: this.categories.filter((item) => {
 				return this.marked[item];
 			}),
