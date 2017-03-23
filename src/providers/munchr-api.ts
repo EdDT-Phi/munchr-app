@@ -38,7 +38,7 @@ export class MunchrApi {
 		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
-	filters(lat: number, long: number) {
+	filters() {
 		if (this.filters_data) {
 			// already loaded data
 			return Promise.resolve(this.filters_data);

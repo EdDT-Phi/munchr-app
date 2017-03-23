@@ -20,10 +20,9 @@ export class Main {
 	categories: Array<string> = ['Breakfast', 'Lunch', 'Dinner', 'Dine-out', 'Delivery', 'Pubs %26 Bars'];
 	cuisines: Array<string> = [];
 	marked: Object = {};
-	lat: number = 0;
-	long: number = 0;
 	loading: boolean = true;
 	user: any;
+	selection: string = 'newCuisine';
 
 
 	constructor(
@@ -42,7 +41,7 @@ export class Main {
 			.then( (time: number) => {
 				// Three hours later
 				if (Math.floor(Date.now() / (1000 * 60)) > time + 60*3) {
-					this.query_restaurant();
+					this.queryRestaurant();
 				}
 			}, error => {
 				// No restaurants to review
@@ -52,29 +51,21 @@ export class Main {
 		}, error => {
 			// Not logged in
 			// this.utils.display_error(error);
-			this.get_user();
+			// this.get_user();
+			this.user={user_id:1}
 		});
 
 
-		Geolocation.getCurrentPosition()
-		.then( resp => {
-			this.lat = resp.coords.latitude;
-			this.long = resp.coords.longitude;
+		this.munchrApi.filters()
+		.then( data => {
+			console.log('got cuisines: ', data);
 
-
-			this.munchrApi.filters(this.lat, this.long)
-			.then( data => {
-				console.log('got cuisines: ', data);
-
-				if(data.error) {
-					this.utils.display_error(data.error);
-				} else {
-					this.cuisines = data.results;
-				}
-				this.loading = false;
-			});
-		}).catch((error) => {
-			this.utils.display_error_obj('Error getting location: ' + error.message, error);
+			if(data.error) {
+				this.utils.display_error(data.error);
+			} else {
+				this.cuisines = data.results;
+			}
+			this.loading = false;
 		});
 
 		const time = new Date().getHours();
@@ -88,8 +79,6 @@ export class Main {
 
 	search() {
 		this.navCtrl.push(Filter, {
-			lat: this.lat,
-			long: this.long,
 			price: this.price,
 			distance: this.distance,
 			categories: this.categories.filter((item) => {
@@ -97,6 +86,7 @@ export class Main {
 			}),
 			cuisines: this.cuisines,
 			user_id: this.user.user_id,
+			selection: this.selection,
 		},  {
 			animation: 'ios-transition'
 		});
@@ -114,7 +104,7 @@ export class Main {
 		});
 	}
 
-	query_restaurant() {
+	queryRestaurant() {
 		NativeStorage.getItem('last_restaurant')
 		.then( (restaurant: any) => {
 			let confirm = this.alertCtrl.create({

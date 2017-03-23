@@ -11,12 +11,9 @@
 	<img height="200" class="center" src="assets/imgs/munchr.png"/>
 
 
-
-</ion-content>
-<ion-footer>
 	<ion-item no-lines>
 		<ion-label item-left>Distance (miles)</ion-label>
-		<ion-badge item-right>{{ distance }} miles</ion-badge>
+		<ion-badge item-right>{{ (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320 }} mile{{((distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320)  > 1 ? 's' : ''}} </ion-badge>
 	</ion-item>
 	<ion-range min="1" max="20" [(ngModel)]="distance">
 		<ion-icon range-left name="walk"></ion-icon>
@@ -31,7 +28,23 @@
 		<ion-icon range-right name="pricetags"></ion-icon>
 	</ion-range>
 
-	<button ion-button class="center" (click)="search()" [disabled]="loading" block> {{loading?  'Loading...' : 'I know what I want'}}</button>
-	<button ion-button class="center" (click)="search()" [disabled]="loading" block> {{loading?  'Loading...' : 'Give me options'}}</button>
-	<button ion-button class="center" (click)="search()" [disabled]="loading" block> {{loading?  'Loading...' : 'Try a random cuisine'}}</button>
+	<ion-list radio-group [(ngModel)]="selection">
+		<ion-item>
+			<ion-label>Try Random Restaurant</ion-label>
+			<ion-radio value="newRestaurant"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Try New Cuisine</ion-label>
+			<ion-radio value="newCuisine"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>I Know What I Want</ion-label>
+			<ion-radio value="know"></ion-radio>
+		</ion-item>
+	</ion-list>
+
+</ion-content>
+<ion-footer>
+
+	<button ion-button class="center" (click)="search()" [disabled]="loading" block> {{loading?  'Loading...' : 'Search'}}</button>
 </ion-footer>
