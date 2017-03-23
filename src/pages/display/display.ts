@@ -150,7 +150,7 @@ export class Display {
 
 	choose() {
 		this.navCtrl.push(Final, {
-			restaurant: this.cards.pop()
+			restaurant: this.cards[this.cards.length-1]
 		})
 	}
 
