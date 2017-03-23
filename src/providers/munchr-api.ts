@@ -46,7 +46,6 @@ export class MunchrApi {
 
 		// this.lat = lat;
 		// this.long = long;
-
 		// let headers = new Headers();
 		// headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		// let options = new RequestOptions({ headers: headers });

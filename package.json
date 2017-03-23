@@ -33,12 +33,30 @@
     "typescript": "2.0.9"
   },
   "cordovaPlugins": [
+    "cordova-plugin-geolocation",
+    "cordova-plugin-x-socialsharing",
+    "cordova-plugin-compat",
+    "ionic-plugin-keyboard",
     "cordova-plugin-whitelist",
-    "cordova-plugin-device",
     "cordova-plugin-console",
     "cordova-plugin-statusbar",
+    "cordova-plugin-device",
     "cordova-plugin-splashscreen",
-    "ionic-plugin-keyboard"
+    {
+      "id": "cordova-plugin-facebook4",
+      "locator": "cordova-plugin-facebook4",
+      "variables": {
+        "APP_ID": "326434787728030",
+        "APP_NAME": "Munchr"
+      }
+    },
+    "cordova-plugin-nativestorage",
+    "uk.co.workingedge.phonegap.plugin.launchnavigator",
+    "cordova-plugin-actionsheet",
+    "cordova-plugin-screen-orientation",
+    "cordova-plugin-admobpro",
+    "cordova-plugin-extension",
+    "cordova-plugin-device-orientation"
   ],
   "cordovaPlatforms": [
     "ios",
@@ -46,6 +64,11 @@
       "platform": "ios",
       "version": "",
       "locator": "ios"
+    },
+    {
+      "platform": "android",
+      "version": "",
+      "locator": "android"
     }
   ],
   "description": "MyIonic2Project: An Ionic project"
