@@ -23,6 +23,7 @@ export class Main {
 	loading: boolean = true;
 	user: any;
 	selection: string = 'newCuisine';
+	activity: Array<any> = [];
 
 
 	constructor(
@@ -36,13 +37,14 @@ export class Main {
 		NativeStorage.getItem('user')
 		.then( data => {
 			this.user = data;
+			this.get_activity();
 
 			NativeStorage.getItem('last_time')
 			.then( (time: number) => {
 				// Three hours later
-				if (Math.floor(Date.now() / (1000 * 60)) > time + 60*3) {
+				// if (Math.floor(Date.now() / (1000 * 60)) > time +) {
 					this.queryRestaurant();
-				}
+				// }
 			}, error => {
 				// No restaurants to review
 				// this.utils.display_error(error);
@@ -52,7 +54,7 @@ export class Main {
 			// Not logged in
 			// this.utils.display_error(error);
 			this.get_user();
-			// this.user={user_id:1} // for testing
+			// this.user={user_id:3}; // for testing
 		});
 
 
@@ -102,6 +104,8 @@ export class Main {
 			}
 			this.user = data;
 			console.log(this.user);
+			this.get_activity();
+			
 		});
 	}
 
@@ -180,7 +184,18 @@ export class Main {
 		}, error => {
 			this.utils.display_error(error);
 		})
+	}
 
-		
+	get_activity() {
+		this.munchrApi.activity(this.user.user_id)
+		.then( data => {
+			console.log('got activity', data)
+			if(data.error) {
+				this.utils.display_error(data.error);
+			} else {
+				this.activity = data.results;
+			}
+			this.loading = false;
+		});
 	}
 }
