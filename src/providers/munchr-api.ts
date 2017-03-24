@@ -25,6 +25,7 @@ export class MunchrApi {
 	reviews_data: any;
 	filters_data: any;
 	restaurants_data: any;
+	activity_data: any;
 	
 	lat: number;
 	long: number;
@@ -38,7 +39,7 @@ export class MunchrApi {
 		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
-	filters(lat: number, long: number) {
+	filters() {
 		if (this.filters_data) {
 			// already loaded data
 			return Promise.resolve(this.filters_data);
@@ -46,7 +47,6 @@ export class MunchrApi {
 
 		// this.lat = lat;
 		// this.long = long;
-
 		// let headers = new Headers();
 		// headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		// let options = new RequestOptions({ headers: headers });
@@ -164,10 +164,75 @@ export class MunchrApi {
 		});	
 	}
 
-	photos(restaurant) {
-		if (this.photos_data) {
+	// photos(restaurant) {
+	// 	if (this.photos_data) {
+	// 		// already loaded data
+	// 		return Promise.resolve(this.photos_data);
+	// 	}
+
+	// 	// don't have the data yet
+	// 	return new Promise(resolve => {
+	// 		// We're using Angular HTTP provider to request the data,
+	// 		// then on the response, it'll map the JSON data to a parsed JS object.
+	// 		// Next, we process the data and resolve the promise with the new data.
+	// 		let address = restaurant.location.address.split(',');
+	// 		address = address[address.length-2];
+
+	// 		let query = restaurant.name  + ' ' + restaurant.location.locality
+	// 		+ ' ' + restaurant.cuisines +' restaurant' + ' ' + address;
+
+	// 		this.http.get(this.url + '/restaurants/photos/' + query)
+	// 		.map(res => res.json())
+	// 		.subscribe(data => {
+	// 			// we've got back the raw data, now generate the core schedule data
+	// 			// and save the data for later reference
+	// 			this.photos_data = data;
+	// 			resolve(this.photos_data);
+	// 		}, error => {
+	// 			this.photos_data = {error: JSON.parse(error._body).error};
+	// 			resolve(this.photos_data);
+	// 		});
+	// 	});	
+	// }
+
+	rating(user_id:number, res_id:string, liked:boolean, specific:string) {
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+
+		let obj = {
+			user_id,
+			res_id,
+			liked,
+			specific
+		};
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/users/rating/', data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
+
+	activity(user_id) {
+		if (this.activity_data) {
 			// already loaded data
-			return Promise.resolve(this.photos_data);
+			return Promise.resolve(this.activity_data);
 		}
 
 		// don't have the data yet
@@ -175,22 +240,17 @@ export class MunchrApi {
 			// We're using Angular HTTP provider to request the data,
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
-			let address = restaurant.location.address.split(',');
-			address = address[address.length-2];
 
-			let query = restaurant.name  + ' ' + restaurant.location.locality
-			+ ' ' + restaurant.cuisines +' restaurant' + ' ' + address;
-
-			this.http.get(this.url + '/restaurants/photos/' + query)
+			this.http.get(this.url + '/users/activity/' + user_id)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
 				// and save the data for later reference
-				this.photos_data = data;
-				resolve(this.photos_data);
+				this.activity_data = data;
+				resolve(this.activity_data);
 			}, error => {
-				this.photos_data = {error: JSON.parse(error._body).error};
-				resolve(this.photos_data);
+				this.activity_data = {error: JSON.parse(error._body).error};
+				resolve(this.activity_data);
 			});
 		});	
 	}

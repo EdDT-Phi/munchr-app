@@ -20,10 +20,10 @@ export class Main {
 	categories: Array<string> = ['Breakfast', 'Lunch', 'Dinner', 'Dine-out', 'Delivery', 'Pubs %26 Bars'];
 	cuisines: Array<string> = [];
 	marked: Object = {};
-	lat: number = 0;
-	long: number = 0;
 	loading: boolean = true;
 	user: any;
+	selection: string = 'newCuisine';
+	activity: Array<any> = [];
 
 
 	constructor(
@@ -37,13 +37,14 @@ export class Main {
 		NativeStorage.getItem('user')
 		.then( data => {
 			this.user = data;
+			this.get_activity();
 
 			NativeStorage.getItem('last_time')
 			.then( (time: number) => {
 				// Three hours later
-				if (Math.floor(Date.now() / (1000 * 60)) > time + 60*3) {
-					this.query_restaurant();
-				}
+				// if (Math.floor(Date.now() / (1000 * 60)) > time +) {
+					this.queryRestaurant();
+				// }
 			}, error => {
 				// No restaurants to review
 				// this.utils.display_error(error);
@@ -53,28 +54,20 @@ export class Main {
 			// Not logged in
 			// this.utils.display_error(error);
 			this.get_user();
+			// this.user={user_id:3}; // for testing
 		});
 
 
-		Geolocation.getCurrentPosition()
-		.then( resp => {
-			this.lat = resp.coords.latitude;
-			this.long = resp.coords.longitude;
+		this.munchrApi.filters()
+		.then( data => {
+			console.log('got cuisines: ', data);
 
-
-			this.munchrApi.filters(this.lat, this.long)
-			.then( data => {
-				console.log('got cuisines: ', data);
-
-				if(data.error) {
-					this.utils.display_error(data.error);
-				} else {
-					this.cuisines = data.results;
-				}
-				this.loading = false;
-			});
-		}).catch((error) => {
-			this.utils.display_error_obj('Error getting location: ' + error.message, error);
+			if(data.error) {
+				this.utils.display_error(data.error);
+			} else {
+				this.cuisines = data.results;
+			}
+			this.loading = false;
 		});
 
 		const time = new Date().getHours();
@@ -87,16 +80,16 @@ export class Main {
 	}
 
 	search() {
+		const distance = this.distance;
 		this.navCtrl.push(Filter, {
-			lat: this.lat,
-			long: this.long,
 			price: this.price,
-			distance: this.distance,
+			distance: (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320,
 			categories: this.categories.filter((item) => {
 				return this.marked[item];
 			}),
 			cuisines: this.cuisines,
 			user_id: this.user.user_id,
+			selection: this.selection,
 		},  {
 			animation: 'ios-transition'
 		});
@@ -111,10 +104,12 @@ export class Main {
 			}
 			this.user = data;
 			console.log(this.user);
+			this.get_activity();
+			
 		});
 	}
 
-	query_restaurant() {
+	queryRestaurant() {
 		NativeStorage.getItem('last_restaurant')
 		.then( (restaurant: any) => {
 			let confirm = this.alertCtrl.create({
@@ -189,7 +184,18 @@ export class Main {
 		}, error => {
 			this.utils.display_error(error);
 		})
+	}
 
-		
+	get_activity() {
+		this.munchrApi.activity(this.user.user_id)
+		.then( data => {
+			console.log('got activity', data)
+			if(data.error) {
+				this.utils.display_error(data.error);
+			} else {
+				this.activity = data.results;
+			}
+			this.loading = false;
+		});
 	}
 }

@@ -11,15 +11,32 @@ import { Display } from '../display/display';
 
 
 export class Filter {
-	items: Array<string>;
-	all: Array<string>;
-	marked: Object;
+	items: Array<string> = [];
+	all: Array<string> = [];
+	marked: Object = {};
+	showSearch: boolean = true;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams) {
+		const selection = navParams.get('selection');
 		this.all = navParams.get('cuisines');
-		this.items = navParams.get('cuisines');
-		this.marked = {};
-		this.marked[this.all[Math.floor(Math.random()*this.all.length)]] = true;
+		
+		if (selection === 'newRestaurant') {
+			this.search();
+		} else if (selection === 'newCuisine') {
+			this.showSearch = false;
+			this.marked[this.all[Math.floor(Math.random()*this.all.length)]] = true;
+			let temp = [];
+			while (temp.length < 5) {
+				const chosen = Math.floor(Math.random() * this.all.length);
+				if (temp.indexOf(this.all[chosen]) === -1) {
+					temp.push(this.all[chosen]);
+				}
+			}
+			this.all = temp;
+
+		}
+
+		this.items = this.all;
 	}
 
 	show_items(ev) {

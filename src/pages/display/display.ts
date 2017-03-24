@@ -2,15 +2,14 @@ import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 
 import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 
-import { AdMob } from 'ionic-native';
-
+import { AdMob, Geolocation } from 'ionic-native';
 
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { MoreInfo } from '../info/info';
 import { Final } from '../final/final';
 
-import {Utils} from "../../utils";
+import { Utils } from "../../utils";
 
 import {
   StackConfig,
@@ -94,24 +93,30 @@ export class Display {
 		loading.present();
 		this.display_options = false;
 
-		this.munchrApi.restaurants(
-			this.navParams.get("lat"),
-			this.navParams.get("long"),
-			this.navParams.get("radius"),
-			this.limit,
-			this.offset,
-			this.navParams.get("price"),
-			this.navParams.get("user_id"),
-			this.navParams.get("cuisines"),
-			this.navParams.get("categories") )
-		.then( (data) => {
-			if(data.error) {
-				this.utils.display_error(data.error);
-			} else {
-				this.cards = data.results;
-				this.offset += this.limit;
-			}
-			loading.dismiss();
+		Geolocation.getCurrentPosition()
+		.then( resp => {
+
+			this.munchrApi.restaurants(
+				resp.coords.latitude,
+				resp.coords.longitude,
+				this.navParams.get("radius"),
+				this.limit,
+				this.offset,
+				this.navParams.get("price"),
+				this.navParams.get("user_id"),
+				this.navParams.get("cuisines"),
+				this.navParams.get("categories") )
+			.then( (data) => {
+				if(data.error) {
+					this.utils.display_error(data.error);
+				} else {
+					this.cards = data.results;
+					this.offset += this.limit;
+				}
+				loading.dismiss();
+			});
+		}).catch((error) => {
+			this.utils.display_error_obj('Error getting location: ' + error.message, error);
 		});
 	}
 	 
@@ -145,7 +150,7 @@ export class Display {
 
 	choose() {
 		this.navCtrl.push(Final, {
-			restaurant: this.cards.pop()
+			restaurant: this.cards[this.cards.length-1]
 		})
 	}
 
