@@ -12,7 +12,7 @@
 	<img *ngIf="!details.photos || details.photos.length == 0" [src]="restaurant.photo">
 	<ion-slides *ngIf="details.photos && details.photos.length > 0" [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000">
 		<ion-slide *ngFor="let photo of details.photos">
-			<img [src]="photo">
+			<img class="center" [src]="photo">
 		</ion-slide>
 	</ion-slides>
 	{{ restaurant.location.address }} <br>
