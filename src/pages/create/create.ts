@@ -54,7 +54,7 @@ export class Create {
 		});
 		
 		this.loading.present();
-		this.authService.create_account(this.first_name, this.last_name, this.email, this.password, null, null)
+		this.authService.create_account(this.first_name, this.last_name, this.email, this.password)
 		.then(data => {
 			this.loading.dismiss();
 				console.log(data);

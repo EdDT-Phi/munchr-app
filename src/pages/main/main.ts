@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavController, ModalController, AlertController } from 'ionic-angular';
-import { Geolocation, NativeStorage } from 'ionic-native';
+import { NativeStorage } from 'ionic-native';
 
 import { Filter } from '../filter/filter';
 import { MunchrApi } from "../../providers/munchr-api";

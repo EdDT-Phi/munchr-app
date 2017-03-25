@@ -66,17 +66,13 @@ export class AuthService {
 		first_name: string,
 		last_name: string,
 		email: string,
-		password: string,
-		fb_id: string,
-		photo: string ) {
+		password: string) {
 
 		if (this.data && 
 			this.first_name == first_name &&
 			this.last_name == last_name &&
 			this.email == email &&
-			this.fb_id == fb_id &&
-			this.password == password &&
-			this.photo == photo) {
+			this.password == password) {
 
 			return Promise.resolve(this.data);
 		}
@@ -85,6 +81,60 @@ export class AuthService {
 		this.last_name = last_name;
 		this.email = email;
 		this.password = password;
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+		let obj = {
+			"first_name": first_name,
+			"last_name": last_name,
+			"email": email,
+			"password": password,
+		};
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/users/', data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				this.data = data;
+				resolve(this.data);
+			}, error => {
+				this.data = {error: JSON.parse(error._body).error};
+				resolve(this.data);
+			});
+		});
+	}
+
+	facebook_login(
+		first_name: string,
+		last_name: string,
+		email: string,
+		fb_id: string,
+		photo: string ) {
+
+		if (this.data && 
+			this.first_name == first_name &&
+			this.last_name == last_name &&
+			this.email == email &&
+			this.fb_id == fb_id &&
+			this.photo == photo) {
+
+			return Promise.resolve(this.data);
+		}
+
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.email = email;
 		this.fb_id = fb_id;
 		this.photo = photo;
 
@@ -95,7 +145,6 @@ export class AuthService {
 			"first_name": first_name,
 			"last_name": last_name,
 			"email": email,
-			"password": password,
 			"fb_id": fb_id,
 			"photo": photo,
 		};
@@ -109,7 +158,7 @@ export class AuthService {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.post(this.url + '/users/', data, options)
+			this.http.post(this.url + '/users/facebook', data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data

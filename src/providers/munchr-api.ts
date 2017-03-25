@@ -138,7 +138,7 @@ export class MunchrApi {
 		});	
 	}
 
-	details(res_id) {
+	details(res_id:string) {
 		if (this.reviews_data) {
 			// already loaded data
 			return Promise.resolve(this.reviews_data);
@@ -163,37 +163,6 @@ export class MunchrApi {
 			});
 		});	
 	}
-
-	// photos(restaurant) {
-	// 	if (this.photos_data) {
-	// 		// already loaded data
-	// 		return Promise.resolve(this.photos_data);
-	// 	}
-
-	// 	// don't have the data yet
-	// 	return new Promise(resolve => {
-	// 		// We're using Angular HTTP provider to request the data,
-	// 		// then on the response, it'll map the JSON data to a parsed JS object.
-	// 		// Next, we process the data and resolve the promise with the new data.
-	// 		let address = restaurant.location.address.split(',');
-	// 		address = address[address.length-2];
-
-	// 		let query = restaurant.name  + ' ' + restaurant.location.locality
-	// 		+ ' ' + restaurant.cuisines +' restaurant' + ' ' + address;
-
-	// 		this.http.get(this.url + '/restaurants/photos/' + query)
-	// 		.map(res => res.json())
-	// 		.subscribe(data => {
-	// 			// we've got back the raw data, now generate the core schedule data
-	// 			// and save the data for later reference
-	// 			this.photos_data = data;
-	// 			resolve(this.photos_data);
-	// 		}, error => {
-	// 			this.photos_data = {error: JSON.parse(error._body).error};
-	// 			resolve(this.photos_data);
-	// 		});
-	// 	});	
-	// }
 
 	rating(user_id:number, res_id:string, liked:boolean, specific:string) {
 
@@ -229,7 +198,7 @@ export class MunchrApi {
 		});
 	}
 
-	activity(user_id) {
+	activity(user_id:number) {
 		if (this.activity_data) {
 			// already loaded data
 			return Promise.resolve(this.activity_data);

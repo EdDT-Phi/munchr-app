@@ -19,6 +19,7 @@ export class Login {
 	password:string = '';
 	loading:Loading;
 	FB_APP_ID:number = 326434787728030;
+	test_data:any = {data: 'data'};
 
 	constructor(
 		public navCtrl: NavController,
@@ -55,13 +56,16 @@ export class Login {
 					photo: data.result.picture,
 				});
 			}
-		}, error => {
-			this.utils.display_error(error);
-		});
+		}, error => this.utils.display_error(error));
 	}
 
 	facebook_login() {
 		const permissions = ['public_profile', 'user_friends', 'email'];
+		this.loading = this.loadingCtrl.create({
+			content: 'Please wait...'
+		});
+
+		this.test_data = {data: 'Getting Facebook Stuff'};
 
 		Facebook.login(permissions)
 		.then(response => {
@@ -73,29 +77,27 @@ export class Login {
 				user.picture = `https://graph.facebook.com/${fb_id}/picture?type=large`;
 				Facebook.api('/me/friends', ['user_friends'])
 				.then(data => {
-					// send friends data to back end
-				});
-				this.authService.create_account(user.first_name, user.last_name, user.email, null, fb_id, user.picture)
+					const friends  = data.data;
+				}, error => this.utils.display_error(error));
+				this.authService.facebook_login(user.first_name, user.last_name, user.email, fb_id, user.picture)
 				.then(data => {
 					this.loading.dismiss();
 					console.log(data);
 					if (data.error) {
 						this.utils.display_error(data.error);
 					} else {
-						this.save_and_login({
-							user_id: data.result.user_id,
-							fb_id: data.result.fb_id,
-							first_name: data.result.first_name,
-							last_name: data.result.last_name,
-							email: data.result.email,
-							photo: data.result.picture,
-						});
+						// this.save_and_login({
+						// 	user_id: data.result.user_id,
+						// 	fb_id: data.result.fb_id,
+						// 	first_name: data.result.first_name,
+						// 	last_name: data.result.last_name,
+						// 	email: data.result.email,
+						// 	photo: data.result.picture,
+						// });
 					}
-				});
-			});
-		}, error => {
-			this.utils.display_error(error);
-		});
+				}, error => this.utils.display_error(error));
+			}, error => this.utils.display_error(error));
+		}, error => this.utils.display_error(error));
 	}
 
 	create_account() {
