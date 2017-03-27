@@ -37,7 +37,7 @@ export class AuthService {
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		let options = new RequestOptions({ headers: headers });
-		let obj = {"email": email, "password": password}
+		let obj = {'email': email, 'password': password}
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];
 		}).join('&');
@@ -86,10 +86,10 @@ export class AuthService {
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		let options = new RequestOptions({ headers: headers });
 		let obj = {
-			"first_name": first_name,
-			"last_name": last_name,
-			"email": email,
-			"password": password,
+			'first_name': first_name,
+			'last_name': last_name,
+			'email': email,
+			'password': password,
 		};
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];
@@ -120,7 +120,9 @@ export class AuthService {
 		last_name: string,
 		email: string,
 		fb_id: string,
-		photo: string ) {
+		photo: string,
+		friends: Array<any>,
+	) {
 
 		if (this.data && 
 			this.first_name == first_name &&
@@ -142,11 +144,12 @@ export class AuthService {
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		let options = new RequestOptions({ headers: headers });
 		let obj = {
-			"first_name": first_name,
-			"last_name": last_name,
-			"email": email,
-			"fb_id": fb_id,
-			"photo": photo,
+			first_name,
+			last_name,
+			email,
+			fb_id,
+			photo,
+			friends: friends.join(','),
 		};
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];

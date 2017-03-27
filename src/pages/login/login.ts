@@ -76,25 +76,24 @@ export class Login {
 				console.log(user);
 				user.picture = `https://graph.facebook.com/${fb_id}/picture?type=large`;
 				Facebook.api('/me/friends', ['user_friends'])
-				.then(data => {
-					const friends  = data.data;
-				}, error => this.utils.display_error(error));
-				this.authService.facebook_login(user.first_name, user.last_name, user.email, fb_id, user.picture)
-				.then(data => {
-					this.loading.dismiss();
-					console.log(data);
-					if (data.error) {
-						this.utils.display_error(data.error);
-					} else {
-						this.save_and_login({
-							user_id: data.result.user_id,
-							fb_id: data.result.fb_id,
-							first_name: data.result.first_name,
-							last_name: data.result.last_name,
-							email: data.result.email,
-							photo: data.result.picture,
-						});
-					}
+				.then(friends_data => {
+					this.authService.facebook_login(user.first_name, user.last_name, user.email, fb_id, user.picture, friends_data.data)
+					.then(data => {
+						this.loading.dismiss();
+						console.log(data);
+						if (data.error) {
+							this.utils.display_error(data.error);
+						} else {
+							this.save_and_login({
+								user_id: data.result.user_id,
+								fb_id: data.result.fb_id,
+								first_name: data.result.first_name,
+								last_name: data.result.last_name,
+								email: data.result.email,
+								photo: data.result.picture,
+							});
+						}
+					}, error => this.utils.display_error(error));
 				}, error => this.utils.display_error(error));
 			}, error => this.utils.display_error(error));
 		}, error => this.utils.display_error(error));
