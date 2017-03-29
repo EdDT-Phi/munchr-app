@@ -9,11 +9,11 @@
 
 <ion-content>
 	<img height="100" class="center" src="assets/imgs/munchr.png"/>
-	<ion-content style="height:200px">
+	<ion-content style="height:210px">
 	<ion-list>
 		<ion-item *ngFor="let rating of activity">
 			<ion-avatar item-left>
-				<img src="https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg">
+				<img src="{{ rating.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
 			</ion-avatar>
 			<h2>{{ rating.first_name }} {{rating.last_name}}</h2>
 			<p>{{ rating.liked? 'Liked' : 'Did not like'}} {{ rating.res_name }}</p>
@@ -30,15 +30,6 @@
 		<ion-icon range-left name="walk"></ion-icon>
 		<ion-icon range-right name="car"></ion-icon>
 	</ion-range>
-	<!-- <ion-item no-lines>
-		<ion-label item-left>Price (max)</ion-label>
-		<ion-badge item-right>${{ price*5 }}</ion-badge>
-	</ion-item>
-	<ion-range min="1" max="5" step="1" snaps="true" [(ngModel)]="price">
-		<ion-icon range-left name="pricetag"></ion-icon>
-		<ion-icon range-right name="pricetags"></ion-icon>
-	</ion-range> -->
-
 	<ion-list radio-group [(ngModel)]="selection">
 		<ion-item>
 			<ion-label>Try Random Restaurant</ion-label>

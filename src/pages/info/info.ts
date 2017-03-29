@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { NavParams, ViewController } from 'ionic-angular';
-// import { LaunchNavigator, LaunchNavigatorOptions, NativeStorage } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
 

@@ -46,14 +46,7 @@ export class Login {
 			if (data.error) {
 				this.utils.display_error(data.error);
 			} else {
-				this.save_and_login( {
-					user_id: data.result.user_id,
-					fb_id: data.result.fb_id,
-					first_name: data.result.first_name,
-					last_name: data.result.last_name,
-					email: data.result.email,
-					photo: data.result.picture,
-				});
+				this.save_and_login(data.result);
 			}
 		}, error => this.utils.display_error(error));
 	}
@@ -82,14 +75,7 @@ export class Login {
 						if (data.error) {
 							this.utils.display_error(data.error);
 						} else {
-							this.save_and_login({
-								user_id: data.result.user_id,
-								fb_id: data.result.fb_id,
-								first_name: data.result.first_name,
-								last_name: data.result.last_name,
-								email: data.result.email,
-								photo: data.result.picture,
-							});
+							this.save_and_login(data.result);
 						}
 					}, error => this.utils.display_error(error));
 				}, error => this.utils.display_error(error));

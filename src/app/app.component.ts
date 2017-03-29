@@ -1,9 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar, Splashscreen, NativeStorage, ScreenOrientation } from 'ionic-native';
 
 import { Main } from '../pages/main/main';
-
 import { Utils } from '../utils';
 
 
@@ -12,25 +12,26 @@ import { Utils } from '../utils';
 })
 export class MyApp {
 	@ViewChild(Nav) nav: Nav;
+	rootPage: Component = Main;
+	pages: Array<{title: string, component: Component}>;
+	user: any = {};
+	account_page: {title: string, component: Component};
 
-	rootPage: any = Main;
 
-	pages: Array<{title: string, component: any}>;
-
-	constructor(public platform: Platform, public utils: Utils) {
+	constructor(
+		public platform: Platform, 
+		public utils: Utils,
+		public events: Events,
+	) {
 		this.initializeApp();
 
 		// used for an example of ngFor and navigation
 		this.pages = [
 			{ title: 'Home', component: Main },
-			{ title: 'Profile', component: Main },
 			{ title: 'Logout', component: Main }
 		];
 
-		ScreenOrientation.lockOrientation('portrait')
-		.then(succes => {}, error => this.utils.display_error_obj('Error setting screen orientation lock', error));
-
-
+		this.account_page = {title: 'Account', component: Main};
 	}
 
 	initializeApp() {
@@ -39,6 +40,11 @@ export class MyApp {
 			// Here you can do any higher level native things you might need.
 			StatusBar.styleDefault();
 			Splashscreen.hide();
+			ScreenOrientation.lockOrientation('portrait')
+			.then(succes => {}, error => this.utils.display_error_obj('Error setting screen orientation lock', error));
+			this.events.subscribe('user:login', (user) => {
+				this.user = user;
+			})
 		});
 	}
 

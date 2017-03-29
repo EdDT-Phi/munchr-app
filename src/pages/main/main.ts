@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-import { NavController, ModalController, AlertController } from 'ionic-angular';
+import { Events, NavController, ModalController, AlertController } from 'ionic-angular';
 import { NativeStorage } from 'ionic-native';
 
+import { Login } from "../login/login";
 import { Filter } from '../filter/filter';
 import { MunchrApi } from "../../providers/munchr-api";
-import { Login } from "../login/login";
 
 import { Utils } from "../../utils"
 
@@ -17,9 +17,7 @@ import { Utils } from "../../utils"
 export class Main {
 	distance: number = 5;
 	price: number = 2;
-	categories: Array<string> = ['Breakfast', 'Lunch', 'Dinner', 'Dine-out', 'Delivery', 'Pubs %26 Bars'];
 	cuisines: Array<string> = [];
-	marked: Object = {};
 	loading: boolean = true;
 	user: any;
 	selection: string = 'newCuisine';
@@ -32,13 +30,14 @@ export class Main {
 		public modalCtrl: ModalController,
 		public alertCtrl: AlertController,
 		public utils: Utils,
+		public events: Events,
 	) {
 
 		NativeStorage.getItem('user')
 		.then( data => {
 			this.user = data;
 			this.get_activity();
-
+			this.broadcast_login();
 			NativeStorage.getItem('last_time')
 			.then( (time: number) => {
 				// Three hours later
@@ -47,12 +46,10 @@ export class Main {
 				// }
 			}, error => {
 				// No restaurants to review
-				// this.utils.display_error(error);
 			});
 
 		}, error => {
 			// Not logged in
-			// this.utils.display_error(error);
 			this.get_user();
 			// this.user={user_id:3}; // for testing
 		});
@@ -69,14 +66,6 @@ export class Main {
 			}
 			this.loading = false;
 		});
-
-		const time = new Date().getHours();
-		if(time <= 10)
-			this.marked['Breakfast'] = true;
-		else if (time <= 16)
-			this.marked['Lunch'] = true;
-		else
-			this.marked['Dinner'] = true;
 	}
 
 	search() {
@@ -84,9 +73,6 @@ export class Main {
 		this.navCtrl.push(Filter, {
 			price: this.price,
 			distance: (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320,
-			categories: this.categories.filter((item) => {
-				return this.marked[item];
-			}),
 			cuisines: this.cuisines,
 			user_id: this.user.user_id,
 			selection: this.selection,
@@ -105,7 +91,7 @@ export class Main {
 			this.user = data;
 			console.log(this.user);
 			this.get_activity();
-			
+			this.broadcast_login();
 		});
 	}
 
@@ -197,5 +183,9 @@ export class Main {
 			}
 			this.loading = false;
 		});
+	}
+
+	broadcast_login() {
+		this.events.publish('user:login', this.user);
 	}
 }
