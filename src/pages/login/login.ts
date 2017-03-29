@@ -5,9 +5,9 @@ import { Facebook, NativeStorage } from "ionic-native";
 
 import { Create } from '../create/create';
 
-import { AuthService } from '../../providers/auth-service'
+import { AuthService } from '../../providers/auth-service';
 
-import { Utils } from '../../utils'
+import { Utils } from '../../utils';
 
 @Component({
 	selector: 'page-login',
@@ -19,7 +19,6 @@ export class Login {
 	password:string = '';
 	loading:Loading;
 	FB_APP_ID:number = 326434787728030;
-	// test_data:any = {data: 'data'};
 
 	constructor(
 		public navCtrl: NavController,
@@ -65,8 +64,6 @@ export class Login {
 			content: 'Please wait...'
 		});
 
-		// this.test_data = {data: 'Getting Facebook Stuff'};
-
 		Facebook.login(permissions)
 		.then(response => {
 			let fb_id = response.authResponse.userID;
@@ -77,7 +74,8 @@ export class Login {
 				user.picture = `https://graph.facebook.com/${fb_id}/picture?type=large`;
 				Facebook.api('/me/friends', ['user_friends'])
 				.then(friends_data => {
-					this.authService.facebook_login(user.first_name, user.last_name, user.email, fb_id, user.picture, friends_data.data)
+					const friends = friends_data.data.map((item) => item.id);
+					this.authService.facebook_login(user.first_name, user.last_name, user.email, fb_id, user.picture, friends)
 					.then(data => {
 						this.loading.dismiss();
 						console.log(data);
