@@ -2,8 +2,8 @@ import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 
 import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 
-import { AdMob, Geolocation } from 'ionic-native';
-
+import { Geolocation } from 'ionic-native';
+// import { AdMob, AdMobOptions, AdSize, AdExtras } from '@ionic-native/ad-mob';
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { MoreInfo } from '../info/info';
@@ -39,12 +39,13 @@ export class Display {
 	offset: number = 0;
 
 	constructor(
-		public munchrApi: MunchrApi, 
-		public navCtrl: NavController, 
-		public navParams: NavParams,
-		public modalCtrl: ModalController,
-		public loadingCtrl: LoadingController,
-		public utils: Utils,
+		private munchrApi: MunchrApi, 
+		private navCtrl: NavController, 
+		private navParams: NavParams,
+		private modalCtrl: ModalController,
+		private loadingCtrl: LoadingController,
+		private utils: Utils,
+		// private adMob: AdMob,
 	) {
 
 		this.add_cards();
@@ -77,13 +78,13 @@ export class Display {
 		});
 	}
 
-	ionViewDidLoad() {
-		AdMob.onAdDismiss()
-		.subscribe(() => console.log('User dismissed ad'));
-		AdMob.prepareInterstitial('ca-app-pub-8261731470611823/8785759392')
-		.then(() => AdMob.showInterstitial(),
-			error => this.utils.display_error(error));
-	}
+	// ionViewDidLoad() {
+	// 	this.adMob.onAdDismiss()
+	// 	.subscribe(() => console.log('User dismissed ad'));
+	// 	this.adMob.prepareInterstitial('ca-app-pub-8261731470611823/8785759392')
+	// 	.then(() => this.adMob.showInterstitial(),
+	// 		error => this.utils.display_error(error));
+	// }
 	 
 	// Add new cards to our array
 	add_cards() {
@@ -93,9 +94,10 @@ export class Display {
 		loading.present();
 		this.display_options = false;
 
+		console.log('getting geolocation');
 		Geolocation.getCurrentPosition()
 		.then( resp => {
-
+			console.log('have positiion, sending request');
 			this.munchrApi.restaurants(
 				resp.coords.latitude,
 				resp.coords.longitude,
@@ -104,8 +106,7 @@ export class Display {
 				this.offset,
 				this.navParams.get("price"),
 				this.navParams.get("user_id"),
-				this.navParams.get("cuisines"),
-				this.navParams.get("categories") )
+				this.navParams.get("cuisines") )
 			.then( (data) => {
 				if(data.error) {
 					this.utils.display_error(data.error);

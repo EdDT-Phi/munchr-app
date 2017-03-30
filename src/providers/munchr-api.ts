@@ -83,8 +83,7 @@ export class MunchrApi {
 		offset: number,
 		price: number,
 		user_id: number,
-		cuisines: Array<string>,
-		categories: Array<string> ) {
+		cuisines: Array<string>) {
 		
 		if (this.restaurants_data && 
 			are_similar(lat, long, this.lat, this.long) &&
@@ -112,7 +111,6 @@ export class MunchrApi {
 			price: price ? price : 2,
 			user_id: user_id,
 			cuisines: cuisines.join(","),
-			categories: categories.join(","),
 		};
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];
