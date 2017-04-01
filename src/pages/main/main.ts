@@ -3,11 +3,12 @@ import { Component } from '@angular/core';
 import { Events, NavController, ModalController, AlertController } from 'ionic-angular';
 import { NativeStorage } from 'ionic-native';
 
-import { Login } from "../login/login";
+import { Login } from '../login/login';
 import { Filter } from '../filter/filter';
-import { MunchrApi } from "../../providers/munchr-api";
+import { Account } from '../account/account';
+import { MunchrApi } from '../../providers/munchr-api';
 
-import { Utils } from "../../utils"
+import { Utils } from '../../utils'
 
 @Component({
 	selector: 'page-main',
@@ -173,8 +174,8 @@ export class Main {
 	}
 
 	get_activity() {
-		this.munchrApi.activity(this.user.user_id)
-		.then( data => {
+		this.munchrApi.friends_activity(this.user.user_id)
+		.then(data => {
 			console.log('got activity', data)
 			if(data.error) {
 				this.utils.display_error(data.error);
@@ -188,4 +189,19 @@ export class Main {
 	broadcast_login() {
 		this.events.publish('user:login', this.user);
 	}
+
+	view_account(rating:any) {
+		this.navCtrl.push(Account, {user: {
+				user_id: rating.user_id,
+				photo: rating.photo,
+				first_name: rating.first_name,
+				last_name: rating.last_name,
+				type: 'friend'
+			}
+		});
+	}
+
+	 viewDidEnter() {
+	 	this.get_activity();
+	 }
 }

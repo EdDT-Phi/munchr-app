@@ -1,0 +1,45 @@
+<ion-header>
+	<ion-navbar>
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Account</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+	<img height="250" class="center" src="{{user.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+	<h1>{{ user.first_name }} {{user.last_name}}</h1>
+	<div *ngIf="user.type === 'friend'">
+		<ion-item no-lines>
+			<ion-label item-left>Activity</ion-label>
+		</ion-item>
+		<ion-list>
+			<ion-item *ngFor="let rating of activity">
+				<ion-avatar item-left>
+					<img src="{{ rating.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+				</ion-avatar>
+				<h2>{{ rating.first_name }} {{rating.last_name}}</h2>
+				<p>{{ rating.liked? 'Liked' : 'Did not like'}} {{ rating.res_name }}</p>
+				<ion-note item-right>{{ rating.review_date }}</ion-note>
+			</ion-item>
+		</ion-list>
+	</div>
+	<div *ngIf="user.type === 'requestee'">
+		<p>
+			Accept their request to see their activity
+		</p>
+		<button ion-button outline item-right icon-left>
+		    <ion-icon name='people'></ion-icon>
+		    Accept
+		</button>
+		<button ion-button outline item-right icon-left>
+		    <ion-icon name='close'></ion-icon>
+		    Decline
+		</button>
+	</div>
+</ion-content>
+
+<ion-footer>
+	<button ion-button class="center" (click)=home() block>Home</button>
+</ion-footer>

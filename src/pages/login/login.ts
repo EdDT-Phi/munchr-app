@@ -15,10 +15,10 @@ import { Utils } from '../../utils';
 	providers: [ AuthService ]
 })
 export class Login {
-	email:string = '';
-	password:string = '';
-	loading:Loading;
-	FB_APP_ID:number = 326434787728030;
+	email: string = '';
+	password: string = '';
+	loading: Loading;
+	FB_APP_ID: number = 326434787728030;
 
 	constructor(
 		public navCtrl: NavController,
