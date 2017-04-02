@@ -9,14 +9,19 @@
 
 <ion-content>
 	<img height="100" class="center" src="assets/imgs/munchr.png"/>
-	<ion-content style="height:210px">
+	<ion-item no-lines>
+		<ion-label item-left>Friend Activity</ion-label>
+	</ion-item>
+	<ion-content style="height:160px">
 	<ion-list>
-		<ion-item *ngFor="let rating of activity">
-			<ion-avatar item-left>
-				<img src="{{ rating.photo || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+		<ion-item  *ngFor="let rating of activity">
+			<ion-avatar item-left (click)="view_account(rating)">
+				<img src="{{ rating.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
 			</ion-avatar>
-			<h2>{{ rating.first_name }} {{rating.last_name}}</h2>
-			<p>{{ rating.liked? 'Liked' : 'Did not like'}} {{ rating.res_name }}</p>
+			<div (click)="view_restaurant(rating.res_id)">
+				<h2>{{ rating.first_name }} {{rating.last_name}}</h2>
+				<p>{{ rating.liked? 'Liked' : 'Did not like'}} {{ rating.res_name }}</p>
+			</div>
 			<ion-note item-right>{{ rating.review_date }}</ion-note>
 		</ion-item>
 	</ion-list>

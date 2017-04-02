@@ -9,7 +9,7 @@
 
 <ion-content>
 	<img height="300" [src]="restaurant.photo">
-	{{ restaurant.distance }} miles away <br>
+	<!-- {{ restaurant.distance }} miles away <br> -->
 	{{ restaurant.location.address }} <br>
 	<ion-icon [name]="restaurant.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
 	<ion-icon [name]="restaurant.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
@@ -17,6 +17,7 @@
 	<ion-icon [name]="restaurant.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
 	<ion-icon [name]="restaurant.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br>
 
+	<p>Tap on the map to navigate there</p>
 	<img [src]="map" (click)="navigate()">
 
 </ion-content>

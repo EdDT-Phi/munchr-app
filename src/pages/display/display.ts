@@ -29,8 +29,8 @@ export class Display {
 	@ViewChild('myswing1') swingStack: SwingStackComponent;
   	@ViewChildren('mycards1') swingCards: QueryList<SwingCardComponent>;
 
-	cards: Array<Object> = [];
-	liked_cards: Array<Object> = [];
+	cards: Array<any> = [];
+	liked_cards: Array<any> = [];
 	stackConfig: StackConfig;
 	display_options: boolean = false;
 	like_opacity: number = 0;
@@ -112,6 +112,7 @@ export class Display {
 					this.utils.display_error(data.error);
 				} else {
 					this.cards = data.results;
+					console.log(this.cards);
 					this.offset += this.limit;
 				}
 				loading.dismiss();
@@ -121,8 +122,8 @@ export class Display {
 		});
 	}
 	 
-	info(restaurant: Object) {
-		let modal = this.modalCtrl.create(MoreInfo, restaurant);
+	info(res_id: string) {
+		let modal = this.modalCtrl.create(MoreInfo, { res_id });
 		modal.present();
 		modal.onDidDismiss(chosen => {
 			if (chosen){

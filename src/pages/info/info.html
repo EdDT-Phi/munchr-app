@@ -1,11 +1,11 @@
 <ion-header>
 	<ion-navbar>
-		<ion-title>{{ restaurant.name }}</ion-title>
+		<ion-title>{{ loading? 'Loading...' : details.name }}</ion-title>
 	</ion-navbar>
 </ion-header>
 
-<ion-content>
-	<img *ngIf="!details.photos || details.photos.length == 0" [src]="restaurant.photo">
+<ion-content *ngIf="details">
+	<img *ngIf="!details.photos || details.photos.length == 0" [src]="details.photo">
 	<ion-slides *ngIf="details.photos && details.photos.length > 0" [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000">
 		<ion-slide *ngFor="let photo of details.photos">
 			<img class="center" [src]="photo">
@@ -13,15 +13,15 @@
 	</ion-slides>
 
 	<ion-item>
-		{{ restaurant.location.address }} <br>
+		{{ details.location.address }} <br>
 		{{ details.phone }} <br>
 		<a href="{{details.website}}">Website</a> <br>
 		<p class="center" style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
-		<ion-icon [name]="restaurant.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="restaurant.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="restaurant.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="restaurant.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="restaurant.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br>
+		<ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+		<ion-icon [name]="details.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+		<ion-icon [name]="details.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+		<ion-icon [name]="details.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+		<ion-icon [name]="details.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br>
 		<!-- Change this with string concat in code -->
 		<p class="price" *ngIf="details.price >= 0">$</p>
 		<p class="price" *ngIf="details.price > 1">$</p>

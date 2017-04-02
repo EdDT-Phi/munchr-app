@@ -196,7 +196,31 @@ export class MunchrApi {
 		});
 	}
 
-	activity(user_id:number) {
+	activity(user_id:number, other_id:number) {
+		if (1 + 1 == 1) {
+			// already loaded data
+			return Promise.resolve(this.activity_data);
+		}
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.get(`${this.url}/users/activity/${user_id}/${other_id}`)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});	
+	}
+
+	friends_activity(user_id:number) {
 		if (this.activity_data) {
 			// already loaded data
 			return Promise.resolve(this.activity_data);
@@ -208,7 +232,7 @@ export class MunchrApi {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.get(this.url + '/users/activity/' + user_id)
+			this.http.get(this.url + '/users/activity/friends/' + user_id)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
@@ -220,5 +244,171 @@ export class MunchrApi {
 				resolve(this.activity_data);
 			});
 		});	
+	}
+
+	get_friends(user_id:number) {
+		// how tf do you get rid of this
+		if (1 * 1 == 2) {
+			// already loaded data
+			return Promise.resolve(this.activity_data);
+		}
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.get(this.url + '/friends/' + user_id)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve(error);
+			});
+		});	
+	}
+
+	respond_request(response:boolean, user_id:number, oth_id:number) {
+
+		// how tf do you get rid of this
+		if (1 * 1 == 2) {
+			// already loaded data
+			return Promise.resolve(this.activity_data);
+		}
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+
+		let obj = {
+			response,
+			user_id,
+			oth_id,
+		};
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/friends/respond/', data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
+
+	search_users(user_id:number, query:string) {
+
+		// how tf do you get rid of this
+		if (1 * 1 == 2) {
+			// already loaded data
+			return Promise.resolve(this.activity_data);
+		}
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+
+		let obj = {
+			user_id,
+			query,
+		};
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/users/search/', data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
+
+	friend_request(user_from_id:number, user_to_id:number) {
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+
+		let obj = {
+			user_from_id,
+			user_to_id,
+		};
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/friends/', data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
+
+	delete_friend(user_id1:number, user_id2:number) {
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers });
+
+		let obj = {
+			user_id1,
+			user_id2,
+		};
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/friends/delete/', data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
 	}
 }

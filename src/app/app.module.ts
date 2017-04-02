@@ -1,14 +1,19 @@
-import {NgModule, ErrorHandler} from '@angular/core';
-import {IonicApp, IonicModule, IonicErrorHandler} from 'ionic-angular';
-import {MyApp} from './app.component';
-import {Login} from '../pages/login/login';
-import {Main} from '../pages/main/main';
-import {Create} from '../pages/create/create';
-import {Filter} from '../pages/filter/filter';
-import {Display} from '../pages/display/display';
-import {MoreInfo} from '../pages/info/info';
-import {Final} from '../pages/final/final';
-import {Utils} from "../utils";
+import { NgModule, ErrorHandler } from '@angular/core';
+
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+
+import { MyApp } from './app.component';
+import { Login } from '../pages/login/login';
+import { Main } from '../pages/main/main';
+import { Create } from '../pages/create/create';
+import { Filter } from '../pages/filter/filter';
+import { Display } from '../pages/display/display';
+import { MoreInfo } from '../pages/info/info';
+import { Final } from '../pages/final/final';
+import { Account } from '../pages/account/account';
+import { Friends } from '../pages/friends/friends';
+import { Search } from '../pages/search/search';
+import { Utils } from '../utils';
 
 import {
 	SwingStackComponent,
@@ -25,11 +30,14 @@ import {
 		Display,
 		MoreInfo,
 		Final,
+		Account,
 		SwingCardComponent,
 		SwingStackComponent,
+		Friends,
+		Search,
 	],
 	imports: [
-		IonicModule.forRoot(MyApp)
+		IonicModule.forRoot(MyApp),
 	],
 	bootstrap: [IonicApp],
 	entryComponents: [
@@ -41,6 +49,9 @@ import {
 		Display,
 		MoreInfo,
 		Final,
+		Account,
+		Friends,
+		Search,
 	],
 	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Utils]
 })

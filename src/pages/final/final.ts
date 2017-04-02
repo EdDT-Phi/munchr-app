@@ -27,6 +27,9 @@ export class Final {
 		public utils: Utils, 
 	) {
 		this.restaurant = this.navParams.get('restaurant');
+		if (!this.restaurant.photo) {
+			this.restaurant.photo = this.restaurant.photos[0];
+		}
 		this.map = `https://maps.googleapis.com/maps/api/staticmap
 		?size=500x300
 		&markers=${this.restaurant.location.lat},${this.restaurant.location.lon}

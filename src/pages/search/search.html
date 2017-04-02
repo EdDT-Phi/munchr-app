@@ -1,0 +1,24 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Add Friends</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<ion-title>Search by first name, last name, or email</ion-title>
+	<ion-searchbar (ionInput)="search_users($event)"></ion-searchbar>
+	<ion-content>
+		<ion-list *ngIf="users && users.length > 0">
+			<ion-item *ngFor="let user of users">
+			<ion-avatar item-left (click)="view_account(user, 'requestee')">
+				<img src="{{ user.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+			</ion-avatar>
+			<h2 (click)="view_account(user, 'requestee')">{{ user.first_name }} {{user.last_name}}</h2>
+		</ion-item>
+		</ion-list>
+	</ion-content>
+</ion-content>
+
+<ion-footer>
+	<button ion-button class="center" (click)=back() block>Back</button>
+</ion-footer>

@@ -3,11 +3,14 @@ import { Component } from '@angular/core';
 import { Events, NavController, ModalController, AlertController } from 'ionic-angular';
 import { NativeStorage } from 'ionic-native';
 
-import { Login } from "../login/login";
+import { Login } from '../login/login';
 import { Filter } from '../filter/filter';
-import { MunchrApi } from "../../providers/munchr-api";
+import { Account } from '../account/account';
+import { MoreInfo } from '../info/info';
+import { Final } from '../final/final';
+import { MunchrApi } from '../../providers/munchr-api';
 
-import { Utils } from "../../utils"
+import { Utils } from '../../utils'
 
 @Component({
 	selector: 'page-main',
@@ -16,7 +19,6 @@ import { Utils } from "../../utils"
 })
 export class Main {
 	distance: number = 5;
-	price: number = 2;
 	cuisines: Array<string> = [];
 	loading: boolean = true;
 	user: any;
@@ -71,7 +73,6 @@ export class Main {
 	search() {
 		const distance = this.distance;
 		this.navCtrl.push(Filter, {
-			price: this.price,
 			distance: (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320,
 			cuisines: this.cuisines,
 			user_id: this.user.user_id,
@@ -173,8 +174,8 @@ export class Main {
 	}
 
 	get_activity() {
-		this.munchrApi.activity(this.user.user_id)
-		.then( data => {
+		this.munchrApi.friends_activity(this.user.user_id)
+		.then(data => {
 			console.log('got activity', data)
 			if(data.error) {
 				this.utils.display_error(data.error);
@@ -187,5 +188,23 @@ export class Main {
 
 	broadcast_login() {
 		this.events.publish('user:login', this.user);
+	}
+
+	view_account(rating:any) {
+		this.navCtrl.push(Account, { user: rating });
+	}
+
+	view_restaurant(res_id:string) {
+		console.log(res_id);
+		const modal = this.modalCtrl.create(MoreInfo, { res_id });
+		modal.present();
+		modal.onDidDismiss(details => {
+			console.log('details at main:', details);
+			this.navCtrl.push(Final, {restaurant: details})
+		});
+	}
+
+	viewDidEnter() {
+		this.get_activity();
 	}
 }

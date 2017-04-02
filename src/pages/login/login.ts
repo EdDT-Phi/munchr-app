@@ -15,18 +15,18 @@ import { Utils } from '../../utils';
 	providers: [ AuthService ]
 })
 export class Login {
-	email:string = '';
-	password:string = '';
-	loading:Loading;
-	FB_APP_ID:number = 326434787728030;
+	email: string = '';
+	password: string = '';
+	loading: Loading;
+	FB_APP_ID: number = 326434787728030;
 
 	constructor(
-		public navCtrl: NavController,
+		public utils: Utils,
 		public authService: AuthService,
+		public navCtrl: NavController,
+		public viewCtrl: ViewController,
 		public modalCtrl: ModalController,
 		public loadingCtrl: LoadingController,
-		public utils: Utils,
-		public viewCtrl: ViewController,
 	) {
 
 		Facebook.browserInit(this.FB_APP_ID, "v2.8");
