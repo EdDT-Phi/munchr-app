@@ -8,14 +8,14 @@
 </ion-header>
 
 <ion-content>
-	<h3 *ngIf="(!requests || requests.length === 0) && (!friends || friends.length === 0)">You have no friends, try adding one by tapping Add Friend below!</h3>
+	<h3 *ngIf="!loading && (!requests || requests.length === 0) && (!friends || friends.length === 0)">You have no friends, try adding one by tapping Add Friend below!</h3>
 	<ion-title *ngIf="requests && requests.length > 0">Requests</ion-title>
 	<ion-list>
 		<ion-item *ngFor="let user of requests">
-			<ion-avatar item-left (click)="view_account(user, 'requestee')">
+			<ion-avatar item-left (click)="view_account(user)">
 				<img src="{{ user.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
 			</ion-avatar>
-			<h2 (click)="view_account(user, 'requestee')">{{ user.first_name }} {{user.last_name}}</h2>
+			<h2 (click)="view_account(user)">{{ user.first_name }} {{user.last_name}}</h2>
 			<button (click)="respond(true, user)" ion-button outline item-right icon-left>
 			    <ion-icon name='people'></ion-icon>
 			    Accept
@@ -28,8 +28,8 @@
 	</ion-list>
 	<ion-title *ngIf="friends && friends.length > 0">Friends</ion-title>
 	<ion-list>
-		<ion-item  *ngFor="let user of friends" (click)="view_account(user, 'friend')">
-			<ion-avatar item-left>
+		<ion-item  *ngFor="let user of friends" (click)="view_account(user)">
+			<ion-avatar item-left (click)="view_account(user)">
 				<img src="{{ user.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
 			</ion-avatar>
 			<h2>{{ user.first_name }} {{user.last_name}}</h2>
@@ -38,5 +38,5 @@
 </ion-content>
 
 <ion-footer>
-	<button ion-button class="center" (click)=search() block>Add Friend</button>
+	<button ion-button class="center" (click)=search_users() block>Add Friend</button>
 </ion-footer>

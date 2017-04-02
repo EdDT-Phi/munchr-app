@@ -21,9 +21,9 @@ export class MyApp {
 
 
 	constructor(
-		public platform: Platform, 
-		public utils: Utils,
-		public events: Events,
+		private platform: Platform, 
+		private utils: Utils,
+		private events: Events,
 	) {
 		this.initializeApp();
 

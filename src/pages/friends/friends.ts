@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-
-import { NavController, NavParams, Loading, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, Loading, LoadingController, ModalController } from 'ionic-angular';
 import { NativeStorage } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { Account } from '../account/account';
+import { Search } from '../search/search';
 
 @Component({
 	selector: 'page-friends',
@@ -15,15 +15,21 @@ import { Account } from '../account/account';
 
 export class Friends {
 
-	user: any = {};
+	user: {
+		user_id: number,
+		first_name: string, 
+		last_name: string, 
+		photo_url: string
+	};
 	requests: Array<any>;
 	friends: Array<any>;
-	loading: Loading;
+	loading: Loading = null;
 
 	constructor(
-		private navCtrl: NavController,
 		private navParams: NavParams,
 		private munchrApi: MunchrApi,
+		private navCtrl: NavController,
+		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
 	) {
 
@@ -34,32 +40,34 @@ export class Friends {
 
 		NativeStorage.getItem('user')
 		.then(user => {
-			// const user = {
-			// 	user_id: 3
-			// };
 			this.user = user;
 			this.get_friends();
-		}, error => {});
+		}, error => {
+			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			this.get_friends();
+		});
 	}
 
-	view_account(user:any, type: string) {
-		this.navCtrl.push(Account, {user: {
-				user_id: user.user_id,
-				photo_url: user.photo_url,
-				first_name: user.first_name,
-				last_name: user.last_name,
-				type: type
-			}
+	view_account(user:any) {
+		const modal = this.modalCtrl.create(Account, { user });
+		modal.present()
+		modal.onDidDismiss(()=> {
+			this.loading = this.loadingCtrl.create({
+				content: 'Please wait...'
+			});
+			this.loading.present()
+			this.get_friends();
 		});
 	}
 
 	get_friends(){
 		this.munchrApi.get_friends(this.user.user_id)
 		.then(data => {
-			console.log(data);
+			console.log('got friends: ', data);
 			this.requests = data.result.requests;
 			this.friends = data.result.friends;
 			this.loading.dismiss();
+			this.loading = null;
 		}, error => {});
 	}
 
@@ -74,6 +82,13 @@ export class Friends {
 			this.requests = data.result.requests;
 			this.friends = data.result.friends;
 			this.loading.dismiss();
+			this.loading = null;
 		}, error => {});
+	}
+
+	search_users() {
+		this.modalCtrl.create(Search, {
+			user_id: this.user.user_id
+		}).present();
 	}
 }

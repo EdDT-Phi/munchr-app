@@ -12,6 +12,7 @@ import { MoreInfo } from '../pages/info/info';
 import { Final } from '../pages/final/final';
 import { Account } from '../pages/account/account';
 import { Friends } from '../pages/friends/friends';
+import { Search } from '../pages/search/search';
 import { Utils } from '../utils';
 
 import {
@@ -33,6 +34,7 @@ import {
 		SwingCardComponent,
 		SwingStackComponent,
 		Friends,
+		Search,
 	],
 	imports: [
 		IonicModule.forRoot(MyApp),
@@ -49,6 +51,7 @@ import {
 		Final,
 		Account,
 		Friends,
+		Search,
 	],
 	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Utils]
 })

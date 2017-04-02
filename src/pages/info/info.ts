@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavParams, ViewController } from 'ionic-angular';
+import { NavParams, ViewController, LoadingController, Loading } from 'ionic-angular';
 
 import { MunchrApi } from '../../providers/munchr-api';
 
@@ -15,57 +15,56 @@ import { Utils } from "../../utils";
 
 export class MoreInfo {
 
-	restaurant: any;
+	// restaurant: any;
+	loading: Loading = null;
 	map: string;
-	details: any = {};
+	details: {
+		name: string,
+		phone: string,
+		website: string,
+		price:number,
+		opennow: boolean,
+		reviews: Array<any>,
+		photos: Array<any>,
+		rating: number,
+		location: {
+			lat: number,
+			lon: number,
+		},
+	};
 	
 	constructor(
-		public munchrApi: MunchrApi, 
-		public navParams: NavParams,
-		public viewCtrl: ViewController,
-		public utils: Utils,
+		private utils: Utils,
+		private munchrApi: MunchrApi, 
+		private navParams: NavParams,
+		private loadingCtrl: LoadingController,
+		private viewCtrl: ViewController,
 	) {
-		this.restaurant = this.navParams.get('restaurant');
-		console.log(this.restaurant);
-		this.details.reviews = [{
-			rating: 3.5,
-			review_text: 'This is definitely a place that has food',
-			review_time_friendly: '10 centuries ago'
-		}];
-		this.details.photos = [];
 
-		this.munchrApi.details(this.restaurant.id)
+		this.loading = this.loadingCtrl.create({
+			content: 'Please wait...'
+		});
+		this.loading.present();
+
+		this.munchrApi.details(this.navParams.get('res_id'))
 		.then( data => {
 			console.log(data);
-			if (data.error) {
-				this.utils.display_error(data.error);
-			} else {
-				this.details = data.results;
-				console.log(this.details);
-			}
-		});
+			this.loading.dismiss();
+			this.loading = null;
 
-		this.map = `https://maps.googleapis.com/maps/api/staticmap
-		?size=500x300
-		&markers=${this.restaurant.location.lat},${this.restaurant.location.lon}
-		&key=AIzaSyCdSzocNEuxd52QRK9bjWcJvpgBPRWqc9w`
+			this.details = data.result;
+			this.map = `https://maps.googleapis.com/maps/api/staticmap
+			?size=500x300
+			&markers=${this.details.location.lat},${this.details.location.lon}
+			&key=AIzaSyCdSzocNEuxd52QRK9bjWcJvpgBPRWqc9w`
+		}, error => {this.utils.display_error(error);});
 	}
-
-	// navigate() {
-	// 	let options: LaunchNavigatorOptions = {}
-
-	// 	LaunchNavigator.navigate([this.restaurant.location.lat, this.restaurant.location.lon], options)
-	// 	.then (
-	// 		success => console.log('Yay! ', success),
-	// 		error => this.utils.display_error(error)
-	// 	);
-	// }
 
 	dismiss() {
 		this.viewCtrl.dismiss();
 	}
 
 	choose() {
-		this.viewCtrl.dismiss(true);
+		this.viewCtrl.dismiss(this.details);
 	}
 }
