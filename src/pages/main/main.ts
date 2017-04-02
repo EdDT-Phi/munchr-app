@@ -199,8 +199,9 @@ export class Main {
 		const modal = this.modalCtrl.create(MoreInfo, { res_id });
 		modal.present();
 		modal.onDidDismiss(details => {
-			console.log('details at main:', details);
-			this.navCtrl.push(Final, {restaurant: details})
+			if (details) {
+				this.navCtrl.push(Final, {restaurant: details})
+			}
 		});
 	}
 
