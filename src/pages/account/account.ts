@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { NativeStorage } from 'ionic-native';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 
+import { Final } from '../final/final';
+import { MoreInfo } from '../info/info';
 import { MunchrApi } from '../../providers/munchr-api';
 import { Utils } from '../../utils';
 
@@ -30,11 +32,12 @@ export class Account {
 
 
 	constructor(
-		public utils: Utils,
-		public navParams: NavParams,
-		public munchrApi: MunchrApi,
-		public navCtrl: NavController,
-		public viewCtrl: ViewController,
+		private utils: Utils,
+		private navParams: NavParams,
+		private munchrApi: MunchrApi,
+		private navCtrl: NavController,
+		private viewCtrl: ViewController,
+		private modalCtrl: ModalController,
 	) {
 
 		this.other_user = this.navParams.get('user');
@@ -89,5 +92,15 @@ export class Account {
 
 	back() {
 		this.viewCtrl.dismiss();
+	}
+	
+	view_restaurant(res_id:string) {
+		const modal = this.modalCtrl.create(MoreInfo, { res_id });
+		modal.present();
+		modal.onDidDismiss(details => {
+			if (details) {
+				this.navCtrl.push(Final, {restaurant: details})
+			}
+		});
 	}
 }
