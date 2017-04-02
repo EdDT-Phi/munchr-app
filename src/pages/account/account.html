@@ -9,9 +9,8 @@
 
 <ion-content>
 	<img height="250" class="center" src="{{other_user.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
-	<h1>{{ other_user.first_name }} {{other_user.last_name}}</h1>
-	<div *ngIf="type === 'friend'">
-		<button ion-button outline item-right icon-left (click)="delete_friend()">
+	<div *ngIf="type === 'friend' || type === 'self'">
+		<button *ngIf="type === 'friend'" ion-button outline item-right icon-left (click)="delete_friend()">
 		    <ion-icon name='close'></ion-icon>
 		    Remove Friend
 		</button>
@@ -19,7 +18,7 @@
 			<ion-label item-left>Activity</ion-label>
 		</ion-item>
 		<ion-list>
-			<ion-item *ngFor="let rating of activity" (click)="view_restaurant(rating.res_id)">
+			<ion-item *ngFor="let rating of activity">
 				<ion-avatar item-left>
 					<img src="{{ rating.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
 				</ion-avatar>

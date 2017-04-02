@@ -17,9 +17,12 @@ export class Filter {
 	showSearch: boolean = true;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams) {
+		const selection = navParams.get('selection');
 		this.all = navParams.get('cuisines');
 		
-		if (navParams.get('selection') === 'newCuisine') {
+		if (selection === 'newRestaurant') {
+			this.search();
+		} else if (selection === 'newCuisine') {
 			this.showSearch = false;
 			this.marked[this.all[Math.floor(Math.random()*this.all.length)]] = true;
 			let temp = [];

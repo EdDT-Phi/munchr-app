@@ -72,17 +72,17 @@ export class Main {
 	}
 
 	search() {
-		let d = this.distance;
-		d = (d*d*d/320) + (320 - (d*d*d)%320)/320;
+		let distance = this.distance;
+		distance = (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320;
 		if (this.selection === 'newRestaurant') {
 			this.navCtrl.push(Display, {
-				radius: d,
+				radius: distance,
 				user_id: this.user.user_id,
 				cuisines: [],
 			});
 		} else {
 			this.navCtrl.push(Filter, {
-				distance: d,
+				distance,
 				cuisines: this.cuisines,
 				user_id: this.user.user_id,
 				selection: this.selection,
@@ -206,6 +206,7 @@ export class Main {
 	}
 
 	view_restaurant(res_id:string) {
+		console.log(res_id);
 		const modal = this.modalCtrl.create(MoreInfo, { res_id });
 		modal.present();
 		modal.onDidDismiss(details => {
