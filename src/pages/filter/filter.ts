@@ -60,12 +60,8 @@ export class Filter {
 	search() {
 
 		this.navCtrl.push(Display, {
-			lat: this.navParams.get('lat'),
-			long: this.navParams.get('long'),
-			price: this.navParams.get('price'),
 			radius: this.navParams.get('distance'),
 			user_id: this.navParams.get('user_id'),
-			categories: this.navParams.get('categories'),
 			cuisines: this.items.filter((item) => {
 				return this.marked[item];
 			}),

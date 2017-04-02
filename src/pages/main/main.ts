@@ -8,6 +8,7 @@ import { Filter } from '../filter/filter';
 import { Account } from '../account/account';
 import { MoreInfo } from '../info/info';
 import { Final } from '../final/final';
+import { Display } from '../display/display';
 import { MunchrApi } from '../../providers/munchr-api';
 
 import { Utils } from '../../utils'
@@ -71,15 +72,25 @@ export class Main {
 	}
 
 	search() {
-		const distance = this.distance;
-		this.navCtrl.push(Filter, {
-			distance: (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320,
-			cuisines: this.cuisines,
-			user_id: this.user.user_id,
-			selection: this.selection,
-		},  {
-			animation: 'ios-transition'
-		});
+		let distance = this.distance;
+		distance = (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320;
+		if (this.selection === 'newRestaurant') {
+			this.navCtrl.push(Display, {
+				radius: distance,
+				user_id: this.user.user_id,
+				cuisines: [],
+			});
+		} else {
+			this.navCtrl.push(Filter, {
+				distance,
+				cuisines: this.cuisines,
+				user_id: this.user.user_id,
+				selection: this.selection,
+			},  {
+				animation: 'ios-transition'
+			});
+		}
+
 	}
 
 	get_user() {
