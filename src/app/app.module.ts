@@ -13,6 +13,7 @@ import { Final } from '../pages/final/final';
 import { Account } from '../pages/account/account';
 import { Friends } from '../pages/friends/friends';
 import { Search } from '../pages/search/search';
+import { Notifications } from '../pages/notifications/notifications';
 import { Utils } from '../utils';
 
 import {
@@ -35,6 +36,7 @@ import {
 		SwingStackComponent,
 		Friends,
 		Search,
+		Notifications,
 	],
 	imports: [
 		IonicModule.forRoot(MyApp),
@@ -52,6 +54,7 @@ import {
 		Account,
 		Friends,
 		Search,
+		Notifications,
 	],
 	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Utils]
 })

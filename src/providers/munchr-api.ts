@@ -411,4 +411,30 @@ export class MunchrApi {
 			});
 		});
 	}
+
+	notifications(user_id: number) {
+
+		// how tf do you get rid of this
+		if (1 * 1 == 2) {
+			// already loaded data
+			return Promise.resolve(this.activity_data);
+		}
+		
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.get(this.url + '/restaurants/notifications/' + user_id)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				this.activity_data = data;
+				resolve(this.activity_data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
 }

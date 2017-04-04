@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Notifications</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+	<h4 *ngIf="!requests || requests.length == 0">You have no notifications right now</h4>
+
+	<div *ngIf="requests && requests.length > 0">
+		<ion-title>Friend Requests</ion-title>
+		<ion-list>
+			<ion-item *ngFor="let user of requests">
+				<ion-avatar item-left (click)="view_account(user)">
+					<img src="{{ user.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+				</ion-avatar>
+				<h2 (click)="view_account(user)">{{ user.first_name }} {{user.last_name}}</h2>
+				<button (click)="respond(true, user)" ion-button outline item-right icon-left>
+				    <ion-icon name='people'></ion-icon>
+				    Accept
+				</button>
+				<button (click)="respond(false, user)" ion-button outline item-right icon-left>
+				    <ion-icon name='close'></ion-icon>
+				    Decline
+				</button>
+			</ion-item>
+		</ion-list>
+	</div>
+</ion-content>

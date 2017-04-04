@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { Events, NavController, ModalController, AlertController } from 'ionic-angular';
 import { NativeStorage } from 'ionic-native';
 
@@ -9,8 +8,8 @@ import { Account } from '../account/account';
 import { MoreInfo } from '../info/info';
 import { Final } from '../final/final';
 import { Display } from '../display/display';
+import { Notifications } from '../notifications/notifications';
 import { MunchrApi } from '../../providers/munchr-api';
-
 import { Utils } from '../../utils'
 
 @Component({
@@ -28,12 +27,12 @@ export class Main {
 
 
 	constructor(
-		public navCtrl: NavController,
-		public munchrApi: MunchrApi,
-		public modalCtrl: ModalController,
-		public alertCtrl: AlertController,
-		public utils: Utils,
-		public events: Events,
+		private utils: Utils,
+		private events: Events,
+		private munchrApi: MunchrApi,
+		private navCtrl: NavController,
+		private modalCtrl: ModalController,
+		private alertCtrl: AlertController,
 	) {
 
 		NativeStorage.getItem('user')
@@ -41,20 +40,20 @@ export class Main {
 			this.user = data;
 			this.get_activity();
 			this.broadcast_login();
-			NativeStorage.getItem('last_time')
-			.then( (time: number) => {
+			// NativeStorage.getItem('last_time')
+			// .then( (time: number) => {
 				// Three hours later
 				// if (Math.floor(Date.now() / (1000 * 60)) > time +) {
-					this.queryRestaurant();
+					// this.user={user_id:3}; // for testing
 				// }
-			}, error => {
+			// }, error => {
 				// No restaurants to review
-			});
+			// });
 
 		}, error => {
 			// Not logged in
 			this.get_user();
-			// this.user={user_id:3}; // for testing
+			this.queryRestaurant();
 		});
 
 
@@ -218,5 +217,9 @@ export class Main {
 
 	viewDidEnter() {
 		this.get_activity();
+	}
+
+	notifications() {
+		this.navCtrl.push(Notifications);
 	}
 }

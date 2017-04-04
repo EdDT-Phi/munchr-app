@@ -6,6 +6,7 @@ import { StatusBar, Splashscreen, NativeStorage, ScreenOrientation } from 'ionic
 import { Main } from '../pages/main/main';
 import { Account } from '../pages/account/account';
 import { Friends } from '../pages/friends/friends';
+import { Notifications } from '../pages/notifications/notifications';
 import { Utils } from '../utils';
 
 
@@ -31,6 +32,7 @@ export class MyApp {
 		this.pages = [
 			{ title: 'Home', component: Main },
 			{ title: 'Friends', component: Friends },
+			{ title: 'Notifications', component: Notifications },
 			{ title: 'Logout', component: Main }
 		];
 
