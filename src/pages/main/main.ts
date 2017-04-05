@@ -24,6 +24,7 @@ export class Main {
 	user: any;
 	selection: string = 'newCuisine';
 	activity: Array<any> = [];
+	notifications: {requests: Array<any>};
 
 
 	constructor(
@@ -38,22 +39,11 @@ export class Main {
 		NativeStorage.getItem('user')
 		.then( data => {
 			this.user = data;
-			this.get_activity();
-			this.broadcast_login();
-			// NativeStorage.getItem('last_time')
-			// .then( (time: number) => {
-				// Three hours later
-				// if (Math.floor(Date.now() / (1000 * 60)) > time +) {
-					// this.user={user_id:3}; // for testing
-				// }
-			// }, error => {
-				// No restaurants to review
-			// });
+			this.after_get_user();
 
 		}, error => {
 			// Not logged in
 			this.get_user();
-			this.queryRestaurant();
 		});
 
 
@@ -101,9 +91,24 @@ export class Main {
 			}
 			this.user = data;
 			console.log(this.user);
-			this.get_activity();
-			this.broadcast_login();
+			this.after_get_user();
 		});
+	}
+
+	after_get_user(){
+		this.get_activity();
+		this.broadcast_login();
+		this.get_notifications();
+
+		// NativeStorage.getItem('last_time')
+		// .then( (time: number) => {
+			// Three hours later
+			// if (Math.floor(Date.now() / (1000 * 60)) > time +) {
+				this.queryRestaurant();
+			// }
+		// }, error => {
+			// No restaurants to review
+		// });
 	}
 
 	queryRestaurant() {
@@ -219,7 +224,14 @@ export class Main {
 		this.get_activity();
 	}
 
-	notifications() {
-		this.navCtrl.push(Notifications);
+	view_notifications() {
+		this.navCtrl.push(Notifications, {notifications: this.notifications});
+	}
+
+	get_notifications() {
+		this.munchrApi.notifications(this.user.user_id)
+		.then(data => {
+			this.notifications = data.results;
+		}, error => { });
 	}
 }

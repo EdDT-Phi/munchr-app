@@ -26,13 +26,19 @@ export class Notifications {
 		private navCtrl: NavController,
 	) {
 
+		const notifications = navParams.get('notifications');
+		if (notifications)
+			this.requests = notifications.requests;
+
 		NativeStorage.getItem('user')
 		.then(user => {
 			this.user = user;
-			this.get_notifications();
+			if (!notifications)
+				this.get_notifications();
 		}, error => {
 			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			this.get_notifications();
+			if (!notifications)
+				this.get_notifications();
 		});
 
 	}
