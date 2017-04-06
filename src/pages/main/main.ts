@@ -44,13 +44,14 @@ export class Main {
 		}, error => {
 			// Not logged in
 			this.get_user();
+
+			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// this.after_get_user();
 		});
 
 
 		this.munchrApi.filters()
 		.then( data => {
-			console.log('got cuisines: ', data);
-
 			if(data.error) {
 				this.utils.display_error(data.error);
 			} else {
@@ -90,7 +91,6 @@ export class Main {
 				return this.get_user();
 			}
 			this.user = data;
-			console.log(this.user);
 			this.after_get_user();
 		});
 	}
@@ -113,7 +113,8 @@ export class Main {
 
 	queryRestaurant() {
 		NativeStorage.getItem('last_restaurant')
-		.then( (restaurant: any) => {
+		.then( (restaurant: {name: string, res_id: string}) => {
+			// const restaurant = {name: 'Restaurant name', res_id: 'ChIJ10x0ibC1RIYRD0WircgSxSM'}
 			let confirm = this.alertCtrl.create({
 				title: 'Did you like ' + restaurant.name +'?',
 				// message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
@@ -121,13 +122,13 @@ export class Main {
 				{
 					text: 'Nah',
 					handler: () => {
-						this.query_specifics(false);
+						this.query_specifics(false, restaurant);
 					}
 				}, 
 				{
 					text: 'Yes!',
 					handler: () => {
-						this.query_specifics(true);
+						this.query_specifics(true, restaurant);
 					}
 				}], 
 				enableBackdropDismiss: false
@@ -139,10 +140,12 @@ export class Main {
 		});
 	}
 
-	query_specifics(liked: boolean) {
+	query_specifics(liked: boolean, restaurant: {name: string, res_id: string}) {
 		NativeStorage.remove('last_restaurant')
 		.then(success => {
 			NativeStorage.remove('last_time');
+			if (!restaurant)
+				return;
 			let alert = this.alertCtrl.create(
 			{
 				title: 'Why did you ' + (liked? '': 'not ') + 'like it?',
@@ -169,29 +172,28 @@ export class Main {
 					checked: false
 				}],
 				buttons: [{
-					text: 'Cancel',
-					handler: () => {
-						// this.query_specifics(false);
-					}
-				}, {
 					text: 'OK',
-					handler: () => {
-						// this.query_specifics(true);
-					}
 				}],
 				enableBackdropDismiss: true
 			});
 
 			alert.present();
+			alert.onDidDismiss((items: Array<string>) => {
+				this.save_rating(restaurant.res_id, liked, items);
+			});
 		}, error => {
 			this.utils.display_error(error);
 		})
 	}
 
+	save_rating(res_id: string, liked: boolean, specifics: Array<string>) {
+		this.munchrApi.rating(this.user.user_id, res_id, liked, specifics.join('|'))
+		.then(() =>{ }, error => {});
+	}
+
 	get_activity() {
 		this.munchrApi.friends_activity(this.user.user_id)
 		.then(data => {
-			console.log('got activity', data)
 			if(data.error) {
 				this.utils.display_error(data.error);
 			} else {
@@ -205,17 +207,16 @@ export class Main {
 		this.events.publish('user:login', this.user);
 	}
 
-	view_account(rating:any) {
-		this.navCtrl.push(Account, { user: rating });
+	view_account(user:any) {
+		this.navCtrl.push(Account, { user: user });
 	}
 
 	view_restaurant(res_id:string) {
-		console.log(res_id);
 		const modal = this.modalCtrl.create(MoreInfo, { res_id });
 		modal.present();
 		modal.onDidDismiss(details => {
 			if (details) {
-				this.navCtrl.push(Final, {restaurant: details})
+				this.navCtrl.push(Final, { restaurant: details })
 			}
 		});
 	}
