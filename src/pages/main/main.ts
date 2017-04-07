@@ -50,7 +50,7 @@ export class Main {
 			// Not logged in
 			// this.get_user();
 
-			this.user = {user_id: 1, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
 			this.after_get_user();
 		});
 
@@ -101,8 +101,8 @@ export class Main {
 	}
 
 	after_get_user(){
-		this.get_activity();
 		this.broadcast_login();
+		this.get_activity();
 		this.get_notifications();
 
 		// NativeStorage.getItem('last_time')

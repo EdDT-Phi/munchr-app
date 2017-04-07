@@ -6,7 +6,6 @@
 		<ion-title>Munchr</ion-title>
 		<ion-buttons end>
 		  <button ion-button icon-only (click)="view_notifications()">
-		  <!-- TODO: check if notifications is > 0 -->
 		  <ion-badge *ngIf="notifications && (notifications.requests.length > 0 || notifications.recommendations.length > 0) ">{{notifications.requests.length + notifications.recommendations.length}}</ion-badge>
 		    <ion-icon name="notifications"></ion-icon>
 		  </button>
