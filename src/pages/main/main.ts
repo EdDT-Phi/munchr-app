@@ -21,10 +21,15 @@ export class Main {
 	distance: number = 5;
 	cuisines: Array<string> = [];
 	loading: boolean = true;
-	user: any;
+	user: {
+		user_id: number,
+		first_name: string, 
+		last_name: string, 
+		photo_url: string
+	};
 	selection: string = 'newCuisine';
 	activity: Array<any> = [];
-	notifications: {requests: Array<any>};
+	notifications: {requests: Array<any>, recommendations: Array<any>};
 
 
 	constructor(
@@ -43,10 +48,10 @@ export class Main {
 
 		}, error => {
 			// Not logged in
-			this.get_user();
+			// this.get_user();
 
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.after_get_user();
+			this.user = {user_id: 1, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			this.after_get_user();
 		});
 
 
@@ -183,7 +188,7 @@ export class Main {
 			});
 		}, error => {
 			this.utils.display_error(error);
-		})
+		});
 	}
 
 	save_rating(res_id: string, liked: boolean, specifics: Array<string>) {

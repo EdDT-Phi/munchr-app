@@ -18,7 +18,7 @@
 			<ion-label item-left>Activity</ion-label>
 		</ion-item>
 		<ion-list>
-			<ion-item *ngFor="let rating of activity">
+			<ion-item *ngFor="let rating of activity" (click)="view_restaurant(rating.res_id)">
 				<ion-avatar item-left>
 					<img src="{{ rating.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
 				</ion-avatar>

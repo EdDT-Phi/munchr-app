@@ -3,6 +3,8 @@ import { NativeStorage } from 'ionic-native';
 import { NavController, NavParams, Loading, LoadingController, ModalController } from 'ionic-angular';
 
 import { Account } from '../account/account'; 
+import { MoreInfo } from '../info/info'; 
+import { Final } from '../final/final'; 
 import { MunchrApi } from '../../providers/munchr-api';
 
 
@@ -14,6 +16,7 @@ import { MunchrApi } from '../../providers/munchr-api';
 export class Notifications {
 
 	requests: Array<any>;
+	recommendations: Array<any>;
 	user: {
 		user_id: number,
 		first_name: string, 
@@ -31,8 +34,10 @@ export class Notifications {
 	) {
 
 		const notifications = navParams.get('notifications');
-		if (notifications)
+		if (notifications) {
 			this.requests = notifications.requests;
+			this.recommendations = notifications.recommendations;
+		}
 
 		NativeStorage.getItem('user')
 		.then(user => {
@@ -52,23 +57,34 @@ export class Notifications {
 	}
 
 	get_notifications() {
+		this.loading = this.loadingCtrl.create({
+			content: 'Please wait...'
+		});
+		this.loading.present();
 		this.munchrApi.notifications(this.user.user_id)
 		.then(data => {
+			console.log(data);
 			this.requests = data.results.requests;
-			this.loading.dismiss()
+			this.recommendations = data.results.recommendations;
+			this.loading.dismiss();
 		}, error => { });
 	}
 
 	view_account(user:any) {
 		const modal = this.modalCtrl.create(Account, { user });
-		modal.present()
+		modal.present();
 		modal.onDidDismiss(()=> {
-			this.loading = this.loadingCtrl.create({
-				content: 'Please wait...'
-			});
-			this.loading.present()
 			this.get_notifications();
 		});
 	}
 
+	view_restaurant(res_id:string) {
+		const modal = this.modalCtrl.create(MoreInfo, { res_id });
+		modal.present();
+		modal.onDidDismiss(details => {
+			if (details) {
+				this.navCtrl.push(Final, { restaurant: details })
+			}
+		});
+	}
 }
