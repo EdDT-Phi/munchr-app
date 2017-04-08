@@ -46,8 +46,8 @@ export class Account {
 			this.user = user;
 			this.get_activity();
 		}, error => {
-			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			this.get_activity();
+			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// this.get_activity();
 
 		})
 

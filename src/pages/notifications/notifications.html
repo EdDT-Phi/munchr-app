@@ -30,7 +30,7 @@
 	<div *ngIf="recommendations && recommendations.length > 0">
 		<ion-title>Restaurant Recommendations</ion-title>
 		<ion-list>
-			<ion-item *ngFor="let recom of recommendations">
+			<ion-item *ngFor="let recom of recommendations; let myIndex = index">
 				<ion-avatar item-left (click)="view_account(recom)">
 					<img src="{{ recom.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
 				</ion-avatar>
@@ -38,7 +38,7 @@
 					<h2>{{ recom.first_name }} {{recom.last_name}}</h2>
 					<p>Liked {{ recom.res_name }}</p>
 				</div>
-				<button (click)="dismiss(false, user)" ion-button outline item-right icon-left>
+				<button (click)="dismiss(myIndex)" ion-button outline item-right icon-left>
 				    <ion-icon name='close'></ion-icon>
 				    Dismiss
 				</button>

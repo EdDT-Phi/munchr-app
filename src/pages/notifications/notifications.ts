@@ -45,9 +45,9 @@ export class Notifications {
 			if (!notifications)
 				this.get_notifications();
 		}, error => {
-			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			if (!notifications)
-				this.get_notifications();
+			// this.user = {user_id: 1, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// if (!notifications)
+				// this.get_notifications();
 		});
 
 	}
@@ -78,13 +78,35 @@ export class Notifications {
 		});
 	}
 
-	view_restaurant(res_id:string) {
+	view_restaurant(index: number) {
+		const res_id = this.recommendations[index].res_id;
 		const modal = this.modalCtrl.create(MoreInfo, { res_id });
 		modal.present();
 		modal.onDidDismiss(details => {
 			if (details) {
+				this.dismiss(index);
 				this.navCtrl.push(Final, { restaurant: details })
 			}
 		});
+	}
+
+	respond(response:boolean, oth_user:any) {
+		this.loading = this.loadingCtrl.create({
+			content: 'Please wait...'
+		});
+		this.loading.present()
+		this.munchrApi.respond_request(response, this.user.user_id, oth_user.user_id)
+		.then(data => {
+			console.log(data);
+			this.requests = data.result.requests;
+			this.loading.dismiss();
+			this.loading = null;
+		}, error => {});
+	}
+
+	dismiss(index: number) {
+		const recomm = this.recommendations.splice(index, 1)[0];
+		this.munchrApi.dismiss_recommendation(recomm.user_id, this.user.user_id, recomm.res_id)
+		.then(() => {}, error => {})
 	}
 }
