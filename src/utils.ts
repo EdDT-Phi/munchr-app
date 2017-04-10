@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
-import { ToastController } from "ionic-angular";
+import { ToastController, AlertController } from 'ionic-angular';
+import { NativeStorage } from 'ionic-native';
 
 @Injectable()
 export class Utils {
 
 	constructor(
-		public toastCtrl: ToastController
+		private toastCtrl: ToastController,
+		private alertCtrl: AlertController,
 	) {}
 
 	display_error(error: string) {
-		console.log(error);
-		let toast = this.toastCtrl.create({
-			message: error,
-			duration: 3000
-		});
-		toast.present();
+		this.display_error_obj(error, error);
 	}
 
 	display_error_obj(error: string, err_obj: Object) {
@@ -24,5 +21,31 @@ export class Utils {
 			duration: 3000
 		});
 		toast.present();
+	}
+
+	show_tutorial(message: string) {
+		NativeStorage.getItem('show_tutorial')
+		.then(show => {
+
+		}, error => {
+			let confirm = this.alertCtrl.create({
+				title: 'Tutorial',
+				message,
+				inputs: [{
+					type: 'checkbox',
+					label: 'Turn off the tutorials',
+					value: 'dismiss',
+				}],
+				buttons: ['OK'], 
+				enableBackdropDismiss: false
+			});
+			confirm.present();
+			confirm.onDidDismiss(info => {
+				if (info.length > 0) {
+					NativeStorage.setItem('show_tutorial', true)
+					.then(() => {}, error => {});
+				}
+			});
+		});
 	}
 }

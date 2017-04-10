@@ -40,6 +40,7 @@ export class Main {
 		private modalCtrl: ModalController,
 		private alertCtrl: AlertController,
 	) {
+		utils.show_tutorial('This is how you use this page');
 
 		NativeStorage.getItem('user')
 		.then( data => {
@@ -48,10 +49,10 @@ export class Main {
 
 		}, error => {
 			// Not logged in
-			this.get_user();
+			// this.get_user();
 
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.after_get_user();
+			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			this.after_get_user();
 		});
 
 

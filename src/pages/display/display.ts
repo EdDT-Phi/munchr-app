@@ -40,15 +40,14 @@ export class Display {
 	offset: number = 0;
 
 	constructor(
+		private utils: Utils,
 		private munchrApi: MunchrApi, 
-		private navCtrl: NavController, 
 		private navParams: NavParams,
+		private navCtrl: NavController, 
 		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
-		private utils: Utils,
 		// private adMob: AdMob,
 	) {
-
 		this.add_cards();
 
 		// TODO implemnent up throw
@@ -117,6 +116,7 @@ export class Display {
 					this.offset += this.limit;
 				}
 				loading.dismiss();
+				this.utils.show_tutorial('This is how you use this page');
 			});
 		}).catch((error) => {
 			this.utils.display_error_obj('Error getting location: ' + error.message, error);
