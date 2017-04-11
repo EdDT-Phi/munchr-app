@@ -4,6 +4,14 @@
 			<ion-icon name="menu"></ion-icon>
 		</button>
 		<ion-title>Munchr</ion-title>
+		<ion-buttons end>
+		  <button ion-button icon-only (click)="view_notifications()">
+		  	<ion-badge *ngIf="notifications && (notifications.requests.length > 0 || notifications.recommendations.length > 0) ">
+		  	{{notifications.requests.length + notifications.recommendations.length}}
+		  	</ion-badge>
+		    <ion-icon name="notifications"></ion-icon>
+		  </button>
+		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 

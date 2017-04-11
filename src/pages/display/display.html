@@ -4,6 +4,14 @@
 			<ion-icon name="menu"></ion-icon>
 		</button>
 		<ion-title>Results</ion-title>
+		<ion-buttons end>
+		  <button ion-button icon-only (click)="see_liked()">
+		  	<ion-badge *ngIf="liked_cards.length > 0">
+		  	{{ liked_cards.length }}
+		  	</ion-badge>
+		    <ion-icon name="thumbs-up"></ion-icon>
+		  </button>
+		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 
@@ -26,6 +34,10 @@
 			</ion-card-content>
 		</ion-card>
 	</div>
+	<div *ngIf="display_options" class="center"  id="buttons">
+		<button ion-button class="center" *ngIf="liked_cards.length != 0" (click)="see_liked()">Show liked restaurants</button>
+		<button ion-button class="center" (click)="start_over()">Start Over</button>
+	</div>
 </ion-content>
 
 <div class="like center" [ngStyle]="{
@@ -42,20 +54,10 @@
 	<img width="200" src="https://img.clipartfest.com/728f0e37bf7467a43968046d5e5e9d53_clipart-thumbs-down-circle-thumbs-down-clipart_1809-1802.png">
 </div>
 
-<ion-content class="center" *ngIf="display_options" id="buttons">
-	<br>
-	<br>
-	<br>
-	<br>
-	<button ion-button class="center" *ngIf="liked_cards.length != 0" (click)="see_liked()">Show liked restaurants</button>
-	<button ion-button class="center" (click)="add_cards()">Show more restaurants</button>
-	<button ion-button class="center" (click)="start_over()">Start over</button>
-</ion-content>
-
 <ion-footer *ngIf="!display_options">
 	<ion-row>
 		<button ion-button class="center" (click)="throw_out(-1)">Dislike</button>
-		<button ion-button class="center" (click)="choose()">Choose</button>
+		<button ion-button class="center" (click)="choose()">Take me here</button>
 		<button ion-button class="center" (click)="throw_out(1)">Like</button>
 	</ion-row>
 </ion-footer>

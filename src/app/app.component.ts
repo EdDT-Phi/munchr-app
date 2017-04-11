@@ -29,12 +29,15 @@ export class MyApp {
 
 		// used for an example of ngFor and navigation
 		this.pages = [
-			{ title: 'Home', component: Main },
 			{ title: 'Friends', component: Friends },
-			{ title: 'Logout', component: Main }
+			{ title: 'Logout', component: Main },
 		];
 
 		this.account_page = {title: 'Account', component: Account};
+
+		this.events.subscribe('user:login', (user) => {
+			this.user = user;
+		});
 	}
 
 	initializeApp() {
@@ -45,9 +48,7 @@ export class MyApp {
 			Splashscreen.hide();
 			ScreenOrientation.lockOrientation('portrait')
 			.then(succes => {}, error => this.utils.display_error_obj('Error setting screen orientation lock', error));
-			this.events.subscribe('user:login', (user) => {
-				this.user = user;
-			});
+
 		});
 	}
 

@@ -40,7 +40,6 @@ export class Filter {
 	}
 
 	show_items(ev) {
-		console.log(this.items);
 		if(ev == null)
 			return ;
 

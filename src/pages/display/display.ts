@@ -30,6 +30,7 @@ export class Display {
   	@ViewChildren('mycards1') swingCards: QueryList<SwingCardComponent>;
 
 	cards: Array<any> = [];
+	all_cards: Array<any> = [];
 	liked_cards: Array<any> = [];
 	stackConfig: StackConfig;
 	display_options: boolean = false;
@@ -39,15 +40,14 @@ export class Display {
 	offset: number = 0;
 
 	constructor(
+		private utils: Utils,
 		private munchrApi: MunchrApi, 
-		private navCtrl: NavController, 
 		private navParams: NavParams,
+		private navCtrl: NavController, 
 		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
-		private utils: Utils,
 		// private adMob: AdMob,
 	) {
-
 		this.add_cards();
 
 		// TODO implemnent up throw
@@ -112,10 +112,11 @@ export class Display {
 					this.utils.display_error(data.error);
 				} else {
 					this.cards = data.results;
-					console.log(this.cards);
+					this.all_cards = data.results;
 					this.offset += this.limit;
 				}
 				loading.dismiss();
+				this.utils.show_tutorial('This is how you use this page');
 			});
 		}).catch((error) => {
 			this.utils.display_error_obj('Error getting location: ' + error.message, error);
@@ -136,7 +137,7 @@ export class Display {
 	throw_out(direction: number) {
 		const card = this.cards.pop();
 		if (direction == 1) {
-			this.liked_cards.push(card);
+			this.liked_cards.unshift(card);
 		}
 
 		if (this.cards.length == 0) {
@@ -145,9 +146,11 @@ export class Display {
 	}
 
 	see_liked() {
-		this.display_options = false;
-		this.cards = this.liked_cards;
-		this.liked_cards = [];
+		if (this.liked_cards.length > 0) {
+			this.display_options = false;
+			this.cards = this.liked_cards;
+			this.liked_cards = [];
+		}
 	}
 
 	choose() {
@@ -157,6 +160,8 @@ export class Display {
 	}
 
 	start_over() {
-		this.navCtrl.pop();
+		this.display_options = false;
+		this.cards = this.all_cards;
+		this.liked_cards = [];
 	}
 }
