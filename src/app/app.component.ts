@@ -6,6 +6,7 @@ import { StatusBar, Splashscreen, NativeStorage, ScreenOrientation } from 'ionic
 import { Main } from '../pages/main/main';
 import { Account } from '../pages/account/account';
 import { Friends } from '../pages/friends/friends';
+import { Search } from '../pages/search/search';
 import { Utils } from '../utils';
 
 
@@ -29,6 +30,7 @@ export class MyApp {
 
 		// used for an example of ngFor and navigation
 		this.pages = [
+			{ title: 'Search Users', component: Search },
 			{ title: 'Friends', component: Friends },
 			{ title: 'Logout', component: Main },
 		];
