@@ -16,7 +16,7 @@
 		{{ details.location.address }} <br>
 		{{ details.phone }} <br>
 		<a href="{{details.website}}">Website</a> <br>
-		<p class="center" style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
+		<p style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
 		<ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
 		<ion-icon [name]="details.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
 		<ion-icon [name]="details.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
