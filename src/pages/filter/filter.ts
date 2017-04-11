@@ -15,6 +15,7 @@ export class Filter {
 	all: Array<string> = [];
 	marked: Object = {};
 	showSearch: boolean = true;
+	title: string = 'What are you in the mood for?';
 
 	constructor(public navCtrl: NavController, public navParams: NavParams) {
 		const selection = navParams.get('selection');
@@ -23,6 +24,7 @@ export class Filter {
 		if (selection === 'newRestaurant') {
 			this.search();
 		} else if (selection === 'newCuisine') {
+			this.title = 'You might like these cuisines';
 			this.showSearch = false;
 			this.marked[this.all[Math.floor(Math.random()*this.all.length)]] = true;
 			let temp = [];

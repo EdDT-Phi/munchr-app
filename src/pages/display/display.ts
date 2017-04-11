@@ -116,7 +116,7 @@ export class Display {
 					this.offset += this.limit;
 				}
 				loading.dismiss();
-				this.utils.show_tutorial('This is how you use this page');
+				this.utils.show_tutorial('Hey! This is where we narrow down your decision. Swipe restaurants left if you\'re not feeling them, and swipe right if you do. Tap \'Take Me Here\' if you\'ve made your choise');
 			});
 		}).catch((error) => {
 			this.utils.display_error_obj('Error getting location: ' + error.message, error);
