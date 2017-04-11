@@ -11,12 +11,6 @@ function are_similar(lat1: number, long1: number, lat2: number, long2: number) {
 	return round_7(lat1) == round_7(lat2) && round_7(long1) == round_7(long2);
 }
 
-/*
-  Generated class for the MunchrApiLogin provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class MunchrApi {
 	url: string;

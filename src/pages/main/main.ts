@@ -41,7 +41,7 @@ export class Main {
 		private modalCtrl: ModalController,
 		private alertCtrl: AlertController,
 	) {
-		// utils.show_tutorial('Welcome to Munchr :) This is the main page. To search for a restaurant first select what you\'re looking for and tap Search.');
+		utils.show_tutorial('Welcome to Munchr :) This is the main page. To search for a restaurant first select what you\'re looking for and tap Search.');
 
 		NativeStorage.getItem('user')
 		.then( data => {
@@ -50,10 +50,10 @@ export class Main {
 
 		}, error => {
 			// Not logged in
-			this.get_user();
+			// this.get_user();
 
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.after_get_user();
+			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			this.after_get_user();
 		});
 
 

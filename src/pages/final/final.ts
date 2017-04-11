@@ -61,7 +61,7 @@ export class Final {
 		SocialSharing.shareWithOptions({
 			message: 'Come eat at this place!',
 			subject: 'Munchr: going out to eat',
-			url: `https://munchr-test.herokuapp.com/restaurant/${this.restaurant.id}`
+			url: `https://munchr-test.herokuapp.com/restaurant/${this.restaurant.res_id}`
 		}).then(success => {}, error => {
 			this.utils.display_error(error);
 		});
