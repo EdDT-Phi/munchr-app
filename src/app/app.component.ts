@@ -8,6 +8,7 @@ import { Account } from '../pages/account/account';
 import { Friends } from '../pages/friends/friends';
 import { Search } from '../pages/search/search';
 import { MoreInfo } from '../pages/info/info';
+import { Stars } from '../pages/stars/stars';
 import { Utils } from '../utils';
 
 
@@ -32,6 +33,7 @@ export class MyApp {
 		// used for an example of ngFor and navigation
 		this.pages = [
 			{ title: 'Search Users', component: Search },
+			{ title: 'Starred Restaurants', component: Stars },
 			{ title: 'Friends', component: Friends },
 			{ title: 'Logout', component: Main },
 		];

@@ -18,13 +18,36 @@ import { Utils } from '../../utils';
 
 export class Final {
 
-	restaurant: any;
+	restaurant: {
+		res_id: string,
+		name: string,
+		phone: string,
+		website: string,
+		price:number,
+		opennow: boolean,
+		reviews: Array<any>,
+		photos: Array<any>,
+		rating: number,
+		location: {
+			lat: number,
+			lon: number,
+		},
+		starred: boolean,
+		photo: string,
+	};
 	map: string;
+	user: {
+		user_id: number,
+		first_name: string, 
+		last_name: string, 
+		photo_url: string
+	};
 
 	constructor(
+		public utils: Utils, 
+		public munchrApi: MunchrApi,
 		public navParams: NavParams,
 		public navCtrl: NavController, 
-		public utils: Utils, 
 	) {
 		this.restaurant = this.navParams.get('restaurant');
 		if (!this.restaurant.photo) {
@@ -36,8 +59,13 @@ export class Final {
 		&key=AIzaSyCdSzocNEuxd52QRK9bjWcJvpgBPRWqc9w`
 
 		NativeStorage.setItem('last_restaurant', this.restaurant)
-		.then( success => {}, error => {
-			this.utils.display_error(error);
+		.then( success => {}, error => {});
+
+		NativeStorage.getItem('user')
+		.then(user => {
+			this.user = user;
+		}, error => {
+			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
 		});
 
 		this.change_time();
@@ -72,5 +100,19 @@ export class Final {
 		.then( success => {}, error => {
 			this.utils.display_error(error);
 		});
+	}
+
+	star_res() {
+		if (!this.restaurant.starred) {
+			this.munchrApi.star_res(this.user.user_id, this.restaurant.res_id)
+			.then(() => {
+				this.restaurant.starred = true;
+			}, error => {});
+		} else {
+			this.munchrApi.unstar_res(this.user.user_id, this.restaurant.res_id)
+			.then(() => {
+				this.restaurant.starred = false;
+			}, error => {});
+		}
 	}
 }

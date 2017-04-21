@@ -4,9 +4,9 @@
 			<ion-icon name="menu"></ion-icon>
 		</button>
 		<ion-title>Results</ion-title>
-		<ion-buttons end>
+		<ion-buttons *ngIf="liked_cards.length > 0" end>
 		  <button ion-button icon-only (click)="see_liked()">
-		  	<ion-badge *ngIf="liked_cards.length > 0">
+		  	<ion-badge>
 		  	{{ liked_cards.length }}
 		  	</ion-badge>
 		    <ion-icon name="thumbs-up"></ion-icon>
@@ -17,19 +17,20 @@
 
 <ion-content>
 	<div swing-stack #myswing1 [stackConfig]="stackConfig" (throwout)="throw_out($event.throwDirection)" id="card-stack">
-		<ion-card #mycards1 swing-card *ngFor="let c of cards">
-			<img (click)="info(c.res_id)" height="300" *ngIf="c.photo" [src]="c.photo">
-			<ion-title>{{ c.name }}</ion-title>
-			<h3 style="color: white;">{{ c.evidence }}</h3>
-			<ion-card-content *ngIf="c.location">
-				{{ c.distance }} miles away<br>
-				{{ c.location.address }}<br>
-				<div *ngIf="c.rating != 0">
-					<ion-icon [name]="c.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="c.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="c.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="c.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="c.rating > 4 ? 'star' : 'star-outline'"></ion-icon>
+		<ion-card #mycards1 swing-card *ngFor="let res of cards">
+			<img (click)="info(res.res_id)" height="300" *ngIf="res.photo" [src]="res.photo">
+			
+			<ion-title>{{ res.name }} <ion-icon name="{{(res.starred)? 'star' : 'star-outline'}}"></ion-icon></ion-title>
+			<h3 style="color: white;">{{ res.evidence }}</h3>
+			<ion-card-content *ngIf="res.location">
+				{{ res.distance }} miles away<br>
+				{{ res.location.address }}<br>
+				<div *ngIf="res.rating != 0">
+					<ion-icon [name]="res.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+					<ion-icon [name]="res.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+					<ion-icon [name]="res.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+					<ion-icon [name]="res.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+					<ion-icon [name]="res.rating > 4 ? 'star' : 'star-outline'"></ion-icon>
 				</div>
 				
 			</ion-card-content>

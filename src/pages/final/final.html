@@ -1,9 +1,11 @@
 <ion-header>
 	<ion-navbar>
-		<button ion-button menuToggle>
-			<ion-icon name="menu"></ion-icon>
-		</button>
 		<ion-title>{{ restaurant.name }}</ion-title>
+		<ion-buttons end>
+		  <button ion-button icon-only (click)="star_res()">
+		    <ion-icon name="{{(restaurant && restaurant.starred)? 'star' : 'star-outline'}}"></ion-icon>
+		  </button>
+		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import { NativeStorage } from 'ionic-native';
 import { NavParams, ViewController, LoadingController, Loading } from 'ionic-angular';
 
 import { MunchrApi } from '../../providers/munchr-api';
@@ -19,6 +19,7 @@ export class MoreInfo {
 	loading: Loading = null;
 	map: string;
 	details: {
+		res_id: string,
 		name: string,
 		phone: string,
 		website: string,
@@ -31,6 +32,13 @@ export class MoreInfo {
 			lat: number,
 			lon: number,
 		},
+		starred: boolean,
+	};
+	user: {
+		user_id: number,
+		first_name: string, 
+		last_name: string, 
+		photo_url: string
 	};
 	
 	constructor(
@@ -46,7 +54,18 @@ export class MoreInfo {
 		});
 		this.loading.present();
 
-		this.munchrApi.details(this.navParams.get('res_id'))
+		NativeStorage.getItem('user')
+		.then(user => {
+			this.user = user;
+			this.get_details(this.navParams.get('res_id'));
+		}, error => {
+			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			this.get_details(this.navParams.get('res_id'));
+		});
+	}
+
+	get_details(res_id:string) {
+		this.munchrApi.details(this.user.user_id, res_id)
 		.then( data => {
 			console.log(data);
 			this.loading.dismiss();
@@ -66,5 +85,19 @@ export class MoreInfo {
 
 	choose() {
 		this.viewCtrl.dismiss(this.details);
+	}
+
+	star_res() {
+		if (!this.details.starred) {
+			this.munchrApi.star_res(this.user.user_id, this.details.res_id)
+			.then(() => {
+				this.details.starred = true;
+			}, error => {});
+		} else {
+			this.munchrApi.unstar_res(this.user.user_id, this.details.res_id)
+			.then(() => {
+				this.details.starred = false;
+			}, error => {});
+		}
 	}
 }

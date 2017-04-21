@@ -233,7 +233,7 @@ export class Main {
 
 	view_notifications() {
 		this.navCtrl.push(Notifications, {notifications: this.notifications});
-		this.notifications = null;
+		// this.notifications = null;
 	}
 
 	get_notifications() {
