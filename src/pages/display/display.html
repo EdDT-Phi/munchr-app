@@ -20,7 +20,7 @@
 		<ion-card #mycards1 swing-card *ngFor="let res of cards">
 			<img (click)="info(res.res_id)" height="300" *ngIf="res.photo" [src]="res.photo">
 			
-			<ion-title>{{ res.name }} <ion-icon name="{{(res.starred)? 'star' : 'star-outline'}}"></ion-icon></ion-title>
+			<ion-title>{{ res.name }} <ion-icon (click)=star_res() name="{{(res.starred)? 'star' : 'star-outline'}}"></ion-icon></ion-title>
 			<h3 style="color: white;">{{ res.evidence }}</h3>
 			<ion-card-content *ngIf="res.location">
 				{{ res.distance }} miles away<br>
