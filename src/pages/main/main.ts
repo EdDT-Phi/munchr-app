@@ -8,6 +8,7 @@ import { Account } from '../account/account';
 import { MoreInfo } from '../info/info';
 import { Final } from '../final/final';
 import { Display } from '../display/display';
+import { Search } from '../search/search';
 import { Notifications } from '../notifications/notifications';
 import { MunchrApi } from '../../providers/munchr-api';
 import { Utils } from '../../utils'
@@ -40,7 +41,7 @@ export class Main {
 		private modalCtrl: ModalController,
 		private alertCtrl: AlertController,
 	) {
-		utils.show_tutorial('This is how you use this page');
+		utils.show_tutorial('Welcome to Munchr :) This is the main page. To search for a restaurant first select what you\'re looking for and tap Search.');
 
 		NativeStorage.getItem('user')
 		.then( data => {
@@ -205,7 +206,6 @@ export class Main {
 			} else {
 				this.activity = data.results;
 			}
-			this.loading = false;
 		});
 	}
 
@@ -233,7 +233,7 @@ export class Main {
 
 	view_notifications() {
 		this.navCtrl.push(Notifications, {notifications: this.notifications});
-		this.notifications = null;
+		// this.notifications = null;
 	}
 
 	get_notifications() {
@@ -241,5 +241,11 @@ export class Main {
 		.then(data => {
 			this.notifications = data.results;
 		}, error => { });
+	}
+
+	add_friends() {
+		this.navCtrl.push(Search, {
+			user_id: this.user.user_id
+		});
 	}
 }

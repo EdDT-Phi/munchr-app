@@ -22,6 +22,13 @@
 	</ion-item>
 	<ion-content style="height:160px">
 	<ion-list>
+		<ion-item *ngIf="loading">
+			<ion-label>Loading...</ion-label>
+		</ion-item>
+		<ion-item *ngIf="!loading && activity.length == 0">
+			<h2>Looks like you have no friends yet</h2>
+			<button ion-button (click)="add_friends()">Add Some Now</button>
+		</ion-item>
 		<ion-item  *ngFor="let rating of activity">
 			<ion-avatar item-left (click)="view_account(rating)">
 				<img src="{{ rating.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
@@ -45,15 +52,15 @@
 	</ion-range>
 	<ion-list radio-group [(ngModel)]="selection">
 		<ion-item>
-			<ion-label>Try Random Restaurant</ion-label>
+			<ion-label>Any Cuisine</ion-label>
 			<ion-radio value="newRestaurant"></ion-radio>
 		</ion-item>
 		<ion-item>
-			<ion-label>Try New Cuisine</ion-label>
+			<ion-label>Recommend Cuisines</ion-label>
 			<ion-radio value="newCuisine"></ion-radio>
 		</ion-item>
 		<ion-item>
-			<ion-label>I Know What I Want</ion-label>
+			<ion-label>Select Cuisines You Want</ion-label>
 			<ion-radio value="know"></ion-radio>
 		</ion-item>
 	</ion-list>

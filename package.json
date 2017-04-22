@@ -55,7 +55,17 @@
     "cordova-plugin-screen-orientation",
     "cordova-plugin-admobpro",
     "cordova-plugin-extension",
-    "cordova-plugin-device-orientation"
+    "cordova-plugin-device-orientation",
+    "cordova-sqlite-storage",
+    {
+      "id": "ionic-plugin-deeplinks",
+      "locator": "ionic-plugin-deeplinks",
+      "variables": {
+        "URL_SCHEME": "munchr",
+        "DEEPLINK_SCHEME": "https",
+        "DEEPLINK_HOST": "munchr-test.herokuapp.com"
+      }
+    }
   ],
   "cordovaPlatforms": [
     "ios",

@@ -14,6 +14,7 @@ import { Account } from '../pages/account/account';
 import { Friends } from '../pages/friends/friends';
 import { Search } from '../pages/search/search';
 import { Notifications } from '../pages/notifications/notifications';
+import { Stars } from '../pages/stars/stars';
 import { Utils } from '../utils';
 
 import {
@@ -37,6 +38,7 @@ import {
 		Friends,
 		Search,
 		Notifications,
+		Stars,
 	],
 	imports: [
 		IonicModule.forRoot(MyApp),
@@ -55,6 +57,7 @@ import {
 		Friends,
 		Search,
 		Notifications,
+		Stars,
 	],
 	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Utils]
 })

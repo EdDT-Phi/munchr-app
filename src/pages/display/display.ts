@@ -2,7 +2,7 @@ import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 
 import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 
-import { Geolocation } from 'ionic-native';
+import { Geolocation, NativeStorage } from 'ionic-native';
 // import { AdMob, AdMobOptions, AdSize, AdExtras } from '@ionic-native/ad-mob';
 
 import { MunchrApi } from '../../providers/munchr-api';
@@ -38,6 +38,12 @@ export class Display {
 	unlike_opacity: number = 0;
 	limit: number = 10;
 	offset: number = 0;
+	user: {
+		user_id: number,
+		first_name: string, 
+		last_name: string, 
+		photo_url: string
+	};
 
 	constructor(
 		private utils: Utils,
@@ -59,6 +65,13 @@ export class Display {
 				return 800;
 			}
 		};
+
+		NativeStorage.getItem('user')
+		.then(user => {
+			this.user = user;
+		}, error => {
+			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+		});
 	}
 
 	ngAfterViewInit() {
@@ -116,7 +129,7 @@ export class Display {
 					this.offset += this.limit;
 				}
 				loading.dismiss();
-				this.utils.show_tutorial('This is how you use this page');
+				this.utils.show_tutorial('Hey! This is where we narrow down your decision. Swipe restaurants left if you\'re not feeling them, and swipe right if you do. Tap \'Take Me Here\' if you\'ve made your choise');
 			});
 		}).catch((error) => {
 			this.utils.display_error_obj('Error getting location: ' + error.message, error);
@@ -163,5 +176,20 @@ export class Display {
 		this.display_options = false;
 		this.cards = this.all_cards;
 		this.liked_cards = [];
+	}
+
+	star_res() {
+		const res = this.cards[this.cards.length-1];
+		if (!res.starred) {
+			this.munchrApi.star_res(this.user.user_id, res.res_id)
+			.then(() => {
+				res.starred = true;
+			}, error => {});
+		} else {
+			this.munchrApi.unstar_res(this.user.user_id, res.res_id)
+			.then(() => {
+				res.starred = false;
+			}, error => {});
+		}
 	}
 }

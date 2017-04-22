@@ -11,12 +11,6 @@ function are_similar(lat1: number, long1: number, lat2: number, long2: number) {
 	return round_7(lat1) == round_7(lat2) && round_7(long1) == round_7(long2);
 }
 
-/*
-  Generated class for the MunchrApiLogin provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class MunchrApi {
 	url: string;
@@ -136,7 +130,7 @@ export class MunchrApi {
 		});	
 	}
 
-	details(res_id:string) {
+	details(user_id:number, res_id:string) {
 		if (this.reviews_data) {
 			// already loaded data
 			return Promise.resolve(this.reviews_data);
@@ -148,7 +142,7 @@ export class MunchrApi {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.get(this.url + '/restaurants/details/' + res_id)
+			this.http.get(`${this.url}/restaurants/details/${user_id}/${res_id}`)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
@@ -452,6 +446,89 @@ export class MunchrApi {
 			// Next, we process the data and resolve the promise with the new data.
 
 			this.http.get(`${this.url}/notifications/dismiss/${user_from_id}/${user_to_id}/${res_id}`)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				this.activity_data = data;
+				resolve(this.activity_data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
+
+	get_stars(user_id: number) {
+
+		// how tf do you get rid of this
+		if (1 * 1 == 2) {
+			// already loaded data
+			return Promise.resolve(this.activity_data);
+		}
+		
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.get(this.url + '/stars/' + user_id)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				this.activity_data = data;
+				resolve(this.activity_data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
+
+	star_res(user_id:number, res_id:string) {
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers });
+
+		let obj = {
+			res_id,
+		};
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/stars/' + user_id, data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
+
+	unstar_res(user_id: number, res_id:string) {
+
+		// how tf do you get rid of this
+		if (1 * 1 == 2) {
+			// already loaded data
+			return Promise.resolve(this.activity_data);
+		}
+		
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.get(`${this.url}/stars/unstar/${user_id}/${res_id}`)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data

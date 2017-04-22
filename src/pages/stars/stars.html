@@ -1,0 +1,26 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Starred Restaurants</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<div *ngIf="stars && stars.length > 0">
+	<!-- <ion-title>Friend Requests</ion-title> -->
+	<ion-list>
+		<ion-item *ngFor="let res of stars">
+<!-- 				<ion-avatar item-left (click)="view_account(user)">
+				<img src="{{ user.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+			</ion-avatar> -->
+			<h2 (click)="view_restaurant(res.res_id)">{{ res.res_name }}</h2>
+			<button (click)="star_res(res.res_id)" ion-button outline item-right icon-left>
+			    <ion-icon name='star-outline'></ion-icon>
+			    Unstar
+			</button>
+		</ion-item>
+	</ion-list>
+</div>
+</ion-content>
