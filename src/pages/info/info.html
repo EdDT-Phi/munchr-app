@@ -12,22 +12,22 @@
 		</ion-slide>
 	</ion-slides>
 
-	<ion-item>
+	<ion-item class="info">
 		{{ details.location.address }} <br>
-		{{ details.phone }} <br>
-		<a href="{{details.website}}">Website</a> <br>
-		<p style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
 		<ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
 		<ion-icon [name]="details.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
 		<ion-icon [name]="details.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
 		<ion-icon [name]="details.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="details.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br>
-		<!-- Change this with string concat in code -->
+		<ion-icon [name]="details.rating > 4 ? 'star' : 'star-outline'"></ion-icon> 
 		<p class="price" *ngIf="details.price >= 0">$</p>
 		<p class="price" *ngIf="details.price > 1">$</p>
 		<p class="price" *ngIf="details.price > 2">$</p>
 		<p class="price" *ngIf="details.price > 3">$</p>
-		<p class="price" *ngIf="details.price > 4">$</p>
+		<p class="price" *ngIf="details.price > 4">$</p> <br>
+		{{ details.phone }}
+		<a href="{{details.website}}" style="float: right;">Website</a> <br>
+		<p style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
+		<!-- Change this with string concat in code -->
 	</ion-item>
 
 	<ion-list>

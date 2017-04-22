@@ -8,13 +8,20 @@ page-info {
 		padding: 0;
 	}
 
+	ion-item.info {
+		color: white;
+		/*text-align: center;*/
+	}
+
 	p.review {
-		color: white
+		color: white;
+		padding-left: 5px; 
 	}
 
 	p.price {
 		color: white;
 		display: inline;
+		float: right;
 	}
 
 }
