@@ -1,6 +1,6 @@
 <ion-header>
 	<ion-navbar>
-		<ion-title>{{ loading? 'Loading...' : details.name }}</ion-title>
+		<ion-title>{{ loading? 'Loading...' : (details.name) }}</ion-title>
 		<ion-buttons end>
 		  <button ion-button icon-only (click)="star_res()">
 		    <ion-icon name="{{(details && details.starred)? 'star' : 'star-outline'}}"></ion-icon>
@@ -18,33 +18,35 @@
 	</ion-slides>
 
 	<ion-item>
+		<p style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
 		{{ details.location.address }} <br>
 		{{ details.phone }} <br>
 		<a href="{{details.website}}">Website</a> <br>
-		<p style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
-		<ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+<!-- 		<ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
 		<ion-icon [name]="details.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
 		<ion-icon [name]="details.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
 		<ion-icon [name]="details.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="details.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br>
+		<ion-icon [name]="details.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br> -->
 		<!-- Change this with string concat in code -->
-		<p class="price" *ngIf="details.price >= 0">$</p>
+<!-- 		<p class="price" *ngIf="details.price >= 0">$</p>
 		<p class="price" *ngIf="details.price > 1">$</p>
 		<p class="price" *ngIf="details.price > 2">$</p>
 		<p class="price" *ngIf="details.price > 3">$</p>
-		<p class="price" *ngIf="details.price > 4">$</p>
+		<p class="price" *ngIf="details.price > 4">$</p> -->
 	</ion-item>
 
 	<ion-list>
 		<ion-item *ngFor="let review of details.reviews" text-wrap>
 			<div *ngIf="review.rating > 0">
+				
+				
+			<p class="review">
 				<ion-icon [name]="review.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
 				<ion-icon [name]="review.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
 				<ion-icon [name]="review.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
 				<ion-icon [name]="review.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-				<ion-icon [name]="review.rating > 4 ? 'star' : 'star-outline'"></ion-icon>
+				<ion-icon [name]="review.rating > 4 ? 'star' : 'star-outline'"></ion-icon> {{ review.review_time_friendly }}</p>
 			</div>
-			<p class="review">{{ review.review_time_friendly }}</p>
 			<p class="review">{{ review.review_text }}</p>
 		</ion-item>	
 	</ion-list>

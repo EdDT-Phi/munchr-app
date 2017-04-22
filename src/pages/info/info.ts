@@ -64,6 +64,12 @@ export class MoreInfo {
 		});
 	}
 
+	get_price() {
+		if (this.details.price >= 1)
+			return ' - ' + Array(this.details.price).join('$');
+		return '';
+	}
+
 	get_details(res_id:string) {
 		this.munchrApi.details(this.user.user_id, res_id)
 		.then( data => {

@@ -10,16 +10,15 @@
 </ion-header>
 
 <ion-content>
-	<img height="300" [src]="restaurant.photo">
+	<img height="200" class="center" [src]="restaurant.photo">
 	<!-- {{ restaurant.distance }} miles away <br> -->
-	{{ restaurant.location.address }} <br>
-	<ion-icon [name]="restaurant.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+<!-- 	<ion-icon [name]="restaurant.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
 	<ion-icon [name]="restaurant.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
 	<ion-icon [name]="restaurant.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
 	<ion-icon [name]="restaurant.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-	<ion-icon [name]="restaurant.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br>
+	<ion-icon [name]="restaurant.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br> -->
 
-	<p>Tap on the map to navigate there</p>
+	<p>Tap on the map to navigate to:<br> {{ restaurant.location.address }}</p>
 	<img [src]="map" (click)="navigate()">
 
 </ion-content>
