@@ -7,7 +7,6 @@ import { Geolocation, NativeStorage } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { MoreInfo } from '../info/info';
-import { Final } from '../final/final';
 
 import { Utils } from "../../utils";
 
@@ -70,7 +69,7 @@ export class Display {
 		.then(user => {
 			this.user = user;
 		}, error => {
-			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
 		});
 	}
 
@@ -137,13 +136,7 @@ export class Display {
 	}
 	 
 	info(res_id: string) {
-		let modal = this.modalCtrl.create(MoreInfo, { res_id });
-		modal.present();
-		modal.onDidDismiss(chosen => {
-			if (chosen){
-				this.choose();
-			}
-		});
+		this.navCtrl.push(MoreInfo, { res_id });
 	}
 
 	// TODO implement up throw
@@ -164,12 +157,6 @@ export class Display {
 			this.cards = this.liked_cards;
 			this.liked_cards = [];
 		}
-	}
-
-	choose() {
-		this.navCtrl.push(Final, {
-			restaurant: this.cards[this.cards.length-1]
-		})
 	}
 
 	start_over() {

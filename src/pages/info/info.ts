@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { NativeStorage } from 'ionic-native';
-import { NavParams, ViewController, LoadingController, Loading } from 'ionic-angular';
+import { NavParams, ViewController, LoadingController, Loading, NavController } from 'ionic-angular';
 
+import { Final } from '../final/final';
 import { MunchrApi } from '../../providers/munchr-api';
 
 import { Utils } from "../../utils";
@@ -11,8 +12,6 @@ import { Utils } from "../../utils";
 	templateUrl: 'info.html',
 	providers: [ MunchrApi ]
 })
-
-
 export class MoreInfo {
 
 	// restaurant: any;
@@ -45,8 +44,9 @@ export class MoreInfo {
 		private utils: Utils,
 		private munchrApi: MunchrApi, 
 		private navParams: NavParams,
-		private loadingCtrl: LoadingController,
+		private navCtrl: NavController,
 		private viewCtrl: ViewController,
+		private loadingCtrl: LoadingController,
 	) {
 
 		this.loading = this.loadingCtrl.create({
@@ -59,8 +59,8 @@ export class MoreInfo {
 			this.user = user;
 			this.get_details(this.navParams.get('res_id'));
 		}, error => {
-			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			this.get_details(this.navParams.get('res_id'));
+			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// this.get_details(this.navParams.get('res_id'));
 		});
 	}
 
@@ -86,11 +86,11 @@ export class MoreInfo {
 	}
 
 	dismiss() {
-		this.viewCtrl.dismiss();
+		this.navCtrl.pop();
 	}
 
 	choose() {
-		this.viewCtrl.dismiss(this.details);
+		this.navCtrl.push(Final, {restaurant: this.details})
 	}
 
 	star_res() {

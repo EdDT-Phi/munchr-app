@@ -3,7 +3,6 @@ import { NativeStorage } from 'ionic-native';
 import { NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 
 import { MoreInfo } from '../info/info';
-import { Final } from '../final/final';
 import { MunchrApi } from '../../providers/munchr-api';
 import { Utils } from '../../utils';
 
@@ -91,13 +90,7 @@ export class Account {
 	}
 
 	view_restaurant(res_id:string) {
-		const modal = this.modalCtrl.create(MoreInfo, { res_id });
-		modal.present();
-		modal.onDidDismiss(details => {
-			if (details) {
-				this.navCtrl.push(Final, { restaurant: details })
-			}
-		});
+		this.navCtrl.push(MoreInfo, { res_id });
 	}
 
 	back() {

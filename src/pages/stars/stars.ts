@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NativeStorage } from 'ionic-native';
 import { NavController, NavParams, Loading, LoadingController, ModalController } from 'ionic-angular';
 
-import { Final } from '../final/final';
 import { MoreInfo } from '../info/info';
 import { MunchrApi } from '../../providers/munchr-api';
 
@@ -39,8 +38,8 @@ export class Stars {
 			this.user = user;
 			this.get_stars();
 		}, error => {
-			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			this.get_stars();
+			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// this.get_stars();
 		});
 
 	}
@@ -70,12 +69,6 @@ export class Stars {
 	}
 
 	view_restaurant(res_id:string) {
-		const modal = this.modalCtrl.create(MoreInfo, { res_id });
-		modal.present();
-		modal.onDidDismiss(details => {
-			if (details) {
-				this.navCtrl.push(Final, { restaurant: details })
-			}
-		});
+		this.navCtrl.push(MoreInfo, { res_id });
 	}
 }

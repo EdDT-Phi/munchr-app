@@ -6,7 +6,6 @@ import { Login } from '../login/login';
 import { Filter } from '../filter/filter';
 import { Account } from '../account/account';
 import { MoreInfo } from '../info/info';
-import { Final } from '../final/final';
 import { Display } from '../display/display';
 import { Search } from '../search/search';
 import { Notifications } from '../notifications/notifications';
@@ -50,10 +49,10 @@ export class Main {
 
 		}, error => {
 			// Not logged in
-			// this.get_user();
+			this.get_user();
 
-			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			this.after_get_user();
+			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// this.after_get_user();
 		});
 
 
@@ -218,13 +217,7 @@ export class Main {
 	}
 
 	view_restaurant(res_id:string) {
-		const modal = this.modalCtrl.create(MoreInfo, { res_id });
-		modal.present();
-		modal.onDidDismiss(details => {
-			if (details) {
-				this.navCtrl.push(Final, { restaurant: details })
-			}
-		});
+		this.navCtrl.push(MoreInfo, { res_id });
 	}
 
 	viewDidEnter() {
@@ -233,7 +226,6 @@ export class Main {
 
 	view_notifications() {
 		this.navCtrl.push(Notifications, {notifications: this.notifications});
-		// this.notifications = null;
 	}
 
 	get_notifications() {

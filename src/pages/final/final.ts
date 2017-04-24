@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+// import { Component } from '@angular/core';
 
 import { NavParams, NavController } from 'ionic-angular';
 import { LaunchNavigator, LaunchNavigatorOptions, NativeStorage } from 'ionic-native';
@@ -65,7 +65,7 @@ export class Final {
 		.then(user => {
 			this.user = user;
 		}, error => {
-			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
 		});
 
 		this.change_time();

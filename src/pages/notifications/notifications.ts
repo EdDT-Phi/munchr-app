@@ -4,7 +4,6 @@ import { NavController, NavParams, Loading, LoadingController, ModalController }
 
 import { Account } from '../account/account'; 
 import { MoreInfo } from '../info/info'; 
-import { Final } from '../final/final'; 
 import { MunchrApi } from '../../providers/munchr-api';
 
 
@@ -78,16 +77,8 @@ export class Notifications {
 		});
 	}
 
-	view_restaurant(index: number) {
-		const res_id = this.recommendations[index].res_id;
-		const modal = this.modalCtrl.create(MoreInfo, { res_id });
-		modal.present();
-		modal.onDidDismiss(details => {
-			if (details) {
-				this.dismiss(index);
-				this.navCtrl.push(Final, { restaurant: details })
-			}
-		});
+	view_restaurant(res_id: string) {
+		this.navCtrl.push(MoreInfo, { res_id });
 	}
 
 	respond(response:boolean, oth_user:any) {
