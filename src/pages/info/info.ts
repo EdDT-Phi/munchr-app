@@ -59,8 +59,8 @@ export class MoreInfo {
 			this.user = user;
 			this.get_details(this.navParams.get('res_id'));
 		}, error => {
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.get_details(this.navParams.get('res_id'));
+			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			this.get_details(this.navParams.get('res_id'));
 		});
 	}
 
