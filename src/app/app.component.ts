@@ -19,7 +19,7 @@ export class MyApp {
 	@ViewChild(Nav) nav: Nav;
 	rootPage: Component = Main;
 	user: any = {};
-	pages: Array<{title: string, component: Component}>;
+	pages: Array<{title: string, component: Component, icon: string}>;
 	account_page: {title: string, component: Component};
 
 
@@ -32,10 +32,10 @@ export class MyApp {
 
 		// used for an example of ngFor and navigation
 		this.pages = [
-			{ title: 'Search Users', component: Search },
-			{ title: 'Starred Restaurants', component: Stars },
-			{ title: 'Friends', component: Friends },
-			{ title: 'Logout', component: Main },
+			{ title: 'Search Users', component: Search, icon: 'search' },
+			{ title: 'Starred Restaurants', component: Stars, icon: 'star' },
+			{ title: 'Friends', component: Friends, icon: 'people' },
+			{ title: 'Logout', component: Main, icon:'exit' },
 		];
 
 		this.account_page = {title: 'Account', component: Account};
