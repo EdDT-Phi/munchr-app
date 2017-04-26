@@ -2,9 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-import { Login } from '../pages/login/login';
-
-
 /*
   Generated class for the AuthService provider.
 
