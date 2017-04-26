@@ -7,6 +7,7 @@ import { Geolocation, NativeStorage } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { MoreInfo } from '../info/info';
+import { Final } from '../final/final';
 
 import { Utils } from "../../utils";
 
@@ -43,6 +44,10 @@ export class Display {
 		last_name: string, 
 		photo_url: string
 	};
+	location: {
+		lat: number,
+		lon: number,
+	};
 
 	constructor(
 		private utils: Utils,
@@ -53,8 +58,6 @@ export class Display {
 		private loadingCtrl: LoadingController,
 		// private adMob: AdMob,
 	) {
-		this.add_cards();
-
 		// TODO implemnent up throw
 		this.stackConfig = {
 			throwOutConfidence: (offset, element) => {
@@ -68,8 +71,11 @@ export class Display {
 		NativeStorage.getItem('user')
 		.then(user => {
 			this.user = user;
+			this.add_cards();
+
 		}, error => {
 			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// this.add_cards();
 		});
 	}
 
@@ -109,6 +115,10 @@ export class Display {
 		console.log('getting geolocation');
 		Geolocation.getCurrentPosition()
 		.then( resp => {
+			this.location = {
+				lat: resp.coords.latitude,
+				lon: resp.coords.longitude,
+			};
 			console.log('have positiion, sending request');
 			this.munchrApi.restaurants(
 				resp.coords.latitude,
@@ -178,5 +188,12 @@ export class Display {
 				res.starred = false;
 			}, error => {});
 		}
+	}
+
+	choose() {
+		this.navCtrl.push(Final, {
+			restaurant: this.cards[this.cards.length-1],
+			loc: location,
+		})
 	}
 }

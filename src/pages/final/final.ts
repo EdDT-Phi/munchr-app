@@ -50,12 +50,15 @@ export class Final {
 		public navCtrl: NavController, 
 	) {
 		this.restaurant = this.navParams.get('restaurant');
+		const loc = this.navParams.get('loc');
+
 		if (!this.restaurant.photo) {
 			this.restaurant.photo = this.restaurant.photos[0];
 		}
 		this.map = `https://maps.googleapis.com/maps/api/staticmap
 		?size=500x300
-		&markers=${this.restaurant.location.lat},${this.restaurant.location.lon}
+		&markers=color:0xff4e00%7clabel:R%7C${this.restaurant.location.lat},${this.restaurant.location.lon}
+		&markers=color:blue%7Clabel:You%7C${loc.lat},${loc.lon}
 		&key=AIzaSyCdSzocNEuxd52QRK9bjWcJvpgBPRWqc9w`
 
 		NativeStorage.setItem('last_restaurant', this.restaurant)
@@ -65,7 +68,7 @@ export class Final {
 		.then(user => {
 			this.user = user;
 		}, error => {
-			this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
 		});
 
 		this.change_time();
