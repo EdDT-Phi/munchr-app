@@ -9,7 +9,7 @@
 	</ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content style="background-color: #151515;">
 	<ion-card>
 		<img height="200" class="center" [src]="restaurant.photo">
 	</ion-card>
@@ -20,7 +20,7 @@
 	<ion-icon [name]="restaurant.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
 	<ion-icon [name]="restaurant.rating > 4 ? 'star' : 'star-outline'"></ion-icon> <br> -->
 	<ion-card>
-		<p style="color: white; ">Tap on the map to navigate to:<br> {{ restaurant.location.address }}</p>
+		<p style="color: white;" >Tap on the map to navigate to:<br> {{ restaurant.location.address }}</p>
 		<img [src]="map" (click)="navigate()">
 	</ion-card>
 </ion-content>

@@ -9,16 +9,17 @@
 	</ion-navbar>
 </ion-header>
 
-<ion-content *ngIf="details" >
-	<!-- <ion-card> -->
-		<img class="slide-img" *ngIf="!details.photos || details.photos.length == 0" [src]="details.photo">
+<ion-content *ngIf="details" style="background-color: #151515;">
+	<br> 
+	<ion-card> 
+		<img *ngIf="!details.photos || details.photos.length == 0" [src]="details.photo">
 		<ion-slides *ngIf="details.photos && details.photos.length > 0" [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000" >
 			<ion-slide *ngFor="let photo of details.photos">
-				<img class="center" [src]="photo">
+				<img class="slide-img" [src]="photo">
 			</ion-slide>
 		</ion-slides>
-	<!-- </ion-card> -->
-	<ion-card style="color: white:">
+	</ion-card>
+	<ion-card>
 		<ion-item class="info">
 			{{ details.location.address }} 
 			<p style="color: white; float: right;">.9 mi</p> <br>
@@ -38,32 +39,26 @@
 		</ion-item>
 	</ion-card>
 		
-	<!-- <ion-card> -->
 
-		<ion-item *ngFor="let review of details.reviews" text-wrap no-lines>
-			<ion-card>
-				<div *ngIf="review.rating > 0">
-					
-					
-				<p class="review">
-					<ion-icon [name]="review.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="review.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="review.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="review.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="review.rating > 4 ? 'star' : 'star-outline'"></ion-icon> {{ review.review_time_friendly }}</p>
-				</div>
-				<p class="review">{{ review.review_text }}</p>
-			</ion-card>
-		</ion-item>	
-		<ion-item no-lines>
-			<ion-card>
-				<img class="center" [src]="map"> <br> <br>
-			</ion-card>
-		</ion-item>
+	<ion-card *ngFor="let review of details.reviews" text-wrap no-lines>
+		<div *ngIf="review.rating > 0">
+			
+			
+		<p class="review">
+			<ion-icon [name]="review.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="review.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="review.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="review.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="review.rating > 4 ? 'star' : 'star-outline'"></ion-icon> {{ review.review_time_friendly }}</p>
+		</div>
+		<p class="review">{{ review.review_text }}</p>
+	</ion-card>	
+	<ion-card no-lines>
+		<img class="center" [src]="map"> <br> <br>
+	</ion-card>
 
-	<!-- </ion-card> -->
 </ion-content>
 
 <ion-footer>
-		<button ion-button (click)="choose()" block>Take me here</button>
+	<button ion-button (click)="choose()" block>Take me here</button>
 </ion-footer>
