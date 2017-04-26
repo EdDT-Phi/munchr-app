@@ -9,7 +9,7 @@
 	</ion-navbar>
 </ion-header>
 
-<ion-content *ngIf="details" has-header="true" has-footer="true" padding="true">
+<ion-content *ngIf="details" >
 	<!-- <ion-card> -->
 		<img class="slide-img" *ngIf="!details.photos || details.photos.length == 0" [src]="details.photo">
 		<ion-slides *ngIf="details.photos && details.photos.length > 0" [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000" >
@@ -18,7 +18,7 @@
 			</ion-slide>
 		</ion-slides>
 	<!-- </ion-card> -->
-	<ion-card>
+	<ion-card style="color: white:">
 		<ion-item class="info">
 			{{ details.location.address }} 
 			<p style="color: white; float: right;">.9 mi</p> <br>
