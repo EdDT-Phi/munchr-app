@@ -9,51 +9,61 @@
 	</ion-navbar>
 </ion-header>
 
-<ion-content *ngIf="details">
-	<img *ngIf="!details.photos || details.photos.length == 0" [src]="details.photo">
-	<ion-slides *ngIf="details.photos && details.photos.length > 0" [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000">
-		<ion-slide *ngFor="let photo of details.photos">
-			<img class="center" [src]="photo">
-		</ion-slide>
-	</ion-slides>
-	<ion-item class="info">
-		{{ details.location.address }} <br>
-		<ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="details.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="details.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="details.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-		<ion-icon [name]="details.rating > 4 ? 'star' : 'star-outline'"></ion-icon> 
-		<p class="price" *ngIf="details.price >= 0">$</p>
-		<p class="price" *ngIf="details.price > 1">$</p>
-		<p class="price" *ngIf="details.price > 2">$</p>
-		<p class="price" *ngIf="details.price > 3">$</p>
-		<p class="price" *ngIf="details.price > 4">$</p> <br>
-		{{ details.phone }}
-		<a href="{{details.website}}" style="float: right;">Website</a> <br>
-		<p style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
-	</ion-item>
+<ion-content *ngIf="details" has-header="true" has-footer="true" padding="true">
+	<!-- <ion-card> -->
+		<img class="slide-img" *ngIf="!details.photos || details.photos.length == 0" [src]="details.photo">
+		<ion-slides *ngIf="details.photos && details.photos.length > 0" [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000" >
+			<ion-slide *ngFor="let photo of details.photos">
+				<img class="center" [src]="photo">
+			</ion-slide>
+		</ion-slides>
+	<!-- </ion-card> -->
+	<ion-card>
+		<ion-item class="info">
+			{{ details.location.address }} 
+			<p style="color: white; float: right;">.9 mi</p> <br>
+			<!-- <ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="details.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="details.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="details.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+			<ion-icon [name]="details.rating > 4 ? 'star' : 'star-outline'"></ion-icon> 
+			<p class="price" *ngIf="details.price >= 0">$</p>
+			<p class="price" *ngIf="details.price > 1">$</p>
+			<p class="price" *ngIf="details.price > 2">$</p>
+			<p class="price" *ngIf="details.price > 3">$</p>
+			<p class="price" *ngIf="details.price > 4">$</p> <br> -->
+			{{ details.phone }}
+			<a href="{{details.website}}" style="float: right;">Website</a> <br>
+			<p style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
+		</ion-item>
+	</ion-card>
+		
+	<!-- <ion-card> -->
 
-	<ion-list>
-		<ion-item *ngFor="let review of details.reviews" text-wrap>
-			<div *ngIf="review.rating > 0">
-				
-				
-			<p class="review">
-				<ion-icon [name]="review.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
-				<ion-icon [name]="review.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
-				<ion-icon [name]="review.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
-				<ion-icon [name]="review.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-				<ion-icon [name]="review.rating > 4 ? 'star' : 'star-outline'"></ion-icon> {{ review.review_time_friendly }}</p>
-			</div>
-			<p class="review">{{ review.review_text }}</p>
+		<ion-item *ngFor="let review of details.reviews" text-wrap no-lines>
+			<ion-card>
+				<div *ngIf="review.rating > 0">
+					
+					
+				<p class="review">
+					<ion-icon [name]="review.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
+					<ion-icon [name]="review.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
+					<ion-icon [name]="review.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
+					<ion-icon [name]="review.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
+					<ion-icon [name]="review.rating > 4 ? 'star' : 'star-outline'"></ion-icon> {{ review.review_time_friendly }}</p>
+				</div>
+				<p class="review">{{ review.review_text }}</p>
+			</ion-card>
 		</ion-item>	
-	</ion-list>
+		<ion-item no-lines>
+			<ion-card>
+				<img class="center" [src]="map"> <br> <br>
+			</ion-card>
+		</ion-item>
 
-	<img class="center" [src]="map">
+	<!-- </ion-card> -->
 </ion-content>
 
 <ion-footer>
-	<ion-row>
 		<button ion-button (click)="choose()" block>Take me here</button>
-	</ion-row>
 </ion-footer>

@@ -1,7 +1,26 @@
 page-info {
 	ion-slides {
-		border: 10px solid black;
+		/*border: 10px solid black;*/
+		/*text-align: center;*/
+		/*position: absolute;*/
 		max-height: 300px;
+		vertical-align: middle;
+	}
+
+	/*.slider-img {
+		text-align: center;
+		vertical-align: middle;
+		position: absolute;
+		max-width: 80vw !important;
+		max-height: 100vh !important;
+
+	}
+*/
+
+	.slide-image {
+	    max-height: 50%;
+	    max-width: 60%;
+	    margin: 18px 0;
 	}
 
 	ion-list {
