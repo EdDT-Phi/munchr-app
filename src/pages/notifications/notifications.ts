@@ -5,12 +5,13 @@ import { NavController, NavParams, Loading, LoadingController, ModalController }
 import { Account } from '../account/account'; 
 import { MoreInfo } from '../info/info'; 
 import { MunchrApi } from '../../providers/munchr-api';
+import { UserService } from '../../providers/user-service';
 
 
 @Component({
 	selector: 'page-notifications',
 	templateUrl: 'notifications.html',
-	providers: [ MunchrApi ],
+	providers: [ MunchrApi, UserService ],
 })
 export class Notifications {
 
@@ -26,6 +27,7 @@ export class Notifications {
 
 	constructor(
 		private navParams: NavParams,
+		private userService: UserService,
 		private munchrApi: MunchrApi,
 		private navCtrl: NavController,
 		private modalCtrl: ModalController,
@@ -38,17 +40,12 @@ export class Notifications {
 			this.recommendations = notifications.recommendations;
 		}
 
-		NativeStorage.getItem('user')
+		this.userService.get_user()
 		.then(user => {
 			this.user = user;
 			if (!notifications)
 				this.get_notifications();
-		}, error => {
-			// this.user = {user_id: 1, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// if (!notifications)
-				// this.get_notifications();
-		});
-
+		}, error => { });
 	}
 
 	ionViewDidLoad() {

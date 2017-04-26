@@ -2,20 +2,20 @@ import { Component } from '@angular/core';
 import { Events, NavController, ModalController, AlertController } from 'ionic-angular';
 import { NativeStorage } from 'ionic-native';
 
-import { Login } from '../login/login';
 import { Filter } from '../filter/filter';
 import { Account } from '../account/account';
 import { MoreInfo } from '../info/info';
 import { Display } from '../display/display';
 import { Search } from '../search/search';
 import { Notifications } from '../notifications/notifications';
+import { UserService } from '../../providers/user-service';
 import { MunchrApi } from '../../providers/munchr-api';
 import { Utils } from '../../utils'
 
 @Component({
 	selector: 'page-main',
 	templateUrl: 'main.html',
-	providers: [ MunchrApi ],
+	providers: [ MunchrApi, UserService ],
 })
 export class Main {
 	distance: number = 5;
@@ -25,7 +25,7 @@ export class Main {
 		user_id: number,
 		first_name: string, 
 		last_name: string, 
-		photo_url: string
+		photo_url: string,
 	};
 	selection: string = 'newCuisine';
 	activity: Array<any> = [];
@@ -36,25 +36,17 @@ export class Main {
 		private utils: Utils,
 		private events: Events,
 		private munchrApi: MunchrApi,
+		public userService: UserService,
 		private navCtrl: NavController,
-		private modalCtrl: ModalController,
 		private alertCtrl: AlertController,
 	) {
 		utils.show_tutorial('Welcome to Munchr :) This is the main page. To search for a restaurant first select what you\'re looking for and tap Search.');
 
-		NativeStorage.getItem('user')
-		.then( data => {
-			this.user = data;
+		this.userService.get_user()
+		.then(user => {
+			this.user = user;
 			this.after_get_user();
-
-		}, error => {
-			// Not logged in
-			this.get_user();
-
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.after_get_user();
-		});
-
+		}, error => { });
 
 		this.munchrApi.filters()
 		.then( data => {
@@ -73,32 +65,17 @@ export class Main {
 		if (this.selection === 'newRestaurant') {
 			this.navCtrl.push(Display, {
 				radius: distance,
-				user_id: this.user.user_id,
 				cuisines: [],
+
 			});
 		} else {
 			this.navCtrl.push(Filter, {
 				distance,
 				cuisines: this.cuisines,
-				user_id: this.user.user_id,
 				selection: this.selection,
-			},  {
-				animation: 'ios-transition'
 			});
 		}
 
-	}
-
-	get_user() {
-		let modal = this.modalCtrl.create(Login);
-		modal.present();
-		modal.onDidDismiss(data => {
-			if (!data){
-				return this.get_user();
-			}
-			this.user = data;
-			this.after_get_user();
-		});
 	}
 
 	after_get_user(){

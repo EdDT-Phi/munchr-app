@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, Loading, LoadingController, ModalController } from 'ionic-angular';
-import { NativeStorage } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
+import { UserService } from '../../providers/user-service';
 import { Account } from '../account/account';
 import { Search } from '../search/search';
 
 @Component({
 	selector: 'page-friends',
 	templateUrl: 'friends.html',
-	providers: [ MunchrApi ],
+	providers: [ MunchrApi, UserService ],
 })
 
 
@@ -28,6 +28,7 @@ export class Friends {
 	constructor(
 		private navParams: NavParams,
 		private munchrApi: MunchrApi,
+		private userService: UserService,
 		private navCtrl: NavController,
 		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
@@ -38,14 +39,11 @@ export class Friends {
 		});
 		this.loading.present();
 
-		NativeStorage.getItem('user')
+		this.userService.get_user()
 		.then(user => {
 			this.user = user;
 			this.get_friends();
-		}, error => {
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.get_friends();
-		});
+		}, error => { });
 	}
 
 	view_account(user:any) {

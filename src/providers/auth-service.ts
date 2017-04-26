@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 
+import { Login } from '../pages/login/login';
+
+
 /*
   Generated class for the AuthService provider.
 
@@ -18,6 +21,12 @@ export class AuthService {
 	last_name: string;
 	fb_id: string;
 	photo: string;
+	user: {
+		user_id: number,
+		first_name: string, 
+		last_name: string, 
+		photo_url: string,
+	} = null;
 
 	constructor(public http: Http) {
 		// this.url = 'http://localhost:5000'; // dev

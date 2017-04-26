@@ -4,11 +4,12 @@ import { NavController, NavParams, Loading, LoadingController, ModalController }
 
 import { MoreInfo } from '../info/info';
 import { MunchrApi } from '../../providers/munchr-api';
+import { UserService } from '../../providers/user-service';
 
 @Component({
 	selector: 'page-stars',
 	templateUrl: 'stars.html',
-	providers: [ MunchrApi ],
+	providers: [ MunchrApi, UserService ],
 })
 export class Stars {
 
@@ -26,22 +27,18 @@ export class Stars {
 
 
 	constructor(
-		private munchrApi: MunchrApi,
-		private navParams: NavParams,
 		private navCtrl: NavController,
+		private munchrApi: MunchrApi,
+		private userService: UserService,
+		private navParams: NavParams,
 		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
 	) {
-
-		NativeStorage.getItem('user')
+		this.userService.get_user()
 		.then(user => {
 			this.user = user;
 			this.get_stars();
-		}, error => {
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.get_stars();
-		});
-
+		}, error => { });
 	}
 
 	ionViewDidLoad() {

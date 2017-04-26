@@ -2,10 +2,11 @@ import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 
 import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
 
-import { Geolocation, NativeStorage } from 'ionic-native';
+import { Geolocation } from 'ionic-native';
 // import { AdMob, AdMobOptions, AdSize, AdExtras } from '@ionic-native/ad-mob';
 
 import { MunchrApi } from '../../providers/munchr-api';
+import { UserService } from '../../providers/user-service';
 import { MoreInfo } from '../info/info';
 import { Final } from '../final/final';
 
@@ -20,7 +21,7 @@ import {
 @Component({
 	selector: 'page-display',
 	templateUrl: 'display.html',
-	providers: [ MunchrApi ],
+	providers: [ MunchrApi, UserService ],
 	entryComponents: [SwingStackComponent, SwingCardComponent]
 })
 
@@ -51,32 +52,25 @@ export class Display {
 
 	constructor(
 		private utils: Utils,
-		private munchrApi: MunchrApi, 
 		private navParams: NavParams,
+		private munchrApi: MunchrApi, 
+		private userService: UserService,
 		private navCtrl: NavController, 
 		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
-		// private adMob: AdMob,
 	) {
-		// TODO implemnent up throw
 		this.stackConfig = {
 			throwOutConfidence: (offset, element) => {
 				return Math.min(Math.abs(offset) / (element.offsetWidth/2), 1);
 			},
-			throwOutDistance: () => {
-				return 800;
-			}
+			throwOutDistance: () => (800)
 		};
 
-		NativeStorage.getItem('user')
+		this.userService.get_user()
 		.then(user => {
 			this.user = user;
 			this.add_cards();
-
-		}, error => {
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.add_cards();
-		});
+		}, error => { });
 	}
 
 	ngAfterViewInit() {

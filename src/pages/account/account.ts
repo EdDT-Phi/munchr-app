@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { NativeStorage } from 'ionic-native';
 import { NavController, NavParams, ViewController, ModalController } from 'ionic-angular';
 
 import { MoreInfo } from '../info/info';
 import { MunchrApi } from '../../providers/munchr-api';
+import { UserService } from '../../providers/user-service';
 import { Utils } from '../../utils';
 
 @Component({
 	selector: 'page-account',
 	templateUrl: 'account.html',
-	providers: [ MunchrApi ],
+	providers: [ MunchrApi, UserService ],
 })
 
 
@@ -34,22 +34,18 @@ export class Account {
 		public utils: Utils,
 		public navParams: NavParams,
 		public munchrApi: MunchrApi,
+		private userService: UserService,
 		public navCtrl: NavController,
 		public viewCtrl: ViewController,
 		private modalCtrl: ModalController,
 	) {
 
 		this.other_user = this.navParams.get('user');
-		NativeStorage.getItem('user')
-		.then( user => {
+		this.userService.get_user()
+		.then(user => {
 			this.user = user;
 			this.get_activity();
-		}, error => {
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.get_activity();
-
-		})
-
+		}, error => { });
 	}
 
 	get_activity() {

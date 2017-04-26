@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
-import { Geolocation, NativeStorage } from 'ionic-native';
+import { Geolocation } from 'ionic-native';
 import { NavParams, ViewController, LoadingController, Loading, NavController } from 'ionic-angular';
 
 import { Final } from '../final/final';
 import { MunchrApi } from '../../providers/munchr-api';
+import { UserService } from '../../providers/user-service';
 
 import { Utils } from "../../utils";
 
 @Component({
 	selector: 'page-info',
 	templateUrl: 'info.html',
-	providers: [ MunchrApi ]
+	providers: [ MunchrApi, UserService ]
 })
 export class MoreInfo {
 
-	// restaurant: any;
 	loading: Loading = null;
 	map: string;
 	details: {
@@ -51,6 +51,7 @@ export class MoreInfo {
 		private navCtrl: NavController,
 		private viewCtrl: ViewController,
 		private loadingCtrl: LoadingController,
+		private userService: UserService,
 	) {
 
 		this.loading = this.loadingCtrl.create({
@@ -58,14 +59,12 @@ export class MoreInfo {
 		});
 		this.loading.present();
 
-		NativeStorage.getItem('user')
+
+		this.userService.get_user()
 		.then(user => {
 			this.user = user;
 			this.get_details(this.navParams.get('res_id'));
-		}, error => {
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-			// this.get_details(this.navParams.get('res_id'));
-		});
+		}, error => { });
 	}
 
 	get_price() {

@@ -5,6 +5,7 @@ import { LaunchNavigator, LaunchNavigatorOptions, NativeStorage } from 'ionic-na
 import { SocialSharing } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
+import { UserService } from '../../providers/user-service';
 
 import { Main } from '../main/main';
 import { Utils } from '../../utils';
@@ -12,7 +13,7 @@ import { Utils } from '../../utils';
 @Component({
 	selector: 'page-final',
 	templateUrl: 'final.html',
-	providers: [ MunchrApi ]
+	providers: [ MunchrApi, UserService ]
 })
 
 
@@ -46,6 +47,7 @@ export class Final {
 	constructor(
 		public utils: Utils, 
 		public munchrApi: MunchrApi,
+		private userService: UserService,
 		public navParams: NavParams,
 		public navCtrl: NavController, 
 	) {
@@ -64,12 +66,10 @@ export class Final {
 		NativeStorage.setItem('last_restaurant', this.restaurant)
 		.then( success => {}, error => {});
 
-		NativeStorage.getItem('user')
+		this.userService.get_user()
 		.then(user => {
 			this.user = user;
-		}, error => {
-			// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-		});
+		}, error => { });
 
 		this.change_time();
 	}
