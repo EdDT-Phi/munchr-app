@@ -9,7 +9,7 @@
 	</ion-navbar>
 </ion-header>
 
-<ion-content *ngIf="details" style="background-color: #151515;">
+<ion-content *ngIf="details">
 	<br> 
 	<ion-card> 
 		<img *ngIf="!details.photos || details.photos.length == 0" [src]="details.photo">
@@ -20,7 +20,7 @@
 		</ion-slides>
 	</ion-card>
 	<ion-card>
-		<ion-item class="info">
+		<ion-item class="info" style="background-color: #494949;">
 			{{ details.location.address }} 
 			<p style="color: white; float: right;">.9 mi</p> <br>
 			<!-- <ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
@@ -35,7 +35,7 @@
 			<p class="price" *ngIf="details.price > 4">$</p> <br> -->
 			{{ details.phone }}
 			<a href="{{details.website}}" style="float: right;">Website</a> <br>
-			<p style="color: white;" *ngIf=[details.opennow]> Open Now! </p>
+			<p style="color: #ff4e00;" *ngIf=[details.opennow]> Open Now! </p>
 		</ion-item>
 	</ion-card>
 		
