@@ -2,31 +2,42 @@ import { Component } from '@angular/core';
 import { ViewController, NavParams, NavController } from 'ionic-angular';
 
 import { Account } from '../account/account';
+import { UserService } from '../../providers/user-service';
 import { MunchrApi } from '../../providers/munchr-api';
 
 
 @Component({
 	selector: 'page-search',
 	templateUrl: 'search.html',
-	providers: [ MunchrApi ],
+	providers: [ MunchrApi, UserService ],
 })
 export class Search {
 
 	last_changed: number = 0;
-	user_id: number;
+	user: {
+		user_id: number,
+		first_name: string, 
+		last_name: string, 
+		photo_url: string
+	};
 	users: Array<{
 		user_id: number,
 		first_name: string, 
 		last_name: string, 
-		photo_url: string}>
+		photo_url: string,
+	}>
 
 	constructor(
-		private navParams: NavParams,
 		private munchrApi: MunchrApi,
-		private viewCtrl: ViewController,
+		private userService: UserService,
+		private navParams: NavParams,
 		private navCtrl: NavController,
+		private viewCtrl: ViewController,
 	) {
-		this.user_id = this.navParams.get('user_id');
+		this.userService.get_user()
+		.then(user => {
+			this.user = user;
+		}, error => { });
 	}
 
 	ionViewDidLoad() {
@@ -35,7 +46,7 @@ export class Search {
 
 	search_users(event) {
 		if (event.target.value == '')  return; 
-		this.munchrApi.search_users(this.user_id, event.target.value)
+		this.munchrApi.search_users(this.user.user_id, event.target.value)
 		.then(data => {
 			this.users = data.results;
 		})
