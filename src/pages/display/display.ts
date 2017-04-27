@@ -121,7 +121,7 @@ export class Display {
 				this.limit,
 				this.offset,
 				this.navParams.get("price"),
-				this.navParams.get("user_id"),
+				this.user.user_id,
 				this.navParams.get("cuisines") )
 			.then( (data) => {
 				if(data.error) {

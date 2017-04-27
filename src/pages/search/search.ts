@@ -40,10 +40,6 @@ export class Search {
 		}, error => { });
 	}
 
-	ionViewDidLoad() {
-
-	}
-
 	search_users(event) {
 		if (event.target.value == '')  return; 
 		this.munchrApi.search_users(this.user.user_id, event.target.value)
@@ -54,9 +50,5 @@ export class Search {
 
 	view_account(user:any) {
 		this.navCtrl.push(Account, { user });
-	}
-
-	back() {
-		this.viewCtrl.dismiss();
 	}
 }
