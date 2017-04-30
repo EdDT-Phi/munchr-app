@@ -21,13 +21,6 @@
 			<img (click)="info(res.res_id)" height="300" *ngIf="res.photo" [src]="res.photo">
 			
 			<ion-title>{{ res.name }} <ion-icon (click)=star_res() name="{{(res.starred)? 'star' : 'star-outline'}}"></ion-icon></ion-title>
-<!-- 				<div *ngIf="res.rating != 0">
-					<ion-icon [name]="res.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="res.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="res.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="res.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-					<ion-icon [name]="res.rating > 4 ? 'star' : 'star-outline'"></ion-icon>
-				</div> -->
 			<ion-card-content *ngIf="res.location">
 				{{ res.location.address }}<br>
 				{{ res.distance }} miles away<br>
@@ -36,9 +29,15 @@
 			<h3 style="color: white;">{{ res.evidence }}</h3>
 		</ion-card>
 	</div>
-	<div *ngIf="display_options" class="center"  id="buttons">
-		<button ion-button class="center" *ngIf="liked_cards.length != 0" (click)="see_liked()">Show liked restaurants</button>
-		<button ion-button class="center" (click)="start_over()">Start Over</button>
+	<div *ngIf="display_options && liked_cards.length != 0" class="center">
+		<button ion-button icon-right class="center" (click)="see_liked()">Show liked restaurants
+		<ion-icon name="thumbs-up"></ion-icon>
+		</button>
+		<p>Tip: Tap on "Take me here" when you decide which restaurant you would like to go to or tap on the card to see more infornmation</p>
+	</div>
+	<div *ngIf="display_options && liked_cards.length == 0">
+		<p>Looks like you didn't swipe right on any restaurants. You could try different filters or try again.</p>
+		<button ion-button class="center" (click)="start_over()">Try Again</button>
 	</div>
 </ion-content>
 
@@ -57,9 +56,5 @@
 </div>
 
 <ion-footer *ngIf="!display_options">
-	<ion-row>
-		<button ion-button class="center" (click)="throw_out(-1)">Dislike</button>
-		<button ion-button class="center" (click)="choose()">Take me here</button>
-		<button ion-button class="center" (click)="throw_out(1)">Like</button>
-	</ion-row>
+	<button ion-button class="center" (click)="choose()" block>Take me here</button>
 </ion-footer>

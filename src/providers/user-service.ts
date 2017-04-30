@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+// import { Http, Headers, RequestOptions } from '@angular/http';
 import { ModalController } from 'ionic-angular';
 import { NativeStorage } from 'ionic-native';
 import 'rxjs/add/operator/map';
@@ -30,7 +30,7 @@ export class UserService {
 		photo_url: string,
 	} = null;
 
-	constructor(public http: Http, private modalCtrl: ModalController) {
+	constructor(private modalCtrl: ModalController) {
 		// this.url = 'http://localhost:5000'; // dev
 		this.url = 'https://munchr-test.herokuapp.com'; // test
 		// this.url = 'https://munchr.herokuapp.com'; // prod
@@ -48,10 +48,10 @@ export class UserService {
 
 			}, error => {
 				// Not logged in
-				this.get_user_login(resolve);
+				// this.get_user_login(resolve);
 
-				// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
-				// resolve(this.user);
+				this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:''}
+				resolve(this.user);
 			});
 		});
 	}
