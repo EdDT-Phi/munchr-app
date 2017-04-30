@@ -62,7 +62,6 @@ export class Filter {
 
 		this.navCtrl.push(Display, {
 			radius: this.navParams.get('distance'),
-			user_id: this.navParams.get('user_id'),
 			cuisines: this.items.filter((item) => {
 				return this.marked[item];
 			}),

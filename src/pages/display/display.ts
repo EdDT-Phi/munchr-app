@@ -1,9 +1,6 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
-
 import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
-
 import { Geolocation } from 'ionic-native';
-// import { AdMob, AdMobOptions, AdSize, AdExtras } from '@ionic-native/ad-mob';
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { UserService } from '../../providers/user-service';
@@ -89,14 +86,6 @@ export class Display {
 			this.unlike_opacity = 0;
 		});
 	}
-
-	// ionViewDidLoad() {
-	// 	this.adMob.onAdDismiss()
-	// 	.subscribe(() => console.log('User dismissed ad'));
-	// 	this.adMob.prepareInterstitial('ca-app-pub-8261731470611823/8785759392')
-	// 	.then(() => this.adMob.showInterstitial(),
-	// 		error => this.utils.display_error(error));
-	// }
 	 
 	// Add new cards to our array
 	add_cards() {
@@ -128,7 +117,7 @@ export class Display {
 					this.utils.display_error(data.error);
 				} else {
 					this.cards = data.results;
-					this.all_cards = data.results;
+					this.all_cards = this.cards.slice();
 					this.offset += this.limit;
 				}
 				loading.dismiss();
@@ -165,7 +154,7 @@ export class Display {
 
 	start_over() {
 		this.display_options = false;
-		this.cards = this.all_cards;
+		this.cards = this.all_cards.slice();
 		this.liked_cards = [];
 	}
 

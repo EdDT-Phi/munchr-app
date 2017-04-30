@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NativeStorage } from 'ionic-native';
 import { NavController, NavParams, Loading, LoadingController, ModalController } from 'ionic-angular';
 
 import { MoreInfo } from '../info/info';

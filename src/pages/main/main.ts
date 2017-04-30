@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, NavController, ModalController, AlertController } from 'ionic-angular';
+import { Events, NavController, AlertController } from 'ionic-angular';
 import { NativeStorage } from 'ionic-native';
 
 import { Filter } from '../filter/filter';
