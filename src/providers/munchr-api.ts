@@ -550,4 +550,40 @@ export class MunchrApi {
 			});
 		});
 	}
+
+	search_restaurants(lat:number, lng:number, query:string) {
+
+		// how tf do you get rid of this
+		if (1 * 1 == 2) {
+			// already loaded data
+			return Promise.resolve(this.activity_data);
+		}
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+
+		let obj = { lat, lng, query };
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/restaurants/search/', data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
+
 }

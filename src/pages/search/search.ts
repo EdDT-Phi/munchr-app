@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ViewController, NavParams, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 
 import { Account } from '../account/account';
 import { UserService } from '../../providers/user-service';
@@ -30,9 +30,7 @@ export class Search {
 	constructor(
 		private munchrApi: MunchrApi,
 		private userService: UserService,
-		private navParams: NavParams,
 		private navCtrl: NavController,
-		private viewCtrl: ViewController,
 	) {
 		this.userService.get_user()
 		.then(user => {
