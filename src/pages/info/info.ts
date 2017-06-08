@@ -29,7 +29,9 @@ export class MoreInfo {
 		rating: number,
 		location: {
 			lat: number,
-			lon: number,
+			lng: number,
+			distance: number,
+			address: string,
 		},
 		starred: boolean,
 	};
@@ -41,7 +43,7 @@ export class MoreInfo {
 	};
 	location: {
 		lat: number,
-		lon: number,
+		lng: number,
 	};
 	
 	constructor(
@@ -83,9 +85,9 @@ export class MoreInfo {
 		
 	}
 
-	api_request(res_id:string, lat:number, lon:number) {
-		this.location = {lat, lon};
-		this.munchrApi.details(this.user.user_id, res_id)
+	api_request(res_id:string, lat:number, lng:number) {
+		this.location = {lat, lng};
+		this.munchrApi.details(this.user.user_id, res_id, lat, lng)
 		.then( data => {
 			console.log(data);
 			this.loading.dismiss();
@@ -94,8 +96,8 @@ export class MoreInfo {
 			this.details = data.result;
 			this.map = `https://maps.googleapis.com/maps/api/staticmap
 			?size=500x300
-			&markers=color:0xff4e00%7clabel:R%7C${this.details.location.lat},${this.details.location.lon}
-			&markers=color:blue%7Clabel:Y%7C${lat},${lon}
+			&markers=color:0xff4e00%7clabel:R%7C${this.details.location.lat},${this.details.location.lng}
+			&markers=color:blue%7Clabel:Y%7C${lat},${lng}
 			&key=AIzaSyCdSzocNEuxd52QRK9bjWcJvpgBPRWqc9w`
 		}, error => {this.utils.display_error(error);});
 	}

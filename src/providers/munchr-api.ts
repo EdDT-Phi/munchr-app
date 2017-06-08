@@ -130,11 +130,21 @@ export class MunchrApi {
 		});	
 	}
 
-	details(user_id:number, res_id:string) {
+	details(user_id:number, res_id:string, lat:number, lng:number) {
 		if (this.reviews_data) {
 			// already loaded data
 			return Promise.resolve(this.reviews_data);
 		}
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+
+		let obj = { lat, lng, user_id, res_id};
+
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
 
 		// don't have the data yet
 		return new Promise(resolve => {
@@ -142,7 +152,7 @@ export class MunchrApi {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.get(`${this.url}/restaurants/details/${user_id}/${res_id}`)
+			this.http.post(`${this.url}/restaurants/details/`, data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
