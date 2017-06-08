@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, Loading, ViewController } from 'ionic-angular';
+import { NavParams, NavController, LoadingController, Loading, ViewController } from 'ionic-angular';
 import { NativeStorage } from "ionic-native";
 
 import { AuthService } from '../../providers/auth-service'
@@ -19,14 +19,20 @@ export class Create {
 	password: string ='';
 	repeatPassword: string =''; 
 	loading: Loading;
+	login_viewCtrl: ViewController;
 
 	constructor(
+		public navParams: NavParams,
 		public navCtrl: NavController,
 		public loadingCtrl: LoadingController,
 		public authService: AuthService,
 		public viewCtrl: ViewController,
 		public utils: Utils,
-	) {}
+	) {
+
+		this.login_viewCtrl = this.navParams.get('login_viewctrl')
+
+	}
 
 	create_account() {
 		//Check all fields are filled
@@ -76,10 +82,12 @@ export class Create {
 	save_and_login(user) {
 		// Uncomment this for production
 		NativeStorage.setItem('user', user).then(() => {
-			this.viewCtrl.dismiss(user);
+			this.login_viewCtrl.dismiss(user);
+			this.navCtrl.pop();
 		}, error => {
 			this.utils.display_error(error);
-			this.viewCtrl.dismiss(user);
+			this.login_viewCtrl.dismiss(user);
+			this.navCtrl.pop();
 		});
 	}
 

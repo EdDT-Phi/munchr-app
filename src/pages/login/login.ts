@@ -84,7 +84,7 @@ export class Login {
 	}
 
 	create_account() {
-		this.navCtrl.push(Create);
+		this.navCtrl.push(Create, {login_viewctrl: this.viewCtrl});
 		// let modal = this.modalCtrl.create(Create);
 		// modal.present();
 		// modal.onDidDismiss(data => {
@@ -93,7 +93,6 @@ export class Login {
 	}
 	
 	save_and_login(user) {
-		// Uncomment this for production
 		NativeStorage.setItem('user', user)
 		.then(() => {
 			this.viewCtrl.dismiss(user);
