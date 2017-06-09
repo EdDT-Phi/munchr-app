@@ -22,10 +22,10 @@
 					<p>{{ res.liked === null ? res.review_date : (res.liked ? 'You liked it' : 'You did not like it')}}</p>
 				</div>
 
-				<button *ngIf="res.liked === null" (click)="rate(res.rating_id, true)" ion-button outline item-right icon-left>
+				<button *ngIf="res.liked === null" (click)="rate(res.rating_id, res.res_id, true)" ion-button outline item-right icon-left>
 					<ion-icon name='thumbs-up'></ion-icon>
 				</button>
-				<button *ngIf="res.liked === null" (click)="rate(res.rating_id, false)" ion-button outline item-right icon-left>
+				<button *ngIf="res.liked === null" (click)="rate(res.rating_id, res.res_id, false)" ion-button outline item-right icon-left>
 					<ion-icon name='thumbs-down'></ion-icon>
 				</button>
 				<button *ngIf="res.liked === null" (click)="dismiss(res.res_id)" ion-button outline item-right icon-left >

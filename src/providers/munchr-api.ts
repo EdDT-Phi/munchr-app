@@ -156,17 +156,19 @@ export class MunchrApi {
 		});	
 	}
 
-	rating(rating_id:number, user_id:number, liked:boolean, specific:string) {
+	rating(user_id:number, rating_id:number, res_id:string, liked:boolean, specific:string, share:boolean) {
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		let options = new RequestOptions({ headers: headers });
 
 		let obj = {
-			rating_id,
 			user_id,
+			rating_id,
+			res_id,
 			liked,
 			specific,
+			share,
 		};
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];
