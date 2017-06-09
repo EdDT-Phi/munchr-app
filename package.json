@@ -63,7 +63,7 @@
       "variables": {
         "URL_SCHEME": "munchr",
         "DEEPLINK_SCHEME": "https",
-        "DEEPLINK_HOST": "munchr-test.herokuapp.com"
+        "DEEPLINK_HOST": "munchr.site"
       }
     }
   ],
