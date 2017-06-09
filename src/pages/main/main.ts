@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { Events, NavController, AlertController } from 'ionic-angular';
-import { NativeStorage } from 'ionic-native';
+import { Events, NavController } from 'ionic-angular';
 
 import { Filter } from '../filter/filter';
 import { Account } from '../account/account';
@@ -34,11 +33,10 @@ export class Main {
 
 	constructor(
 		private utils: Utils,
-		private events: Events,
 		private munchrApi: MunchrApi,
 		public userService: UserService,
+		private events: Events,
 		private navCtrl: NavController,
-		private alertCtrl: AlertController,
 	) {
 		utils.show_tutorial('Welcome to Munchr. This is the main page. To search for a restaurant first select what you\'re looking for and tap Search.');
 

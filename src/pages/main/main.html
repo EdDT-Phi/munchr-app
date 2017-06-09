@@ -35,7 +35,7 @@
 			</ion-avatar>
 			<div (click)="view_restaurant(rating.res_id)">
 				<h2>{{ rating.first_name }} {{rating.last_name}}</h2>
-				<p>{{ rating.liked? 'Liked' : 'Did not like'}} {{ rating.res_name }}</p>
+				<p>{{ rating.liked === null ? 'Went to' : rating.liked? 'Liked' : 'Did not like'}} {{ rating.res_name }}</p>
 			</div>
 			<ion-note item-right>{{ rating.review_date }}</ion-note>
 		</ion-item>

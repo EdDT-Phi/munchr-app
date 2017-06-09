@@ -30,7 +30,6 @@
 				</button>
 				<button *ngIf="res.liked === null" (click)="dismiss(res.res_id)" ion-button outline item-right icon-left >
 				    <ion-icon name='close'></ion-icon>
-				    Did Not Go
 				</button>
 				<ion-note *ngIf="res.liked != null" item-right>{{ res.review_date }}</ion-note>
 			</ion-item>
