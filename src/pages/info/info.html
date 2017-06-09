@@ -22,7 +22,7 @@
 	<ion-card>
 		<ion-item class="info" style="background-color: #494949;">
 			{{ details.location.address }} 
-			<p style="color: white; float: right;">.9 mi</p> <br>
+			<p style="color: white; float: right;">{{ details.location.distance }} miles</p> <br>
 			<!-- <ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
 			<ion-icon [name]="details.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
 			<ion-icon [name]="details.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
@@ -62,5 +62,5 @@
 </ion-content>
 
 <ion-footer>
-	<button ion-button (click)="choose()" block>Take me here</button>
+	<button ion-button (click)="done()" block>Munch Here!</button>
 </ion-footer>

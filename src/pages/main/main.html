@@ -26,12 +26,12 @@
 			<ion-label>Loading...</ion-label>
 		</ion-item>
 		<ion-item *ngIf="!loading && activity.length == 0">
-			<h2>Looks like you have no friends yet</h2>
-			<button ion-button (click)="add_friends()">Add Some Now</button>
+			<h2>Looks like you have no friends with activity yet</h2>
+			<button ion-button (click)="add_friends()">Add Friends</button>
 		</ion-item>
 		<ion-item  *ngFor="let rating of activity">
 			<ion-avatar item-left (click)="view_account(rating)">
-				<img src="{{ rating.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+				<img src="{{ rating.photo_url || 'assets/imgs/person.png'}}">
 			</ion-avatar>
 			<div (click)="view_restaurant(rating.res_id)">
 				<h2>{{ rating.first_name }} {{rating.last_name}}</h2>

@@ -40,7 +40,7 @@ export class Main {
 		private navCtrl: NavController,
 		private alertCtrl: AlertController,
 	) {
-		utils.show_tutorial('Welcome to Munchr :) This is the main page. To search for a restaurant first select what you\'re looking for and tap Search.');
+		utils.show_tutorial('Welcome to Munchr. This is the main page. To search for a restaurant first select what you\'re looking for and tap Search.');
 
 		this.userService.get_user()
 		.then(user => {
@@ -82,96 +82,6 @@ export class Main {
 		this.broadcast_login();
 		this.get_activity();
 		this.get_notifications();
-
-		// NativeStorage.getItem('last_time')
-		// .then( (time: number) => {
-			// Three hours later
-			// if (Math.floor(Date.now() / (1000 * 60)) > time +) {
-				this.queryRestaurant();
-			// }
-		// }, error => {
-			// No restaurants to review
-		// });
-	}
-
-	queryRestaurant() {
-		NativeStorage.getItem('last_restaurant')
-		.then( (restaurant: {name: string, res_id: string}) => {
-			// const restaurant = {name: 'Restaurant name', res_id: 'ChIJ10x0ibC1RIYRD0WircgSxSM'}
-			let confirm = this.alertCtrl.create({
-				title: 'Did you like ' + restaurant.name +'?',
-				// message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
-				buttons: [
-				{
-					text: 'Nah',
-					handler: () => {
-						this.query_specifics(false, restaurant);
-					}
-				}, 
-				{
-					text: 'Yes!',
-					handler: () => {
-						this.query_specifics(true, restaurant);
-					}
-				}], 
-				enableBackdropDismiss: false
-			});
-			confirm.present();
-
-		}, error => {
-			this.utils.display_error(error);
-		});
-	}
-
-	query_specifics(liked: boolean, restaurant: {name: string, res_id: string}) {
-		NativeStorage.remove('last_restaurant')
-		.then(success => {
-			NativeStorage.remove('last_time');
-			if (!restaurant)
-				return;
-			let alert = this.alertCtrl.create(
-			{
-				title: 'Why did you ' + (liked? '': 'not ') + 'like it?',
-				inputs: [
-				{
-					type: 'checkbox',
-					label: 'Food',
-					value: 'food',
-					checked: false
-				},			{
-					type: 'checkbox',
-					label: 'Environent',
-					value: 'environment',
-					checked: false
-				},			{
-					type: 'checkbox',
-					label: 'Price',
-					value: 'price',
-					checked: false
-				},			{
-					type: 'checkbox',
-					label: 'Other',
-					value: 'other',
-					checked: false
-				}],
-				buttons: [{
-					text: 'OK',
-				}],
-				enableBackdropDismiss: true
-			});
-
-			alert.present();
-			alert.onDidDismiss((items: Array<string>) => {
-				this.save_rating(restaurant.res_id, liked, items);
-			});
-		}, error => {
-			this.utils.display_error(error);
-		});
-	}
-
-	save_rating(res_id: string, liked: boolean, specifics: Array<string>) {
-		this.munchrApi.rating(this.user.user_id, res_id, liked, specifics.join('|'))
-		.then(() =>{ }, error => {});
 	}
 
 	get_activity() {

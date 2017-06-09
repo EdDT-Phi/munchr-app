@@ -9,12 +9,13 @@ import { Create } from '../pages/create/create';
 import { Filter } from '../pages/filter/filter';
 import { Display } from '../pages/display/display';
 import { MoreInfo } from '../pages/info/info';
-import { Final } from '../pages/final/final';
 import { Account } from '../pages/account/account';
 import { Friends } from '../pages/friends/friends';
 import { Search } from '../pages/search/search';
 import { Notifications } from '../pages/notifications/notifications';
 import { Stars } from '../pages/stars/stars';
+import { ResSearch } from '../pages/res_search/res_search';
+import { History } from '../pages/history/history';
 import { Utils } from '../utils';
 
 import {
@@ -31,7 +32,6 @@ import {
 		Filter,
 		Display,
 		MoreInfo,
-		Final,
 		Account,
 		SwingCardComponent,
 		SwingStackComponent,
@@ -39,6 +39,8 @@ import {
 		Search,
 		Notifications,
 		Stars,
+		ResSearch,
+		History,
 	],
 	imports: [
 		IonicModule.forRoot(MyApp),
@@ -52,12 +54,13 @@ import {
 		Filter,
 		Display,
 		MoreInfo,
-		Final,
 		Account,
 		Friends,
 		Search,
 		Notifications,
 		Stars,
+		ResSearch,
+		History,
 	],
 	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Utils]
 })

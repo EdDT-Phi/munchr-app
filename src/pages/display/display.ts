@@ -5,7 +5,6 @@ import { Geolocation } from 'ionic-native';
 import { MunchrApi } from '../../providers/munchr-api';
 import { UserService } from '../../providers/user-service';
 import { MoreInfo } from '../info/info';
-import { Final } from '../final/final';
 
 import { Utils } from "../../utils";
 
@@ -171,12 +170,5 @@ export class Display {
 				res.starred = false;
 			}, error => {});
 		}
-	}
-
-	choose() {
-		this.navCtrl.push(Final, {
-			restaurant: this.cards[this.cards.length-1],
-			loc: location,
-		})
 	}
 }

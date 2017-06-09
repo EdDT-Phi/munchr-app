@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Geolocation } from 'ionic-native';
-import { NavParams, ViewController, LoadingController, Loading, NavController } from 'ionic-angular';
+import { Geolocation, SocialSharing, LaunchNavigator, LaunchNavigatorOptions } from 'ionic-native';
+import { NavParams, ViewController, LoadingController, Loading, NavController, AlertController } from 'ionic-angular';
 
-import { Final } from '../final/final';
+import { Main } from '../main/main';
+
 import { MunchrApi } from '../../providers/munchr-api';
 import { UserService } from '../../providers/user-service';
 
@@ -29,7 +30,9 @@ export class MoreInfo {
 		rating: number,
 		location: {
 			lat: number,
-			lon: number,
+			lng: number,
+			distance: number,
+			address: string,
 		},
 		starred: boolean,
 	};
@@ -41,7 +44,7 @@ export class MoreInfo {
 	};
 	location: {
 		lat: number,
-		lon: number,
+		lng: number,
 	};
 	
 	constructor(
@@ -50,6 +53,7 @@ export class MoreInfo {
 		private navParams: NavParams,
 		private navCtrl: NavController,
 		private viewCtrl: ViewController,
+		private alertCtrl: AlertController,
 		private loadingCtrl: LoadingController,
 		private userService: UserService,
 	) {
@@ -73,6 +77,16 @@ export class MoreInfo {
 		return '';
 	}
 
+	navigate() {
+		let options: LaunchNavigatorOptions = {}
+
+		LaunchNavigator.navigate([this.details.location.lat, this.details.location.lng], options)
+		.then (
+				success => console.log('Yay! ', success),
+				error => this.utils.display_error(error)
+		);
+	}
+
 	get_details(res_id:string) {
 		Geolocation.getCurrentPosition()
 		.then( resp => {
@@ -83,9 +97,9 @@ export class MoreInfo {
 		
 	}
 
-	api_request(res_id:string, lat:number, lon:number) {
-		this.location = {lat, lon};
-		this.munchrApi.details(this.user.user_id, res_id)
+	api_request(res_id:string, lat:number, lng:number) {
+		this.location = {lat, lng};
+		this.munchrApi.details(this.user.user_id, res_id, lat, lng)
 		.then( data => {
 			console.log(data);
 			this.loading.dismiss();
@@ -94,18 +108,47 @@ export class MoreInfo {
 			this.details = data.result;
 			this.map = `https://maps.googleapis.com/maps/api/staticmap
 			?size=500x300
-			&markers=color:0xff4e00%7clabel:R%7C${this.details.location.lat},${this.details.location.lon}
-			&markers=color:blue%7Clabel:Y%7C${lat},${lon}
+			&markers=color:0xff4e00%7clabel:R%7C${this.details.location.lat},${this.details.location.lng}
+			&markers=color:blue%7Clabel:Y%7C${lat},${lng}
 			&key=AIzaSyCdSzocNEuxd52QRK9bjWcJvpgBPRWqc9w`
 		}, error => {this.utils.display_error(error);});
 	}
 
-	dismiss() {
-		this.navCtrl.pop();
-	}
+	done() {
 
-	choose() {
-		this.navCtrl.push(Final, {restaurant: this.details, loc: this.location})
+		this.munchrApi.munch(this.user.user_id, this.details.res_id)
+		.then(success => {
+			let confirm = this.alertCtrl.create({
+				title: 'Would you like to share this restaurant?',
+				// message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
+				buttons: [
+				{
+					text: 'Nah',
+					handler: () => {
+						this.navCtrl.setRoot(Main)
+					}
+				}, 
+				{
+					text: 'Yes!',
+					handler: () => {
+						SocialSharing.shareWithOptions({
+							message: 'Let\'s munch here!',
+							subject: 'Munchr: going out to eat',
+							url: `https://munchr.us/restaurant/${this.details.res_id}`
+						}).then(success => {
+							this.navCtrl.setRoot(Main)
+						}, error => {
+							this.utils.display_error(error);
+							this.navCtrl.setRoot(Main)
+						});
+					}
+				}], 
+				enableBackdropDismiss: false
+			});
+			confirm.present();
+		}, error => {
+			this.utils.display_error(error);
+		});
 	}
 
 	star_res() {

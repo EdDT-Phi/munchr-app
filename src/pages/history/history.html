@@ -1,0 +1,39 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>History</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+	<h4 *ngIf="loading != null && (!history || history.length == 0)">You have no history yet. Try looking for some places to munch at.</h4>
+
+	<div *ngIf="history && history.length > 0">
+		<!-- <ion-title>Restaurant Recommendations</ion-title> -->
+		<ion-list>
+			<ion-item *ngFor="let res of history; let myIndex = index">
+				<ion-avatar item-left (click)="view_restaurant(res.res_id)">
+					<img src="{{ res.photo_url }}">
+				</ion-avatar>
+				<div (click)="view_restaurant(res.res_id)">
+					<h2>{{ res.res_name }}</h2>
+					<p>{{ res.liked === null ? res.review_date : (res.liked ? 'You liked it' : 'You did not like it')}}</p>
+				</div>
+
+				<button *ngIf="res.liked === null" (click)="rate(res.rating_id, true)" ion-button outline item-right icon-left>
+					<ion-icon name='thumbs-up'></ion-icon>
+				</button>
+				<button *ngIf="res.liked === null" (click)="rate(res.rating_id, false)" ion-button outline item-right icon-left>
+					<ion-icon name='thumbs-down'></ion-icon>
+				</button>
+				<button *ngIf="res.liked === null" (click)="dismiss(res.res_id)" ion-button outline item-right icon-left >
+				    <ion-icon name='close'></ion-icon>
+				    Did Not Go
+				</button>
+				<ion-note *ngIf="res.liked != null" item-right>{{ res.review_date }}</ion-note>
+			</ion-item>
+		</ion-list>
+	</div>
+</ion-content>

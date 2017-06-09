@@ -33,11 +33,12 @@
 		<button ion-button icon-right class="center" (click)="see_liked()">Show liked restaurants
 		<ion-icon name="thumbs-up"></ion-icon>
 		</button>
-		<p>Tip: Tap on "Take me here" when you decide which restaurant you would like to go to or tap on the card to see more infornmation</p>
+		<p>Tip: Tap on the card or "Restaurant Details" to see more information and "Done" when you've made your choice</p>
 	</div>
 	<div *ngIf="display_options && liked_cards.length == 0">
-		<p>Looks like you didn't swipe right on any restaurants. You could try different filters or try again.</p>
-		<button ion-button class="center" (click)="start_over()">Try Again</button>
+		<p>Looks like you didn't swipe right on any restaurants.</p>
+		<button ion-button class="center" (click)="start_over()">Try Different Filters</button>
+		<button ion-button class="center" (click)="start_over()">View Again</button>
 	</div>
 </ion-content>
 
@@ -45,16 +46,16 @@
 		'opacity': like_opacity, 
 		'z-index': (like_opacity > 0 ? 1 : -1)
 		}">
-	<img width="200" src="https://img.clipartfest.com/1385a91877ce473d8acfcaff01c09242_symbol-thumbs-up-clip-art-big-thumbs-up-clipart_1809-1802.png">
+	<img width="200" src="assets/imgs/thumbs_up.png">
 </div>
 
 <div class="like center" [ngStyle]="{
 		'opacity': unlike_opacity, 
 		'z-index': (unlike_opacity > 0 ? 1 : -1)
 		}">
-	<img width="200" src="https://img.clipartfest.com/728f0e37bf7467a43968046d5e5e9d53_clipart-thumbs-down-circle-thumbs-down-clipart_1809-1802.png">
+	<img width="200" src="assets/imgs/thumbs_down.png">
 </div>
 
 <ion-footer *ngIf="!display_options">
-	<button ion-button class="center" (click)="choose()" block>Take me here</button>
+	<button ion-button class="center" (click)="info(res.res_id)" block>Restaurant Details</button>
 </ion-footer>
