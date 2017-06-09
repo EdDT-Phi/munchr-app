@@ -1,6 +1,6 @@
 <ion-header>
 	<ion-navbar>
-		<ion-title>{{ loading? 'Loading...' : (details.name) }}</ion-title>
+		<!-- <ion-title>{{ loading? 'Loading...' : (details.name) }}</ion-title> -->
 		<ion-buttons end>
 		  <button ion-button icon-only (click)="star_res()">
 		    <ion-icon name="{{(details && details.starred)? 'star' : 'star-outline'}}"></ion-icon>
@@ -10,8 +10,9 @@
 </ion-header>
 
 <ion-content *ngIf="details">
-	<br> 
+	<br> <br> <br>
 	<ion-card> 
+		<ion-title>{{ loading? 'Loading...' : (details.name) }}</ion-title>
 		<img *ngIf="!details.photos || details.photos.length == 0" [src]="details.photo">
 		<ion-slides *ngIf="details.photos && details.photos.length > 0" [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000" >
 			<ion-slide *ngFor="let photo of details.photos">
@@ -19,6 +20,7 @@
 			</ion-slide>
 		</ion-slides>
 	</ion-card>
+
 	<ion-card>
 		<ion-item class="info" style="background-color: #494949;">
 			{{ details.location.address }} 
@@ -41,6 +43,9 @@
 		</ion-item>
 	</ion-card>
 		
+	<ion-list-header no-lines>
+		Reviews
+	</ion-list-header>
 
 	<ion-card *ngFor="let review of details.reviews" text-wrap no-lines>
 		<div *ngIf="review.rating > 0">
@@ -54,7 +59,7 @@
 			<ion-icon [name]="review.rating > 4 ? 'star' : 'star-outline'"></ion-icon> {{ review.review_time_friendly }}</p>
 		</div>
 		<p class="review">{{ review.review_text }}</p>
-	</ion-card>	
+	</ion-card>	<br> <br>
 	<!-- <ion-card no-lines>
 		<img class="center" [src]="map"> <br> <br>
 	</ion-card> -->
