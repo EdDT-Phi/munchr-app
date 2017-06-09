@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { Geolocation } from 'ionic-native';
-import { NavParams, ViewController, LoadingController, Loading, NavController } from 'ionic-angular';
+import { Geolocation, SocialSharing, LaunchNavigator, LaunchNavigatorOptions } from 'ionic-native';
+import { NavParams, ViewController, LoadingController, Loading, NavController, AlertController } from 'ionic-angular';
 
-import { Final } from '../final/final';
+import { Main } from '../main/main';
+
 import { MunchrApi } from '../../providers/munchr-api';
 import { UserService } from '../../providers/user-service';
 
@@ -52,6 +53,7 @@ export class MoreInfo {
 		private navParams: NavParams,
 		private navCtrl: NavController,
 		private viewCtrl: ViewController,
+		private alertCtrl: AlertController,
 		private loadingCtrl: LoadingController,
 		private userService: UserService,
 	) {
@@ -73,6 +75,16 @@ export class MoreInfo {
 		if (this.details.price >= 1)
 			return ' - ' + Array(this.details.price).join('$');
 		return '';
+	}
+
+	navigate() {
+		let options: LaunchNavigatorOptions = {}
+
+		LaunchNavigator.navigate([this.details.location.lat, this.details.location.lng], options)
+		.then (
+				success => console.log('Yay! ', success),
+				error => this.utils.display_error(error)
+		);
 	}
 
 	get_details(res_id:string) {
@@ -102,12 +114,41 @@ export class MoreInfo {
 		}, error => {this.utils.display_error(error);});
 	}
 
-	dismiss() {
-		this.navCtrl.pop();
-	}
+	done() {
 
-	choose() {
-		this.navCtrl.push(Final, {restaurant: this.details, loc: this.location})
+		this.munchrApi.munch(this.user.user_id, this.details.res_id)
+		.then(success => {
+			let confirm = this.alertCtrl.create({
+				title: 'Would you like to share this restaurant?',
+				// message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
+				buttons: [
+				{
+					text: 'Nah',
+					handler: () => {
+						this.navCtrl.setRoot(Main)
+					}
+				}, 
+				{
+					text: 'Yes!',
+					handler: () => {
+						SocialSharing.shareWithOptions({
+							message: 'Let\'s munch here!',
+							subject: 'Munchr: going out to eat',
+							url: `https://munchr.us/restaurant/${this.details.res_id}`
+						}).then(success => {
+							this.navCtrl.setRoot(Main)
+						}, error => {
+							this.utils.display_error(error);
+							this.navCtrl.setRoot(Main)
+						});
+					}
+				}], 
+				enableBackdropDismiss: false
+			});
+			confirm.present();
+		}, error => {
+			this.utils.display_error(error);
+		});
 	}
 
 	star_res() {

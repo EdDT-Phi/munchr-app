@@ -28,8 +28,8 @@ export class MunchrApi {
 
 	constructor(public http: Http) {
 		// console.log('Hello MunchrApiLogin Provider');
-		// this.url = 'http://localhost:5000'; // dev
-		this.url = 'https://munchr-test.herokuapp.com'; // prod
+		this.url = 'http://localhost:5000'; // dev
+		// this.url = 'https://munchr-test.herokuapp.com'; // prod
 		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
@@ -38,16 +38,6 @@ export class MunchrApi {
 			// already loaded data
 			return Promise.resolve(this.filters_data);
 		}
-
-		// this.lat = lat;
-		// this.long = long;
-		// let headers = new Headers();
-		// headers.append('Content-Type', 'application/x-www-form-urlencoded');
-		// let options = new RequestOptions({ headers: headers });
-		// let obj = {"lat": lat, "long": long}
-		// let data = Object.keys(obj).map(function(key) {
-		//     return key + '=' + obj[key];
-		// }).join('&');
 
 		// don't have the data yet
 		return new Promise(resolve => {
@@ -166,17 +156,17 @@ export class MunchrApi {
 		});	
 	}
 
-	rating(user_id:number, res_id:string, liked:boolean, specific:string) {
+	rating(rating_id:number, user_id:number, liked:boolean, specific:string) {
 
 		let headers = new Headers();
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		let options = new RequestOptions({ headers: headers });
 
 		let obj = {
+			rating_id,
 			user_id,
-			res_id,
 			liked,
-			specific
+			specific,
 		};
 		let data = Object.keys(obj).map(function(key) {
 		    return key + '=' + obj[key];
@@ -575,6 +565,38 @@ export class MunchrApi {
 			// Next, we process the data and resolve the promise with the new data.
 
 			this.http.post(this.url + '/restaurants/search/', data, options)
+			.map(res => res.json())
+			.subscribe(data => {
+				// we've got back the raw data, now generate the core schedule data
+				// and save the data for later reference
+				resolve(data);
+			}, error => {
+				resolve({error: JSON.parse(error._body).error});
+			});
+		});
+	}
+
+	munch(user_id:number, res_id:string) {
+
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		let options = new RequestOptions({ headers: headers });
+
+		let obj = {
+			user_id,
+			res_id
+		};
+		let data = Object.keys(obj).map(function(key) {
+		    return key + '=' + obj[key];
+		}).join('&');
+
+		// don't have the data yet
+		return new Promise(resolve => {
+			// We're using Angular HTTP provider to request the data,
+			// then on the response, it'll map the JSON data to a parsed JS object.
+			// Next, we process the data and resolve the promise with the new data.
+
+			this.http.post(this.url + '/users/munch/', data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
