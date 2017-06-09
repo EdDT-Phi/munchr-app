@@ -1,6 +1,6 @@
 <ion-header>
 	<ion-navbar>
-		<!-- <ion-title>{{ loading? 'Loading...' : (details.name) }}</ion-title> -->
+		<ion-title>Details</ion-title>
 		<ion-buttons end>
 		  <button ion-button icon-only (click)="star_res()">
 		    <ion-icon name="{{(details && details.starred)? 'star' : 'star-outline'}}"></ion-icon>
@@ -25,18 +25,10 @@
 		<ion-item class="info" style="background-color: #494949;">
 			{{ details.location.address }} 
 			<p style="color: white; float: right;">{{ details.location.distance }} miles</p> <br>
-			<!-- <ion-icon [name]="details.rating >= 0 ? 'star' : 'star-outline'"></ion-icon>
-			<ion-icon [name]="details.rating > 1 ? 'star' : 'star-outline'"></ion-icon>
-			<ion-icon [name]="details.rating > 2 ? 'star' : 'star-outline'"></ion-icon>
-			<ion-icon [name]="details.rating > 3 ? 'star' : 'star-outline'"></ion-icon>
-			<ion-icon [name]="details.rating > 4 ? 'star' : 'star-outline'"></ion-icon> 
-			<p class="price" *ngIf="details.price >= 0">$</p>
-			<p class="price" *ngIf="details.price > 1">$</p>
-			<p class="price" *ngIf="details.price > 2">$</p>
-			<p class="price" *ngIf="details.price > 3">$</p>
-			<p class="price" *ngIf="details.price > 4">$</p> <br> -->
+
 			{{ details.phone }}
 			<a href="{{details.website}}" style="float: right;">Website</a> <br>
+			
 			<p style="color: #ff4e00;" *ngIf=[details.opennow]> Open Now! </p>
 
 			<img class="center" [src]="map"> <br> <br>

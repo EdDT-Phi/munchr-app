@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-// import { Http, Headers, RequestOptions } from '@angular/http';
 import { ModalController } from 'ionic-angular';
 import { NativeStorage } from 'ionic-native';
 import 'rxjs/add/operator/map';
@@ -7,12 +6,6 @@ import 'rxjs/add/operator/map';
 import { Login } from '../pages/login/login';
 
 
-/*
-  Generated class for the AuthService provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class UserService {
 	data: any;

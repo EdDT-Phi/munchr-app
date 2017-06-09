@@ -65,7 +65,7 @@ export class History {
 		this.navCtrl.push(MoreInfo, { res_id });
 	}
 
-	rate(rating_id:number, liked:boolean) {
+	rate(rating_id:number, res_id:string, liked:boolean) {
 		let alert = this.alertCtrl.create({
 			title: 'Why did you ' + (liked? '': 'not ') + 'like it?',
 			inputs: [
@@ -97,13 +97,37 @@ export class History {
 		});
 		alert.present();
 		alert.onDidDismiss((items: Array<string>) => {
-			this.save_rating(rating_id, liked, items);
+			this.share(rating_id, res_id, liked, items);
 		});
 	}
 
+	share(rating_id:number, res_id:string, liked:boolean, items: Array<string>) {
+		if (!liked) return this.save_rating(rating_id, res_id, liked, items, false);
 
-	save_rating(rating_id: number, liked: boolean, specifics: Array<string>) {
-		this.munchrApi.rating(rating_id, this.user.user_id, liked, specifics.join('|'))
+		let confirm = this.alertCtrl.create({
+			title: 'Would you like to recommend this to your friends?',
+			// message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
+			buttons: [
+			{
+				text: 'Nah',
+				handler: () => {
+					 this.save_rating(rating_id, res_id, liked, items, false);
+				}
+			}, 
+			{
+				text: 'Yes!',
+				handler: () => {
+					 this.save_rating(rating_id, res_id, liked, items, true);
+				}
+			}], 
+			enableBackdropDismiss: false
+		});
+		confirm.present();
+	}
+
+
+	save_rating(rating_id: number, res_id:string, liked: boolean, specifics: Array<string>, share:boolean) {
+		this.munchrApi.rating(this.user.user_id, rating_id, res_id, liked, specifics.join('|'), share)
 		.then(() =>{
 			this.get_history();
 		}, error => {});
