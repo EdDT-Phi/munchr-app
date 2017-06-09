@@ -36,6 +36,8 @@
 			{{ details.phone }}
 			<a href="{{details.website}}" style="float: right;">Website</a> <br>
 			<p style="color: #ff4e00;" *ngIf=[details.opennow]> Open Now! </p>
+
+			<img class="center" [src]="map"> <br> <br>
 		</ion-item>
 	</ion-card>
 		
@@ -53,9 +55,9 @@
 		</div>
 		<p class="review">{{ review.review_text }}</p>
 	</ion-card>	
-	<ion-card no-lines>
+	<!-- <ion-card no-lines>
 		<img class="center" [src]="map"> <br> <br>
-	</ion-card>
+	</ion-card> -->
 
 </ion-content>
 
