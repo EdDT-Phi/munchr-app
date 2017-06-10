@@ -131,16 +131,7 @@ export class MoreInfo {
 				{
 					text: 'Yes!',
 					handler: () => {
-						SocialSharing.shareWithOptions({
-							message: 'Let\'s munch here!',
-							subject: 'Munchr: going out to eat',
-							url: `https://munchr.site/restaurant/${this.details.res_id}`
-						}).then(success => {
-							this.navCtrl.setRoot(Main)
-						}, error => {
-							this.utils.display_error(error);
-							this.navCtrl.setRoot(Main)
-						});
+						this.share_res(true);
 					}
 				}], 
 				enableBackdropDismiss: false
@@ -148,6 +139,21 @@ export class MoreInfo {
 			confirm.present();
 		}, error => {
 			this.utils.display_error(error);
+		});
+	}
+
+	share_res(final:boolean) {
+		SocialSharing.shareWithOptions({
+			message: 'Let\'s munch here!',
+			subject: 'Munchr: going out to eat',
+			url: `https://munchr.site/restaurant/${this.details.res_id}`
+		}).then(success => {
+			if (final)
+				this.navCtrl.setRoot(Main)
+		}, error => {
+			this.utils.display_error(error);
+			if (final)
+				this.navCtrl.setRoot(Main)
 		});
 	}
 

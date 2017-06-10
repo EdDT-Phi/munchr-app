@@ -95,7 +95,7 @@ export class Display {
 		this.display_options = false;
 
 		console.log('getting geolocation');
-		Geolocation.getCurrentPosition()
+		Geolocation.getCurrentPosition({timeout: 5000})
 		.then( resp => {
 			this.location = {
 				lat: resp.coords.latitude,

@@ -2,9 +2,12 @@
 	<ion-navbar>
 		<ion-title>Details</ion-title>
 		<ion-buttons end>
-		  <button ion-button icon-only (click)="star_res()">
-		    <ion-icon name="{{(details && details.starred)? 'star' : 'star-outline'}}"></ion-icon>
-		  </button>
+			<button ion-button icon-only (click)="share_res(false)">
+			  <ion-icon name="share"></ion-icon>
+			</button>
+			<button ion-button icon-only (click)="star_res()">
+			<ion-icon name="{{(details && details.starred)? 'star' : 'star-outline'}}"></ion-icon>
+			</button>
 		</ion-buttons>
 	</ion-navbar>
 </ion-header>

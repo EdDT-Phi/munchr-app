@@ -106,9 +106,11 @@ export class Main {
 	}
 
 	ionViewWillEnter() {
-		this.notifications = null;
-		this.get_activity();
-		this.get_notifications();
+		if (this.user) {
+			this.notifications = null;
+			this.get_activity();
+			this.get_notifications();
+		}
 	}
 
 	view_notifications() {
