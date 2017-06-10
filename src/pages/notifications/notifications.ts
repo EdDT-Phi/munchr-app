@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Loading, LoadingController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, Loading, LoadingController, ModalController, AlertController } from 'ionic-angular';
 
 import { Account } from '../account/account'; 
 import { MoreInfo } from '../info/info'; 
@@ -16,6 +16,7 @@ export class Notifications {
 
 	requests: Array<any>;
 	recommendations: Array<any>;
+	ratings: Array<any>;
 	user: {
 		user_id: number,
 		first_name: string, 
@@ -29,6 +30,7 @@ export class Notifications {
 		private userService: UserService,
 		private munchrApi: MunchrApi,
 		private navCtrl: NavController,
+		private alertCtrl: AlertController,
 		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
 	) {
@@ -37,6 +39,7 @@ export class Notifications {
 		if (notifications) {
 			this.requests = notifications.requests;
 			this.recommendations = notifications.recommendations;
+			this.ratings = notifications.ratings;
 		}
 
 		this.userService.get_user()
@@ -45,10 +48,6 @@ export class Notifications {
 			if (!notifications)
 				this.get_notifications();
 		}, error => { });
-	}
-
-	ionViewDidLoad() {
-
 	}
 
 	get_notifications() {
@@ -61,6 +60,7 @@ export class Notifications {
 			console.log(data);
 			this.requests = data.results.requests;
 			this.recommendations = data.results.recommendations;
+			this.ratings = data.results.ratings;
 			this.loading.dismiss();
 		}, error => { });
 	}
@@ -95,5 +95,73 @@ export class Notifications {
 		const recomm = this.recommendations.splice(index, 1)[0];
 		this.munchrApi.dismiss_recommendation(recomm.user_id, this.user.user_id, recomm.res_id)
 		.then(() => {}, error => {})
+	}
+
+	rate(rating_id:number, res_id:string, liked:boolean) {
+		let alert = this.alertCtrl.create({
+			title: 'Why did you ' + (liked? '': 'not ') + 'like it?',
+			inputs: [
+			{
+				type: 'checkbox',
+				label: 'Food',
+				value: 'food',
+				checked: false
+			},			{
+				type: 'checkbox',
+				label: 'Environent',
+				value: 'environment',
+				checked: false
+			},			{
+				type: 'checkbox',
+				label: 'Price',
+				value: 'price',
+				checked: false
+			},			{
+				type: 'checkbox',
+				label: 'Other',
+				value: 'other',
+				checked: false
+			}],
+			buttons: [{
+				text: 'OK',
+			}],
+			enableBackdropDismiss: true
+		});
+		alert.present();
+		alert.onDidDismiss((items: Array<string>) => {
+			this.share(rating_id, res_id, liked, items);
+		});
+	}
+
+	share(rating_id:number, res_id:string, liked:boolean, items: Array<string>) {
+		if (!liked) return this.save_rating(rating_id, res_id, liked, items, false);
+
+		let confirm = this.alertCtrl.create({
+			title: 'Would you like to recommend this to your friends?',
+			// message: 'Do you agree to use this lightsaber to do good across the intergalactic galaxy?',
+			buttons: [
+			{
+				text: 'Nah',
+				handler: () => {
+					 this.save_rating(rating_id, res_id, liked, items, false);
+				}
+			}, 
+			{
+				text: 'Yes!',
+				handler: () => {
+					 this.save_rating(rating_id, res_id, liked, items, true);
+				}
+			}], 
+			enableBackdropDismiss: false
+		});
+		confirm.present();
+	}
+
+
+	save_rating(rating_id: number, res_id:string, liked: boolean, specifics: Array<string>, share:boolean) {
+		this.munchrApi.rating(this.user.user_id, rating_id, res_id, liked, specifics.join('|'), share)
+		.then(() =>{
+			this.get_notifications();
+		}, error => {});
 	}
 }

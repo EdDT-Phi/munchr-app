@@ -105,8 +105,10 @@ export class Main {
 		this.navCtrl.push(MoreInfo, { res_id });
 	}
 
-	viewDidEnter() {
+	ionViewWillEnter() {
+		this.notifications = null;
 		this.get_activity();
+		this.get_notifications();
 	}
 
 	view_notifications() {

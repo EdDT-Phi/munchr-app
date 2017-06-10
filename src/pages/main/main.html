@@ -6,8 +6,8 @@
 		<ion-title>Munchr</ion-title>
 		<ion-buttons end>
 		  <button ion-button icon-only (click)="view_notifications()">
-		  	<ion-badge *ngIf="notifications && (notifications.requests.length > 0 || notifications.recommendations.length > 0) ">
-		  	{{notifications.requests.length + notifications.recommendations.length}}
+		  	<ion-badge *ngIf="notifications && (notifications.requests.length > 0 || notifications.recommendations.length > 0 || notifications.ratings.length > 0) ">
+		  	{{notifications.requests.length + notifications.recommendations.length + notifications.ratings.length}}
 		  	</ion-badge>
 		    <ion-icon name="notifications"></ion-icon>
 		  </button>
@@ -22,7 +22,7 @@
 	</ion-item>
 	<ion-content style="height:160px">
 	<ion-list>
-		<ion-item *ngIf="loading">
+		<ion-item *ngIf="loading && (!activity || activity.length == 0)">
 			<ion-label>Loading...</ion-label>
 		</ion-item>
 		<ion-item *ngIf="!loading && activity.length == 0">

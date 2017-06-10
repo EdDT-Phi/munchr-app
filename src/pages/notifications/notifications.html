@@ -6,8 +6,31 @@
 
 
 <ion-content padding>
-	<h4 *ngIf="(!requests || requests.length == 0) && (!recommendations || recommendations.length == 0)">You have no notifications right now</h4>
+	<h4 *ngIf="(!requests || requests.length == 0) && (!recommendations || recommendations.length == 0) && (!ratings || ratings.length == 0)">You have no notifications right now</h4>
+	<div *ngIf="ratings && ratings.length > 0">
+		<ion-title>Pending Ratings</ion-title>
+		<ion-list>
+			<ion-item *ngFor="let res of ratings">
+				<ion-avatar item-left (click)="view_restaurant(res.res_id)">
+					<img src="{{ res.photo_url }}">
+				</ion-avatar>
+				<div (click)="view_restaurant(res.res_id)">
+					<h2>{{ res.res_name }}</h2>
+					<p>{{ res.review_date }}</p>
+				</div>
 
+				<button (click)="rate(res.rating_id, res.res_id, true)" ion-button outline item-right icon-left>
+					<ion-icon name='thumbs-up'></ion-icon>
+				</button>
+				<button (click)="rate(res.rating_id, res.res_id, false)" ion-button outline item-right icon-left>
+					<ion-icon name='thumbs-down'></ion-icon>
+				</button>
+				<button (click)="dismiss(res.res_id)" ion-button outline item-right icon-left >
+				    <ion-icon name='close'></ion-icon>
+				</button>
+			</ion-item>
+		</ion-list>
+	</div>
 	<div *ngIf="requests && requests.length > 0">
 		<ion-title>Friend Requests</ion-title>
 		<ion-list>
@@ -36,7 +59,7 @@
 				</ion-avatar>
 				<div (click)="view_restaurant(recom.res_id)">
 					<h2>{{ recom.first_name }} {{recom.last_name}}</h2>
-					<p>Liked {{ recom.res_name }}</p>
+					<p>Recommends {{ recom.res_name }}</p>
 				</div>
 				<button (click)="dismiss(myIndex)" ion-button outline item-right icon-left>
 				    <ion-icon name='close'></ion-icon>

@@ -426,8 +426,8 @@ export class MunchrApi {
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
 				// and save the data for later reference
-				this.activity_data = data;
-				resolve(this.activity_data);
+				// this.activity_data = data;
+				resolve(data);
 			}, error => {
 				resolve({error: JSON.parse(error._body).error});
 			});
