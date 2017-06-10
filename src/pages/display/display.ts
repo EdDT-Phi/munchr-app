@@ -171,4 +171,8 @@ export class Display {
 			}, error => {});
 		}
 	}
+
+	go_back() {
+		this.navCtrl.pop();
+	}
 }

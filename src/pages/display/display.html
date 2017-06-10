@@ -37,8 +37,12 @@
 	</div>
 	<div *ngIf="display_options && liked_cards.length == 0">
 		<p>Looks like you didn't swipe right on any restaurants.</p>
-		<button ion-button class="center" (click)="start_over()">Try Different Filters</button>
+		<button ion-button class="center" (click)="go_back()">Try Different Filters</button>
 		<button ion-button class="center" (click)="start_over()">View Again</button>
+	</div>
+	<div *ngIf="all_cards.length === 0">
+		<p>Looks like there were no results that matched those filters. You could try different filters or a larger search radius</p>
+		<button ion-button class="center" (click)="go_back()">Ok</button>
 	</div>
 </ion-content>
 
