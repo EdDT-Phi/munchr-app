@@ -28,7 +28,7 @@
 				<button *ngIf="res.liked === null" (click)="rate(res.rating_id, res.res_id, false)" ion-button outline item-right icon-left>
 					<ion-icon name='thumbs-down'></ion-icon>
 				</button>
-				<button *ngIf="res.liked === null" (click)="dismiss(res.res_id)" ion-button outline item-right icon-left >
+				<button *ngIf="res.liked === null" (click)="dismiss_rating(res.rating_id)" ion-button outline item-right icon-left >
 				    <ion-icon name='close'></ion-icon>
 				</button>
 				<ion-note *ngIf="res.liked != null" item-right>{{ res.review_date }}</ion-note>

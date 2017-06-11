@@ -164,4 +164,12 @@ export class Notifications {
 			this.get_notifications();
 		}, error => {});
 	}
+
+	dismiss_rating(rating_id:number) {
+		this.munchrApi.dismiss_rating(rating_id)
+		.then(() => {
+			// change to splice
+			this.get_notifications();
+		});
+	}
 }

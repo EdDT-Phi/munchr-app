@@ -1,5 +1,5 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
-import { NavController, NavParams, ModalController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, ModalController, LoadingController, Loading } from 'ionic-angular';
 import { Geolocation } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
@@ -45,6 +45,7 @@ export class Display {
 		lat: number,
 		lon: number,
 	};
+	loading: Loading = null;
 
 	constructor(
 		private utils: Utils,
@@ -88,10 +89,10 @@ export class Display {
 	 
 	// Add new cards to our array
 	add_cards() {
-		const loading = this.loadingCtrl.create({
+		this.loading = this.loadingCtrl.create({
 			content: 'Please wait...'
 		});
-		loading.present();
+		this.loading.present();
 		this.display_options = false;
 
 		console.log('getting geolocation');
@@ -119,7 +120,8 @@ export class Display {
 					this.all_cards = this.cards.slice();
 					this.offset += this.limit;
 				}
-				loading.dismiss();
+				this.loading.dismiss();
+				this.loading = null;
 				this.utils.show_tutorial('Hey! This is where we narrow down your decision. Swipe restaurants left if you\'re not feeling them, and swipe right if you do. Tap \'Take Me Here\' if you\'ve made your choise');
 			});
 		}).catch((error) => {
