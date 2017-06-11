@@ -8,27 +8,43 @@
 </ion-header>
 
 <ion-content>
-	<!-- <img height="200" class="center" src="assets/imgs/munchr.png"/> -->
-	<ion-title>{{ title }}</ion-title>
-	<ion-list *ngIf="items && items.length > 0">
-		<div *ngFor="let item of items">
-			<ion-item  *ngIf="marked[item]">
-				<ion-label>{{ item }}</ion-label>
-				<ion-checkbox [(ngModel)]="marked[item]" item-left></ion-checkbox>
-			</ion-item>
-		</div>
-	</ion-list>
-	<ion-searchbar *ngIf="showSearch" (ionInput)="show_items($event)"></ion-searchbar>
-	<ion-content>
+	<ion-searchbar (ionInput)="show_items($event)"></ion-searchbar>
+	<ion-content style="height:60vh">
 		<ion-list *ngIf="items && items.length > 0">
 			<div *ngFor="let item of items">
-				<ion-item  *ngIf="!marked[item]">
+				<ion-item style="background: #393939" *ngIf="marked[item]">
+					<ion-label>{{ item }}</ion-label>
+					<ion-checkbox [(ngModel)]="marked[item]" item-left></ion-checkbox>
+				</ion-item>
+			</div>
+			<ion-item *ngIf="recommended.length > 0" no-lines>
+				<ion-label item-left>Recommended For You</ion-label>
+			</ion-item>
+			<div *ngFor="let item of recommended">
+				<ion-item style="background: #393939" *ngIf="!marked[item]">
+					<ion-label>{{ item }}</ion-label>
+					<ion-checkbox [(ngModel)]="marked[item]" item-left></ion-checkbox>
+				</ion-item>
+			</div>
+			<ion-item no-lines>
+				<ion-label item-left>All</ion-label>
+			</ion-item>
+			<div *ngFor="let item of items">
+				<ion-item style="background: #393939" *ngIf="!marked[item]">
 					<ion-label>{{ item }}</ion-label>
 					<ion-checkbox [(ngModel)]="marked[item]" item-left></ion-checkbox>
 				</ion-item>
 			</div>
 		</ion-list>
 	</ion-content>
+	<ion-item no-lines>
+		<ion-label item-left>Distance (miles)</ion-label>
+		<ion-badge item-right>{{ (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320 }} mile{{((distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320)  > 1 ? 's' : ''}} </ion-badge>
+	</ion-item>
+	<ion-range min="1" max="20" [(ngModel)]="distance">
+		<ion-icon range-left name="walk"></ion-icon>
+		<ion-icon range-right name="car"></ion-icon>
+	</ion-range>
 </ion-content>
 
 <ion-footer>

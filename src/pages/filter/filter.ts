@@ -12,33 +12,24 @@ import { Display } from '../display/display';
 
 export class Filter {
 	items: Array<string> = [];
+	recommended: Array<string> = [];
 	all: Array<string> = [];
+	all_recommended: Array<string> = [];
 	marked: Object = {};
-	showSearch: boolean = true;
-	title: string = 'What are you in the mood for?';
+	distance: number = 8;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams) {
-		const selection = navParams.get('selection');
 		this.all = navParams.get('cuisines');
-		
-		if (selection === 'newRestaurant') {
-			this.search();
-		} else if (selection === 'newCuisine') {
-			this.title = 'You might like these cuisines';
-			this.showSearch = false;
-			this.marked[this.all[Math.floor(Math.random()*this.all.length)]] = true;
-			let temp = [];
-			while (temp.length < 5) {
-				const chosen = Math.floor(Math.random() * this.all.length);
-				if (temp.indexOf(this.all[chosen]) === -1) {
-					temp.push(this.all[chosen]);
-				}
-			}
-			this.all = temp;
 
+		while (this.all_recommended.length < 5) {
+			const chosen = Math.floor(Math.random() * this.all.length);
+			if (this.all_recommended.indexOf(this.all[chosen]) === -1) {
+				this.all_recommended.push(this.all[chosen]);
+			}
 		}
 
 		this.items = this.all;
+		this.recommended = this.all_recommended;
 	}
 
 	show_items(ev) {
@@ -53,15 +44,19 @@ export class Filter {
 			this.items = this.all.filter((item) => {
 				return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
 			});
+			this.recommended = this.all_recommended.filter((item) => {
+				return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+			});
 		} else {
 			this.items = this.all;
+			this.recommended = this.all_recommended;
 		}
 	}
 
 	search() {
-
+		const distance = this.distance;
 		this.navCtrl.push(Display, {
-			radius: this.navParams.get('distance'),
+			radius: (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320,
 			cuisines: this.items.filter((item) => {
 				return this.marked[item];
 			}),

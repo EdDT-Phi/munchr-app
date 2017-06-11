@@ -20,7 +20,7 @@
 	<ion-item no-lines>
 		<ion-label item-left>Friend Activity</ion-label>
 	</ion-item>
-	<ion-content style="height:160px">
+	<ion-content style="height:60vh">
 	<ion-list>
 		<ion-item *ngIf="loading && (!activity || activity.length == 0)">
 			<ion-label>Loading...</ion-label>
@@ -29,7 +29,7 @@
 			<h2>Looks like you have no friends with activity yet</h2>
 			<button ion-button (click)="add_friends()">Add Friends</button>
 		</ion-item>
-		<ion-item  *ngFor="let rating of activity">
+		<ion-item style="background: #393939" *ngFor="let rating of activity">
 			<ion-avatar item-left (click)="view_account(rating)">
 				<img src="{{ rating.photo_url || 'assets/imgs/person.png'}}">
 			</ion-avatar>
@@ -41,32 +41,8 @@
 		</ion-item>
 	</ion-list>
 	</ion-content>
-
-	<ion-item no-lines>
-		<ion-label item-left>Distance (miles)</ion-label>
-		<ion-badge item-right>{{ (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320 }} mile{{((distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320)  > 1 ? 's' : ''}} </ion-badge>
-	</ion-item>
-	<ion-range min="1" max="20" [(ngModel)]="distance">
-		<ion-icon range-left name="walk"></ion-icon>
-		<ion-icon range-right name="car"></ion-icon>
-	</ion-range>
-	<ion-list radio-group [(ngModel)]="selection">
-		<ion-item>
-			<ion-label>No Filter</ion-label>
-			<ion-radio value="newRestaurant"></ion-radio>
-		</ion-item>
-		<ion-item>
-			<ion-label>Recommended Filters</ion-label>
-			<ion-radio value="newCuisine"></ion-radio>
-		</ion-item>
-		<ion-item>
-			<ion-label>All Filters</ion-label>
-			<ion-radio value="know"></ion-radio>
-		</ion-item>
-	</ion-list>
-
 </ion-content>
 <ion-footer>
 
-	<button ion-button class="center" (click)="search()" [disabled]="loading" block> {{loading?  'Loading...' : 'Search'}}</button>
+	<button ion-button class="center" (click)="search()" [disabled]="loading" block> {{loading?  'Loading...' : "Let's Munch"}}</button>
 </ion-footer>

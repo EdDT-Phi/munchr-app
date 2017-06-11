@@ -17,7 +17,6 @@ import { Utils } from '../../utils'
 	providers: [ MunchrApi, UserService ],
 })
 export class Main {
-	distance: number = 5;
 	cuisines: Array<string> = [];
 	loading: boolean = true;
 	user: {
@@ -26,10 +25,8 @@ export class Main {
 		last_name: string, 
 		photo_url: string,
 	};
-	selection: string = 'newCuisine';
 	activity: Array<any> = [];
 	notifications: {requests: Array<any>, recommendations: Array<any>};
-
 
 	constructor(
 		private utils: Utils,
@@ -57,29 +54,22 @@ export class Main {
 		});
 	}
 
-	search() {
-		let distance = this.distance;
-		distance = (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320;
-		if (this.selection === 'newRestaurant') {
-			this.navCtrl.push(Display, {
-				radius: distance,
-				cuisines: [],
-
-			});
-		} else {
-			this.navCtrl.push(Filter, {
-				distance,
-				cuisines: this.cuisines,
-				selection: this.selection,
-			});
+	ionViewWillEnter() {
+		if (this.user) {
+			this.notifications = null;
+			this.get_activity();
+			this.get_notifications();
 		}
-
 	}
 
 	after_get_user(){
 		this.broadcast_login();
 		this.get_activity();
 		this.get_notifications();
+	}
+
+	broadcast_login() {
+		this.events.publish('user:login', this.user);
 	}
 
 	get_activity() {
@@ -93,10 +83,17 @@ export class Main {
 		});
 	}
 
-	broadcast_login() {
-		this.events.publish('user:login', this.user);
+	get_notifications() {
+		this.munchrApi.notifications(this.user.user_id)
+		.then(data => {
+			this.notifications = data.results;
+		}, error => { });
 	}
 
+	view_notifications() {
+		this.navCtrl.push(Notifications, {notifications: this.notifications});
+	}
+	
 	view_account(user:any) {
 		this.navCtrl.push(Account, { user: user });
 	}
@@ -105,28 +102,15 @@ export class Main {
 		this.navCtrl.push(MoreInfo, { res_id });
 	}
 
-	ionViewWillEnter() {
-		if (this.user) {
-			this.notifications = null;
-			this.get_activity();
-			this.get_notifications();
-		}
-	}
-
-	view_notifications() {
-		this.navCtrl.push(Notifications, {notifications: this.notifications});
-	}
-
-	get_notifications() {
-		this.munchrApi.notifications(this.user.user_id)
-		.then(data => {
-			this.notifications = data.results;
-		}, error => { });
-	}
-
 	add_friends() {
 		this.navCtrl.push(Search, {
 			user_id: this.user.user_id
+		});
+	}
+	
+	search() {
+		this.navCtrl.push(Filter, {
+			cuisines: this.cuisines,
 		});
 	}
 }
