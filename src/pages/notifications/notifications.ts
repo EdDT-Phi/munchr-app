@@ -165,11 +165,12 @@ export class Notifications {
 		}, error => {});
 	}
 
-	dismiss_rating(rating_id:number) {
+	dismiss_rating(rating_id:number, index:number) {
+		this.ratings.splice(index, 1);
 		this.munchrApi.dismiss_rating(rating_id)
 		.then(() => {
 			// change to splice
-			this.get_notifications();
+			// this.get_notifications();
 		});
 	}
 }

@@ -133,11 +133,12 @@ export class History {
 		}, error => {});
 	}
 
-	dismiss_rating(rating_id:number) {
+	dismiss_rating(rating_id:number, index:number) {
+		this.history.splice(index, 1);
 		this.munchrApi.dismiss_rating(rating_id)
 		.then(() => {
 			// change to splice
-			this.get_history();
+			// this.get_history();
 		});
 	}
 }

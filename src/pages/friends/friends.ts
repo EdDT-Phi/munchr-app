@@ -48,12 +48,12 @@ export class Friends {
 
 	view_account(user:any) {
 		const modal = this.modalCtrl.create(Account, { user });
-		modal.present()
+		modal.present();
 		modal.onDidDismiss(()=> {
 			this.loading = this.loadingCtrl.create({
 				content: 'Please wait...'
 			});
-			this.loading.present()
+			this.loading.present();
 			this.get_friends();
 		});
 	}
@@ -73,7 +73,7 @@ export class Friends {
 		this.loading = this.loadingCtrl.create({
 			content: 'Please wait...'
 		});
-		this.loading.present()
+		this.loading.present();
 		this.munchrApi.respond_request(response, this.user.user_id, oth_user.user_id)
 		.then(data => {
 			console.log(data);
