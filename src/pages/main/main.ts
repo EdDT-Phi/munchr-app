@@ -4,7 +4,6 @@ import { Events, NavController } from 'ionic-angular';
 import { Filter } from '../filter/filter';
 import { Account } from '../account/account';
 import { MoreInfo } from '../info/info';
-import { Display } from '../display/display';
 import { Search } from '../search/search';
 import { Notifications } from '../notifications/notifications';
 import { UserService } from '../../providers/user-service';
@@ -14,7 +13,6 @@ import { Utils } from '../../utils'
 @Component({
 	selector: 'page-main',
 	templateUrl: 'main.html',
-	providers: [ MunchrApi, UserService ],
 })
 export class Main {
 	cuisines: Array<string> = [];
@@ -25,7 +23,7 @@ export class Main {
 		last_name: string, 
 		photo_url: string,
 	};
-	activity: Array<any> = [];
+	activity: Array<any>;
 	notifications: {requests: Array<any>, recommendations: Array<any>};
 
 	constructor(

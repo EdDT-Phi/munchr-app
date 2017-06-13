@@ -9,7 +9,6 @@ import { Search } from '../search/search';
 @Component({
 	selector: 'page-friends',
 	templateUrl: 'friends.html',
-	providers: [ MunchrApi, UserService ],
 })
 
 

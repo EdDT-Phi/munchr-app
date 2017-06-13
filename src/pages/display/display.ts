@@ -5,6 +5,7 @@ import { Geolocation } from 'ionic-native';
 import { MunchrApi } from '../../providers/munchr-api';
 import { UserService } from '../../providers/user-service';
 import { MoreInfo } from '../info/info';
+// import { Liked } from '../liked/liked';
 
 import { Utils } from "../../utils";
 
@@ -17,7 +18,6 @@ import {
 @Component({
 	selector: 'page-display',
 	templateUrl: 'display.html',
-	providers: [ MunchrApi, UserService ],
 	entryComponents: [SwingStackComponent, SwingCardComponent]
 })
 
@@ -33,8 +33,6 @@ export class Display {
 	display_options: boolean = false;
 	like_opacity: number = 0;
 	unlike_opacity: number = 0;
-	limit: number = 10;
-	offset: number = 0;
 	user: {
 		user_id: number,
 		first_name: string, 
@@ -107,9 +105,6 @@ export class Display {
 				resp.coords.latitude,
 				resp.coords.longitude,
 				this.navParams.get("radius"),
-				this.limit,
-				this.offset,
-				this.navParams.get("price"),
 				this.user.user_id,
 				this.navParams.get("cuisines") )
 			.then( (data) => {
@@ -118,13 +113,13 @@ export class Display {
 				} else {
 					this.cards = data.results;
 					this.all_cards = this.cards.slice();
-					this.offset += this.limit;
 				}
 				this.loading.dismiss();
 				this.loading = null;
 				this.utils.show_tutorial('Hey! This is where we narrow down your decision. Swipe restaurants left if you\'re not feeling them, and swipe right if you do. Tap \'Take Me Here\' if you\'ve made your choise');
 			});
 		}).catch((error) => {
+			this.loading.dismiss();
 			this.utils.display_error_obj('Error getting location: ' + error.message, error);
 		});
 	}
@@ -151,6 +146,7 @@ export class Display {
 			this.cards = this.liked_cards;
 			this.liked_cards = [];
 		}
+		// this.navCtrl.push(Liked, { restaurants: this.liked_cards })
 	}
 
 	start_over() {

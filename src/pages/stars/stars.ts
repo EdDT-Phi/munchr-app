@@ -8,7 +8,6 @@ import { UserService } from '../../providers/user-service';
 @Component({
 	selector: 'page-stars',
 	templateUrl: 'stars.html',
-	providers: [ MunchrApi, UserService ],
 })
 export class Stars {
 

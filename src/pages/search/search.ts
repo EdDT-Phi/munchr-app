@@ -9,7 +9,6 @@ import { MunchrApi } from '../../providers/munchr-api';
 @Component({
 	selector: 'page-search',
 	templateUrl: 'search.html',
-	providers: [ MunchrApi, UserService ],
 })
 export class Search {
 

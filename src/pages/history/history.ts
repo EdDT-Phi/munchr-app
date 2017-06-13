@@ -10,7 +10,6 @@ import { Utils } from '../../utils';
 @Component({
 	selector: 'page-history',
 	templateUrl: 'history.html',
-	providers: [ MunchrApi, UserService ],
 })
 export class History {
 

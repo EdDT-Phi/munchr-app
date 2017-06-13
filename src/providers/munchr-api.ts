@@ -1,16 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { UserService } from './user-service';
 import 'rxjs/add/operator/map';
-
-
-function round_7(num: number) {
-	return Math.floor(num * 10000000) * 10000000;
-}
-
-
-function are_similar(lat1: number, long1: number, lat2: number, long2: number) {
-	return round_7(lat1) == round_7(lat2) && round_7(long1) == round_7(long2);
-}
 
 
 @Injectable()
@@ -21,7 +12,7 @@ export class MunchrApi {
 
 	data: any;
 
-	constructor(public http: Http) {
+	constructor(private http: Http, private userService: UserService) {
 		// this.url = 'http://localhost:5000'; // dev
 		this.url = 'https://munchr-test.herokuapp.com'; // prod
 		// this.url = 'https://munchr.herokuapp.com'; // prod
@@ -49,31 +40,29 @@ export class MunchrApi {
 
 	post_api_call(uri:string, obj:Object): Promise<any> {
 
-		const headers = new Headers();
-		headers.append('Content-Type', 'application/x-www-form-urlencoded');
-		const options = new RequestOptions({ headers: headers });
-
-		const data = Object.keys(obj).map(function(key) {
-		    return key + '=' + obj[key];
-		}).join('&');
-
-		// don't have the data yet
 		return new Promise(resolve => {
-			// We're using Angular HTTP provider to request the data,
-			// then on the response, it'll map the JSON data to a parsed JS object.
-			// Next, we process the data and resolve the promise with the new data.
+			this.userService.get_user_token()
+			.then(token => {
 
-			this.http.post(this.url + uri, data, options)
-			.map(res => res.json())
-			.subscribe(data => {
-				// we've got back the raw data, now generate the core schedule data
-				// and save the data for later reference
-				this.data = data;
-				resolve(this.data);
-			}, error => {
-				this.data = {error: JSON.parse(error._body).error};
-				resolve(this.data);
-			});
+				const headers = new Headers();
+				headers.append('Content-Type', 'application/x-www-form-urlencoded');
+				headers.append('Authorization', 'Token ' + token);
+				const options = new RequestOptions({ headers: headers });
+
+				const data = Object.keys(obj).map(function(key) {
+				    return key + '=' + obj[key];
+				}).join('&');
+
+				this.http.post(this.url + uri, data, options)
+				.map(res => res.json())
+				.subscribe(data => {
+					this.data = data;
+					resolve(this.data);
+				}, error => {
+					this.data = {error: JSON.parse(error._body).error};
+					resolve(this.data);
+				});
+			}, error => {});
 		});
 	}
 
@@ -108,10 +97,7 @@ export class MunchrApi {
 	}
 
 	details(user_id:number, res_id:string, lat:number, lng:number) {
-
-		let obj = { lat, lng, user_id, res_id};
-
-		return this.post_api_call(`${this.url}/restaurants/details/`, obj);
+		return this.post_api_call('/restaurants/details/', { lat, lng, user_id, res_id });
 	}
 
 	rating(user_id:number, rating_id:number, res_id:string, liked:boolean, specific:string, share:boolean) {
@@ -128,92 +114,63 @@ export class MunchrApi {
 		return this.post_api_call('/users/rating/', obj);
 	}
 
-	// POST
 	dismiss_rating(rating_id: number) {
-		
-		return this.get_api_call(`/users/munch/dismiss/${rating_id}`, 'null');
+		return this.post_api_call(`/users/munch/dismiss/`, { rating_id });
 	}
 
-	// POST
 	activity(user_id:number, other_id:number) {
-
-		return this.get_api_call(`/users/activity/${user_id}/${other_id}`, 'null');
+		return this.post_api_call(`/users/activity/`, { user_id, other_id });
 	}
 
-	// POST
 	friends_activity(user_id:number) {
-
-		return this.get_api_call('/users/activity/friends/' + user_id, 'null');
+		return this.post_api_call('/users/activity/friends/', { user_id });
 	}
 
-	// POST
 	get_friends(user_id:number) {
-
-		return this.get_api_call('/friends/' + user_id, 'null');
+		return this.post_api_call('/friends/', { user_id });
 	}
 
 	respond_request(response:boolean, user_id:number, oth_id:number) {
-
-		let obj = { response, user_id, oth_id };
-		return this.post_api_call('/friends/respond/', obj);
+		return this.post_api_call('/friends/respond/', { response, user_id, oth_id });
 	}
 
 	search_users(user_id:number, query:string) {
-
-		let obj = { user_id, query };
-		return this.post_api_call('/users/search/', obj);
+		return this.post_api_call('/users/search/', { user_id, query });
 	}
 
 	friend_request(user_from_id:number, user_to_id:number) {
-
-		let obj = { user_from_id, user_to_id };
-		return this.post_api_call('/friends/', obj);
+		return this.post_api_call('/friends/', { user_from_id, user_to_id });
 	}
 
 	delete_friend(user_id1:number, user_id2:number) {
-
-		let obj = { user_id1, user_id2 };
-		return this.post_api_call('/friends/delete/', obj);
+		return this.post_api_call('/friends/delete/', { user_id1, user_id2 });
 	}
 
 	notifications(user_id: number) {
-
-		return this.get_api_call('/notifications/' + user_id, 'null');
+		return this.post_api_call('/notifications/', { user_id });
 	}
 
 	dismiss_recommendation(user_from_id: number, user_to_id: number, res_id: string) {
-		
-		return this.get_api_call(`notifications/dismiss/${user_from_id}/${user_to_id}/${res_id}`, 'null');
+		return this.post_api_call(`notifications/dismiss/`, { user_from_id, user_to_id, res_id });
 	}
 
 	get_stars(user_id: number) {
-
-		return this.get_api_call('/stars/' + user_id, 'null');
+		return this.post_api_call('/stars/', { user_id });
 	}
 
 	star_res(user_id:number, res_id:string) {
-
-		let obj = { res_id };
-		return this.post_api_call('/stars/' + user_id, obj);
+		return this.post_api_call('/stars/new/', { res_id });
 	}
 
 	unstar_res(user_id: number, res_id:string) {
-
-		return this.get_api_call(`/stars/unstar/${user_id}/${res_id}`, 'null');
+		return this.post_api_call(`/stars/unstar/`, { user_id, res_id });
 	}
 
 	search_restaurants(lat:number, lng:number, query:string) {
-
-		let obj = { lat, lng, query };
-		return this.post_api_call('/restaurants/search/', obj);
+		return this.post_api_call('/restaurants/search/', { lat, lng, query });
 	}
 
 	munch(user_id:number, res_id:string) {
-
-		let obj = {
-			user_id,
-			res_id
-		};
-		return this.post_api_call('/users/munch/', obj);
+		return this.post_api_call('/users/munch/', { user_id, res_id });
 	}
 }

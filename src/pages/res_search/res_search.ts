@@ -11,7 +11,6 @@ import { Utils } from "../../utils";
 @Component({
 	selector: 'page-res_search',
 	templateUrl: 'res_search.html',
-	providers: [ MunchrApi ],
 })
 export class ResSearch {
 

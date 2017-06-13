@@ -9,7 +9,6 @@ import { Utils } from '../../utils';
 @Component({
 	selector: 'page-account',
 	templateUrl: 'account.html',
-	providers: [ MunchrApi, UserService ],
 })
 
 

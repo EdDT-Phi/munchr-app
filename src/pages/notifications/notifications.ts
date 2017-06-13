@@ -10,7 +10,6 @@ import { UserService } from '../../providers/user-service';
 @Component({
 	selector: 'page-notifications',
 	templateUrl: 'notifications.html',
-	providers: [ MunchrApi, UserService ],
 })
 export class Notifications {
 

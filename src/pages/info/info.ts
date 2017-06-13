@@ -12,7 +12,6 @@ import { Utils } from "../../utils";
 @Component({
 	selector: 'page-info',
 	templateUrl: 'info.html',
-	providers: [ MunchrApi, UserService ]
 })
 export class MoreInfo {
 
