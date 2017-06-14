@@ -116,7 +116,7 @@ export class Display {
 				}
 				this.loading.dismiss();
 				this.loading = null;
-				this.utils.show_tutorial('Hey! This is where we narrow down your decision. Swipe restaurants left if you\'re not feeling them, and swipe right if you do. Tap \'Take Me Here\' if you\'ve made your choise');
+				this.utils.show_tutorial('display_page', 'This is where we narrow down your decision. Swipe restaurants left to remove them and right to save it for later. Tap on the restaurant to view more information.');
 			});
 		}).catch((error) => {
 			this.loading.dismiss();
@@ -124,8 +124,8 @@ export class Display {
 		});
 	}
 	 
-	info(res_id: string) {
-		this.navCtrl.push(MoreInfo, { res_id });
+	info() {
+		this.navCtrl.push(MoreInfo, { res_id: this.cards[this.cards.length - 1].res_id });
 	}
 
 	// TODO implement up throw

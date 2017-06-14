@@ -23,8 +23,8 @@ export class Utils {
 		toast.present();
 	}
 
-	show_tutorial(message: string) {
-		NativeStorage.getItem('show_tutorial')
+	show_tutorial(id: string, message: string) {
+		NativeStorage.getItem('show_tutorial' + id)
 		.then(show => {
 
 		}, error => {
@@ -33,16 +33,15 @@ export class Utils {
 				message,
 				inputs: [{
 					type: 'checkbox',
-					label: 'Turn off the tutorials',
+					label: 'Do not show again',
 					value: 'dismiss',
 				}],
 				buttons: ['OK'], 
-				enableBackdropDismiss: false
 			});
 			confirm.present();
 			confirm.onDidDismiss(info => {
 				if (info.length > 0) {
-					NativeStorage.setItem('show_tutorial', true)
+					NativeStorage.setItem('show_tutorial' + id, true)
 					.then(() => {}, error => {});
 				}
 			});

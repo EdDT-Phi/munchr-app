@@ -44,10 +44,10 @@ export class UserService {
 
 			}, error => {
 				// Not logged in
-				this.get_user_login(resolve);
+				// this.get_user_login(resolve);
 
-				// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:'', token:'test-token', timestamp: Date.now()}
-				// resolve(this.user);
+				this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:'', token:'test-token', timestamp: Date.now()}
+				resolve(this.user);
 			});
 		});
 	}

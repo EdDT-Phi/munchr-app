@@ -33,7 +33,7 @@ export class Main {
 		private events: Events,
 		private navCtrl: NavController,
 	) {
-		utils.show_tutorial('Welcome to Munchr. This is the main page. To search for a restaurant first select what you\'re looking for and tap Search.');
+		utils.show_tutorial('main_page', 'Welcome to Munchr. This is the main page. To search for a restaurant just tap Search.');
 
 		this.userService.get_user()
 		.then(user => {
