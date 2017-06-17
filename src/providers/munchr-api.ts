@@ -18,12 +18,12 @@ export class MunchrApi {
 		// this.url = 'https://munchr.herokuapp.com'; // prod
 	}
 
-	get_api_call(uri:string, saved:string): Promise<any> {
+	get_api_call(uri:string): Promise<any> {
 
 
-		if (this.saved_data[saved]) {
+		if (this.saved_data[uri]) {
 			// already loaded data
-			return Promise.resolve(this.saved_data[saved]);
+			return Promise.resolve(this.saved_data[uri]);
 		}
 
 		return new Promise(resolve => {
@@ -36,11 +36,11 @@ export class MunchrApi {
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data
 				// and save the data for later reference
-				this.saved_data[saved] = data;
-				resolve(this.saved_data[saved]);
+				this.saved_data[uri] = data;
+				resolve(this.saved_data[uri]);
 			}, error => {
-				this.saved_data[saved] = {error: JSON.parse(error._body).error};
-				resolve(this.saved_data[saved]);
+				this.saved_data[uri] = {error: JSON.parse(error._body).error};
+				resolve(this.saved_data[uri]);
 			});
 		});
 	}
@@ -49,12 +49,14 @@ export class MunchrApi {
 
 		return new Promise(resolve => {
 			this.userService.get_user_token()
-			.then(token => {
+			.then(token_obj => {
 
 				const headers = new Headers();
 				headers.append('Content-Type', 'application/x-www-form-urlencoded');
-				headers.append('Authorization', 'Token ' + token);
+				headers.append('Authorization', 'Token ' + token_obj.token);
 				const options = new RequestOptions({ headers: headers });
+
+				obj['user_id'] = token_obj.user_id;
 
 				const data = Object.keys(obj).map(function(key) {
 				    return key + '=' + obj[key];
@@ -76,14 +78,13 @@ export class MunchrApi {
 
 	filters() {
 
-		return this.get_api_call('/restaurants/filters', 'filters');
+		return this.get_api_call('/restaurants/filters');
 	}
 
 	restaurants(
 		lat:number, 
 		long:number, 
 		radius: number, 
-		user_id: number,
 		cuisines: Array<string>
 	) {
 
@@ -91,21 +92,19 @@ export class MunchrApi {
 			lat: lat,
 			long: long,
 			radius: radius,
-			user_id: user_id,
 			cuisines: cuisines.join(","),
 		};
 		
 		return this.post_api_call('/restaurants/', obj);
 	}
 
-	details(user_id:number, res_id:string, lat:number, lng:number) {
-		return this.post_api_call('/restaurants/details/', { lat, lng, user_id, res_id });
+	details(res_id:string, lat:number, lng:number) {
+		return this.post_api_call('/restaurants/details/', { lat, lng, res_id });
 	}
 
-	rating(user_id:number, rating_id:number, res_id:string, liked:boolean, specific:string, share:boolean) {
+	rating(rating_id:number, res_id:string, liked:boolean, specific:string, share:boolean) {
 
 		let obj = {
-			user_id,
 			rating_id,
 			res_id,
 			liked,
@@ -120,59 +119,59 @@ export class MunchrApi {
 		return this.post_api_call(`/users/munch/dismiss/`, { rating_id });
 	}
 
-	activity(user_id:number, other_id:number) {
-		return this.post_api_call(`/users/activity/`, { user_id, other_id });
+	activity(other_id:number) {
+		return this.post_api_call(`/users/activity/`, { other_id });
 	}
 
-	friends_activity(user_id:number) {
-		return this.post_api_call('/users/activity/friends/', { user_id });
+	friends_activity() {
+		return this.post_api_call('/users/activity/friends/', { });
 	}
 
-	get_friends(user_id:number) {
-		return this.post_api_call('/friends/', { user_id });
+	get_friends() {
+		return this.post_api_call('/friends/', { });
 	}
 
-	respond_request(response:boolean, user_id:number, oth_id:number) {
-		return this.post_api_call('/friends/respond/', { response, user_id, oth_id });
+	respond_request(response:boolean, oth_id:number) {
+		return this.post_api_call('/friends/respond/', { response, oth_id });
 	}
 
-	search_users(user_id:number, query:string) {
-		return this.post_api_call('/users/search/', { user_id, query });
+	search_users(query:string) {
+		return this.post_api_call('/users/search/', { query });
 	}
 
-	friend_request(user_from_id:number, user_to_id:number) {
-		return this.post_api_call('/friends/', { user_from_id, user_to_id });
+	friend_request(user_to_id:number) {
+		return this.post_api_call('/friends/', { user_to_id });
 	}
 
-	delete_friend(user_id1:number, user_id2:number) {
-		return this.post_api_call('/friends/delete/', { user_id1, user_id2 });
+	delete_friend(user_to_id:number) {
+		return this.post_api_call('/friends/delete/', { user_to_id });
 	}
 
-	notifications(user_id: number) {
-		return this.post_api_call('/notifications/', { user_id });
+	notifications() {
+		return this.post_api_call('/notifications/', { });
 	}
 
-	dismiss_recommendation(user_from_id: number, user_to_id: number, res_id: string) {
-		return this.post_api_call(`notifications/dismiss/`, { user_from_id, user_to_id, res_id });
+	dismiss_recommendation(user_to_id: number, res_id: string) {
+		return this.post_api_call(`notifications/dismiss/`, { user_to_id, res_id });
 	}
 
-	get_stars(user_id: number) {
-		return this.post_api_call('/stars/', { user_id });
+	get_stars() {
+		return this.post_api_call('/stars/', { });
 	}
 
-	star_res(user_id:number, res_id:string) {
+	star_res(res_id:string) {
 		return this.post_api_call('/stars/new/', { res_id });
 	}
 
-	unstar_res(user_id: number, res_id:string) {
-		return this.post_api_call(`/stars/unstar/`, { user_id, res_id });
+	unstar_res(res_id:string) {
+		return this.post_api_call(`/stars/unstar/`, { res_id });
 	}
 
 	search_restaurants(lat:number, lng:number, query:string) {
 		return this.post_api_call('/restaurants/search/', { lat, lng, query });
 	}
 
-	munch(user_id:number, res_id:string) {
-		return this.post_api_call('/users/munch/', { user_id, res_id });
+	munch(res_id:string) {
+		return this.post_api_call('/users/munch/', { res_id });
 	}
 }

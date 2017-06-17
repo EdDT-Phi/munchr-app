@@ -45,7 +45,7 @@ export class History {
 			content: 'Please wait...'
 		});
 		this.loading.present();
-		this.munchrApi.activity(this.user.user_id, this.user.user_id)
+		this.munchrApi.activity(this.user.user_id)
 		.then(data => {
 			console.log('got activity', data)
 			if(data.error) {
@@ -126,7 +126,7 @@ export class History {
 
 
 	save_rating(rating_id: number, res_id:string, liked: boolean, specifics: Array<string>, share:boolean) {
-		this.munchrApi.rating(this.user.user_id, rating_id, res_id, liked, specifics.join('|'), share)
+		this.munchrApi.rating(rating_id, res_id, liked, specifics.join('|'), share)
 		.then(() =>{
 			this.get_history();
 		}, error => {});

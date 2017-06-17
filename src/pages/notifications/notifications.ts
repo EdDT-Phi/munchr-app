@@ -4,7 +4,6 @@ import { NavController, NavParams, Loading, LoadingController, ModalController, 
 import { Account } from '../account/account'; 
 import { MoreInfo } from '../info/info'; 
 import { MunchrApi } from '../../providers/munchr-api';
-import { UserService } from '../../providers/user-service';
 
 
 @Component({
@@ -16,17 +15,10 @@ export class Notifications {
 	requests: Array<any>;
 	recommendations: Array<any>;
 	ratings: Array<any>;
-	user: {
-		user_id: number,
-		first_name: string, 
-		last_name: string, 
-		photo_url: string
-	};
 	loading: Loading = null;
 
 	constructor(
 		private navParams: NavParams,
-		private userService: UserService,
 		private munchrApi: MunchrApi,
 		private navCtrl: NavController,
 		private alertCtrl: AlertController,
@@ -39,14 +31,9 @@ export class Notifications {
 			this.requests = notifications.requests;
 			this.recommendations = notifications.recommendations;
 			this.ratings = notifications.ratings;
+		} else {
+			this.get_notifications();
 		}
-
-		this.userService.get_user()
-		.then(user => {
-			this.user = user;
-			if (!notifications)
-				this.get_notifications();
-		}, error => { });
 	}
 
 	get_notifications() {
@@ -54,7 +41,7 @@ export class Notifications {
 			content: 'Please wait...'
 		});
 		this.loading.present();
-		this.munchrApi.notifications(this.user.user_id)
+		this.munchrApi.notifications()
 		.then(data => {
 			console.log(data);
 			this.requests = data.results.requests;
@@ -81,7 +68,7 @@ export class Notifications {
 			content: 'Please wait...'
 		});
 		this.loading.present()
-		this.munchrApi.respond_request(response, this.user.user_id, oth_user.user_id)
+		this.munchrApi.respond_request(response, oth_user.user_id)
 		.then(data => {
 			console.log(data);
 			this.requests = data.result.requests;
@@ -92,7 +79,7 @@ export class Notifications {
 
 	dismiss(index: number) {
 		const recomm = this.recommendations.splice(index, 1)[0];
-		this.munchrApi.dismiss_recommendation(recomm.user_id, this.user.user_id, recomm.res_id)
+		this.munchrApi.dismiss_recommendation(recomm.user_id, recomm.res_id)
 		.then(() => {}, error => {})
 	}
 
@@ -158,7 +145,7 @@ export class Notifications {
 
 
 	save_rating(rating_id: number, res_id:string, liked: boolean, specifics: Array<string>, share:boolean) {
-		this.munchrApi.rating(this.user.user_id, rating_id, res_id, liked, specifics.join('|'), share)
+		this.munchrApi.rating(rating_id, res_id, liked, specifics.join('|'), share)
 		.then(() =>{
 			this.get_notifications();
 		}, error => {});

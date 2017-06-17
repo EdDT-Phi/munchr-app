@@ -3,7 +3,6 @@ import { NavController, NavParams, ViewController, ModalController } from 'ionic
 
 import { MoreInfo } from '../info/info';
 import { MunchrApi } from '../../providers/munchr-api';
-import { UserService } from '../../providers/user-service';
 import { Utils } from '../../utils';
 
 @Component({
@@ -13,12 +12,6 @@ import { Utils } from '../../utils';
 
 
 export class Account {
-	user: {
-		user_id: number,
-		first_name: string, 
-		last_name: string, 
-		photo_url: string
-	};
 	other_user: {
 		user_id: number,
 		first_name: string, 
@@ -33,22 +26,17 @@ export class Account {
 		public utils: Utils,
 		public navParams: NavParams,
 		public munchrApi: MunchrApi,
-		private userService: UserService,
 		public navCtrl: NavController,
 		public viewCtrl: ViewController,
 		private modalCtrl: ModalController,
 	) {
 
 		this.other_user = this.navParams.get('user');
-		this.userService.get_user()
-		.then(user => {
-			this.user = user;
-			this.get_activity();
-		}, error => { });
+		this.get_activity();
 	}
 
 	get_activity() {
-		this.munchrApi.activity(this.user.user_id, this.other_user.user_id)
+		this.munchrApi.activity(this.other_user.user_id)
 		.then(data => {
 			console.log('got activity', data)
 			if(data.error) {
@@ -62,7 +50,7 @@ export class Account {
 
 	respond(response:boolean, user_id:number, other_id:number) {
 		this.type = 'loading';
-		this.munchrApi.respond_request(response, user_id, other_id)
+		this.munchrApi.respond_request(response, other_id)
 		.then(data => {
 			this.get_activity();
 		}, error => {});
@@ -70,7 +58,7 @@ export class Account {
 
 	request() {
 		this.type = 'loading';
-		this.munchrApi.friend_request(this.user.user_id, this.other_user.user_id)
+		this.munchrApi.friend_request(this.other_user.user_id)
 		.then(data => {
 			this.get_activity();
 		}, error => {});
@@ -78,7 +66,7 @@ export class Account {
 
 	delete_friend() {
 		this.type = 'loading';
-		this.munchrApi.delete_friend(this.user.user_id, this.other_user.user_id)
+		this.munchrApi.delete_friend(this.other_user.user_id)
 		.then(data => {
 			this.get_activity();
 		}, error => {})

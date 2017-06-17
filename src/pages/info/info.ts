@@ -5,7 +5,6 @@ import { NavParams, ViewController, LoadingController, Loading, NavController, A
 import { Main } from '../main/main';
 
 import { MunchrApi } from '../../providers/munchr-api';
-import { UserService } from '../../providers/user-service';
 
 import { Utils } from "../../utils";
 
@@ -35,12 +34,6 @@ export class MoreInfo {
 		},
 		starred: boolean,
 	};
-	user: {
-		user_id: number,
-		first_name: string, 
-		last_name: string, 
-		photo_url: string,
-	};
 	location: {
 		lat: number,
 		lng: number,
@@ -54,7 +47,6 @@ export class MoreInfo {
 		private viewCtrl: ViewController,
 		private alertCtrl: AlertController,
 		private loadingCtrl: LoadingController,
-		private userService: UserService,
 	) {
 
 		this.loading = this.loadingCtrl.create({
@@ -63,11 +55,7 @@ export class MoreInfo {
 		this.loading.present();
 
 
-		this.userService.get_user()
-		.then(user => {
-			this.user = user;
-			this.get_details(this.navParams.get('res_id'));
-		}, error => { });
+		this.get_details(this.navParams.get('res_id'));
 	}
 
 	get_price() {
@@ -98,7 +86,7 @@ export class MoreInfo {
 
 	api_request(res_id:string, lat:number, lng:number) {
 		this.location = {lat, lng};
-		this.munchrApi.details(this.user.user_id, res_id, lat, lng)
+		this.munchrApi.details(res_id, lat, lng)
 		.then( data => {
 			console.log(data);
 			this.loading.dismiss();
@@ -115,7 +103,7 @@ export class MoreInfo {
 
 	done() {
 
-		this.munchrApi.munch(this.user.user_id, this.details.res_id)
+		this.munchrApi.munch(this.details.res_id)
 		.then(success => {
 			let confirm = this.alertCtrl.create({
 				title: 'Would you like to share this restaurant?',
@@ -158,12 +146,12 @@ export class MoreInfo {
 
 	star_res() {
 		if (!this.details.starred) {
-			this.munchrApi.star_res(this.user.user_id, this.details.res_id)
+			this.munchrApi.star_res(this.details.res_id)
 			.then(() => {
 				this.details.starred = true;
 			}, error => {});
 		} else {
-			this.munchrApi.unstar_res(this.user.user_id, this.details.res_id)
+			this.munchrApi.unstar_res(this.details.res_id)
 			.then(() => {
 				this.details.starred = false;
 			}, error => {});

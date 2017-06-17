@@ -61,9 +61,9 @@ export class UserService {
 		});
 	}
 
-	get_user_token(): Promise<string> {
+	get_user_token(): Promise<{token:string, user_id:number}> {
 		if (Date.now() < this.user.timestamp + (1000 * 60 * 60)) {
-			return Promise.resolve(this.user.token);
+			return Promise.resolve({token: this.user.token, user_id: this.user.user_id});
 		} 
 
 		return new Promise(resolve => {
@@ -88,12 +88,12 @@ export class UserService {
 				// and save the data for later reference
 				this.user.token = data.token;
 				this.user.timestamp = Date.now();
-				resolve(data.token);
+				resolve({token: data.token, user_id: this.user.user_id});
 			}, error => {
 				setTimeout(() => {
 					this.get_user_token()
-					.then(token => {
-						resolve(token);
+					.then(token_obj => {
+						resolve(token_obj);
 					});
 				}, 5000);
 			});

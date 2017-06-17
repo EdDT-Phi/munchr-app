@@ -3,7 +3,6 @@ import { NavController, NavParams, ModalController, LoadingController, Loading }
 import { Geolocation } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
-import { UserService } from '../../providers/user-service';
 import { MoreInfo } from '../info/info';
 // import { Liked } from '../liked/liked';
 
@@ -33,12 +32,6 @@ export class Display {
 	display_options: boolean = false;
 	like_opacity: number = 0;
 	unlike_opacity: number = 0;
-	user: {
-		user_id: number,
-		first_name: string, 
-		last_name: string, 
-		photo_url: string
-	};
 	location: {
 		lat: number,
 		lon: number,
@@ -49,7 +42,6 @@ export class Display {
 		private utils: Utils,
 		private navParams: NavParams,
 		private munchrApi: MunchrApi, 
-		private userService: UserService,
 		private navCtrl: NavController, 
 		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
@@ -61,11 +53,7 @@ export class Display {
 			throwOutDistance: () => (800)
 		};
 
-		this.userService.get_user()
-		.then(user => {
-			this.user = user;
-			this.add_cards();
-		}, error => { });
+		this.add_cards();
 	}
 
 	ngAfterViewInit() {
@@ -105,7 +93,6 @@ export class Display {
 				resp.coords.latitude,
 				resp.coords.longitude,
 				this.navParams.get("radius"),
-				this.user.user_id,
 				this.navParams.get("cuisines") )
 			.then( (data) => {
 				if(data.error) {
@@ -158,12 +145,12 @@ export class Display {
 	star_res() {
 		const res = this.cards[this.cards.length-1];
 		if (!res.starred) {
-			this.munchrApi.star_res(this.user.user_id, res.res_id)
+			this.munchrApi.star_res(res.res_id)
 			.then(() => {
 				res.starred = true;
 			}, error => {});
 		} else {
-			this.munchrApi.unstar_res(this.user.user_id, res.res_id)
+			this.munchrApi.unstar_res(res.res_id)
 			.then(() => {
 				res.starred = false;
 			}, error => {});

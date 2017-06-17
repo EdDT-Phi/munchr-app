@@ -71,7 +71,7 @@ export class Main {
 	}
 
 	get_activity() {
-		this.munchrApi.friends_activity(this.user.user_id)
+		this.munchrApi.friends_activity()
 		.then(data => {
 			if(data.error) {
 				this.utils.display_error(data.error);
@@ -82,7 +82,7 @@ export class Main {
 	}
 
 	get_notifications() {
-		this.munchrApi.notifications(this.user.user_id)
+		this.munchrApi.notifications()
 		.then(data => {
 			this.notifications = data.results;
 		}, error => { });
@@ -101,9 +101,7 @@ export class Main {
 	}
 
 	add_friends() {
-		this.navCtrl.push(Search, {
-			user_id: this.user.user_id
-		});
+		this.navCtrl.push(Search);
 	}
 	
 	search() {
