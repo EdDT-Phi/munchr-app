@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { ModalController } from 'ionic-angular';
+import { ModalController, Platform } from 'ionic-angular';
 import { NativeStorage } from '@ionic-native/native-storage';
 import 'rxjs/add/operator/map';
 
@@ -27,6 +27,7 @@ export class UserService {
 
 	constructor(
 		private http: Http,
+		private platform: Platform,
 		private modalCtrl: ModalController,
 		private nativeStorage: NativeStorage,
 		private utils: Utils,
@@ -41,19 +42,21 @@ export class UserService {
 			return Promise.resolve(this.user);
 
 		return new Promise(resolve => {
-			this.nativeStorage.getItem('user')
-			.then( data => {
-				this.user = data;
-				this.user.timestamp = Date.now();
-				resolve(this.user);
 
-			}, error => {
-				// Not logged in
-				this.get_user_login(resolve);
+			this.platform.ready().then(() => {
+				this.nativeStorage.getItem('user')
+				.then( data => {
+					this.user = data;
+					this.user.timestamp = Date.now();
+					resolve(this.user);
 
-				this.utils.display_error(error);
-				// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:'', token:'test-token', timestamp: Date.now()}
-				// resolve(this.user);
+				}, error => {
+					// Not logged in
+					this.get_user_login(resolve);
+
+					// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:'', token:'test-token', timestamp: Date.now()}
+					// resolve(this.user);
+				});
 			});
 		});
 	}
