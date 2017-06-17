@@ -38,6 +38,7 @@ export class Main {
 		this.userService.get_user()
 		.then(user => {
 			this.user = user;
+			this.broadcast_login();
 			this.after_get_user();
 		}, error => { });
 
@@ -55,18 +56,13 @@ export class Main {
 	ionViewWillEnter() {
 		if (this.user) {
 			this.notifications = null;
-			this.get_activity();
-			this.get_notifications();
+			this.after_get_user();
 		}
 	}
 
 	after_get_user(){
-		this.broadcast_login();
-		this.userService.refresh_token()
-		.then(success => {
-			this.get_activity();
-			this.get_notifications();
-		});
+		this.get_activity();
+		this.get_notifications();
 	}
 
 	broadcast_login() {

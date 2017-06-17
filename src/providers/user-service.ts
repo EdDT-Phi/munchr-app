@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { ModalController, Platform } from 'ionic-angular';
 import { NativeStorage } from '@ionic-native/native-storage';
 import 'rxjs/add/operator/map';
@@ -22,11 +21,9 @@ export class UserService {
 		last_name: string, 
 		photo_url: string,
 		token: string,
-		timestamp: number, // milliseconds
 	} = null;
 
 	constructor(
-		private http: Http,
 		private platform: Platform,
 		private modalCtrl: ModalController,
 		private nativeStorage: NativeStorage,
@@ -47,7 +44,6 @@ export class UserService {
 				this.nativeStorage.getItem('user')
 				.then( data => {
 					this.user = data;
-					this.user.timestamp = Date.now();
 					resolve(this.user);
 
 				}, error => {
@@ -62,41 +58,12 @@ export class UserService {
 	}
 
 	get_user_token(): Promise<{token:string, user_id:number}> {
-		if (Date.now() < this.user.timestamp + (1000 * 60 * 60)) {
+		if (this.user && this.user.token) {
 			return Promise.resolve({token: this.user.token, user_id: this.user.user_id});
-		} 
+		}
 
 		return new Promise(resolve => {
-			const headers = new Headers();
-			headers.append('Content-Type', 'application/x-www-form-urlencoded');
-			const options = new RequestOptions({ headers: headers });
-
-			const obj = {
-				user_id: this.user.user_id,
-				old_token: this.user.token,
-			}
-
-			const data = Object.keys(obj).map(function(key) {
-			    return key + '=' + obj[key];
-			}).join('&');
-
-
-			this.http.post(this.url + '/auth/token/', data, options)
-			.map(res => res.json())
-			.subscribe(data => {
-				// we've got back the raw data, now generate the core schedule data
-				// and save the data for later reference
-				this.user.token = data.token;
-				this.user.timestamp = Date.now();
-				resolve({token: data.token, user_id: this.user.user_id});
-			}, error => {
-				setTimeout(() => {
-					this.get_user_token()
-					.then(token_obj => {
-						resolve(token_obj);
-					});
-				}, 5000);
-			});
+			this.get_user_login(resolve);
 		});
 	}
 
@@ -108,7 +75,6 @@ export class UserService {
 				return this.get_user_login(resolve);
 			}
 			this.user = data;
-			this.user.timestamp = Date.now();
 			return resolve(this.user);
 		});
 	}
@@ -117,16 +83,5 @@ export class UserService {
 		this.user = null;
 		this.nativeStorage.remove("user")
 		.then(success => { }, error => { });
-	}
-
-	refresh_token(): Promise<boolean> {
-		return new Promise(resolve => {
-			this.get_user_token()
-			.then(token => {
-				resolve(true);
-			}, error => {
-				resolve(false);
-			});
-		});
 	}
 }
