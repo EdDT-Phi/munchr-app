@@ -116,11 +116,11 @@ export class MunchrApi {
 	}
 
 	dismiss_rating(rating_id: number) {
-		return this.post_api_call(`/users/munch/dismiss/`, { rating_id });
+		return this.post_api_call('/users/munch/dismiss/', { rating_id });
 	}
 
 	activity(other_id:number) {
-		return this.post_api_call(`/users/activity/`, { other_id });
+		return this.post_api_call('/users/activity/', { other_id });
 	}
 
 	friends_activity() {
@@ -152,7 +152,7 @@ export class MunchrApi {
 	}
 
 	dismiss_recommendation(user_to_id: number, res_id: string) {
-		return this.post_api_call(`notifications/dismiss/`, { user_to_id, res_id });
+		return this.post_api_call('notifications/dismiss/', { user_to_id, res_id });
 	}
 
 	get_stars() {
@@ -164,7 +164,7 @@ export class MunchrApi {
 	}
 
 	unstar_res(res_id:string) {
-		return this.post_api_call(`/stars/unstar/`, { res_id });
+		return this.post_api_call('/stars/unstar/', { res_id });
 	}
 
 	search_restaurants(lat:number, lng:number, query:string) {

@@ -118,4 +118,15 @@ export class UserService {
 		this.nativeStorage.remove("user")
 		.then(success => { }, error => { });
 	}
+
+	refresh_token(): Promise<boolean> {
+		return new Promise(resolve => {
+			this.get_user_token()
+			.then(token => {
+				resolve(true);
+			}, error => {
+				resolve(false);
+			});
+		});
+	}
 }

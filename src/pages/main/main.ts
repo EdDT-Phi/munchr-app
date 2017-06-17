@@ -62,8 +62,11 @@ export class Main {
 
 	after_get_user(){
 		this.broadcast_login();
-		this.get_activity();
-		this.get_notifications();
+		this.userService.refresh_token()
+		.then(success => {
+			this.get_activity();
+			this.get_notifications();
+		});
 	}
 
 	broadcast_login() {
