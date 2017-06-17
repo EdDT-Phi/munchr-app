@@ -35,11 +35,11 @@ export class ResSearch {
 	}
 
 	search_restaurants(event) {
-		if (event.target.value == '')  return; 
+		if (event.target.value == '')  return;
 		this.munchrApi.search_restaurants(this.lat, this.lng, event.target.value)
 		.then(data => {
 			this.restaurants = data.results;
-		})
+		});
 	}
 
 	view_details(res_id:string) {

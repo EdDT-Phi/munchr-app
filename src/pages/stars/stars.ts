@@ -13,6 +13,7 @@ export class Stars {
 	stars: Array<{
 		res_id: string,
 		res_name: string,
+		photo_url: string,
 	}>;
 	loading: Loading = null;
 

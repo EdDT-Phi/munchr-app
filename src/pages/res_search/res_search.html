@@ -10,7 +10,7 @@
 	<ion-list *ngIf="restaurants && restaurants.length > 0">
 		<ion-item *ngFor="let res of restaurants">
 			<ion-avatar item-left (click)="view_details(res.res_id)">
-				<img src="{{ res.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+				<img src="{{ res.photo_url }}">
 			</ion-avatar>
 			<div (click)="view_details(res.res_id)">
 				<h2>{{ res.name }}</h2>
