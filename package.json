@@ -1,84 +1,106 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
-  "private": true,
-  "scripts": {
-    "clean": "ionic-app-scripts clean",
-    "build": "ionic-app-scripts build",
-    "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
-  },
-  "dependencies": {
-    "@angular/common": "2.2.1",
-    "@angular/compiler": "2.2.1",
-    "@angular/compiler-cli": "2.2.1",
-    "@angular/core": "2.2.1",
-    "@angular/forms": "2.2.1",
-    "@angular/http": "2.2.1",
-    "@angular/platform-browser": "2.2.1",
-    "@angular/platform-browser-dynamic": "2.2.1",
-    "@angular/platform-server": "2.2.1",
-    "angular2-swing": "^0.10.0",
-    "ionic-angular": "2.0.0",
-    "ionic-native": "2.4.1",
-    "ionicons": "3.0.0",
-    "rxjs": "5.0.0-beta.12",
-    "sw-toolbox": "3.4.0",
-    "zone.js": "0.6.26"
-  },
-  "devDependencies": {
-    "@ionic/app-scripts": "1.0.0",
-    "typescript": "2.0.9"
-  },
-  "cordovaPlugins": [
-    "cordova-plugin-geolocation",
-    "cordova-plugin-x-socialsharing",
-    "cordova-plugin-compat",
-    "ionic-plugin-keyboard",
-    "cordova-plugin-whitelist",
-    "cordova-plugin-console",
-    "cordova-plugin-statusbar",
-    "cordova-plugin-device",
-    "cordova-plugin-splashscreen",
-    {
-      "id": "cordova-plugin-facebook4",
-      "locator": "cordova-plugin-facebook4",
-      "variables": {
-        "APP_ID": "326434787728030",
-        "APP_NAME": "Munchr"
-      }
+    "name": "munchr",
+    "author": "EdDT",
+    "homepage": "http://munchr.site/",
+    "private": true,
+    "scripts": {
+        "clean": "ionic-app-scripts clean",
+        "build": "ionic-app-scripts build",
+        "ionic:build": "ionic-app-scripts build",
+        "ionic:serve": "ionic-app-scripts serve"
     },
-    "cordova-plugin-nativestorage",
-    "uk.co.workingedge.phonegap.plugin.launchnavigator",
-    "cordova-plugin-actionsheet",
-    "cordova-plugin-screen-orientation",
-    "cordova-plugin-admobpro",
-    "cordova-plugin-extension",
-    "cordova-plugin-device-orientation",
-    "cordova-sqlite-storage",
-    {
-      "id": "ionic-plugin-deeplinks",
-      "locator": "ionic-plugin-deeplinks",
-      "variables": {
-        "URL_SCHEME": "munchr",
-        "DEEPLINK_SCHEME": "https",
-        "DEEPLINK_HOST": "munchr.site"
-      }
-    }
-  ],
-  "cordovaPlatforms": [
-    "ios",
-    {
-      "platform": "ios",
-      "version": "",
-      "locator": "ios"
+    "dependencies": {
+        "@angular/common": "2.2.1",
+        "@angular/compiler": "2.2.1",
+        "@angular/compiler-cli": "2.2.1",
+        "@angular/core": "2.2.1",
+        "@angular/forms": "2.2.1",
+        "@angular/http": "2.2.1",
+        "@angular/platform-browser": "2.2.1",
+        "@angular/platform-browser-dynamic": "2.2.1",
+        "@angular/platform-server": "2.2.1",
+        "@ionic-native/core": "^3.12.1",
+        "@ionic-native/native-storage": "^3.12.1",
+        "@ionic/app-scripts": "^1.3.7",
+        "angular2-swing": "^0.10.0",
+        "ionic-angular": "2.0.0",
+        "ionic-native": "2.4.1",
+        "ionicons": "3.0.0",
+        "rxjs": "^5.0.1",
+        "sw-toolbox": "3.4.0",
+        "zone.js": "0.6.26",
+        "cordova-plugin-console": "1.0.5",
+        "cordova-plugin-device": "1.1.4",
+        "cordova-plugin-nativestorage": "~2.2.1",
+        "cordova-plugin-splashscreen": "~4.0.1",
+        "cordova-plugin-statusbar": "2.2.1",
+        "cordova-plugin-whitelist": "1.3.1",
+        "cordova-sqlite-storage": "~2.0.2",
+        "ionic-plugin-keyboard": "~2.2.1"
     },
-    {
-      "platform": "android",
-      "version": "",
-      "locator": "android"
+    "devDependencies": {
+        "@ionic/app-scripts": "1.3.7",
+        "@ionic/cli-plugin-cordova": "1.4.0",
+        "@ionic/cli-plugin-ionic-angular": "1.3.1",
+        "typescript": "2.0.9"
+    },
+    "cordovaPlugins": [
+        "cordova-plugin-geolocation",
+        "cordova-plugin-x-socialsharing",
+        "cordova-plugin-compat",
+        "ionic-plugin-keyboard",
+        "cordova-plugin-whitelist",
+        "cordova-plugin-console",
+        "cordova-plugin-statusbar",
+        "cordova-plugin-device",
+        "cordova-plugin-splashscreen",
+        {
+            "id": "cordova-plugin-facebook4",
+            "locator": "cordova-plugin-facebook4",
+            "variables": {
+                "APP_ID": "326434787728030",
+                "APP_NAME": "Munchr"
+            }
+        },
+        "uk.co.workingedge.phonegap.plugin.launchnavigator",
+        "cordova-plugin-actionsheet",
+        "cordova-plugin-screen-orientation",
+        "cordova-plugin-extension",
+        "cordova-plugin-device-orientation",
+        {
+            "id": "ionic-plugin-deeplinks",
+            "locator": "ionic-plugin-deeplinks",
+            "variables": {
+                "URL_SCHEME": "munchr",
+                "DEEPLINK_SCHEME": "https",
+                "DEEPLINK_HOST": "munchr.site"
+            }
+        }
+    ],
+    "cordovaPlatforms": [
+        "ios",
+        {
+            "platform": "ios",
+            "version": "",
+            "locator": "ios"
+        },
+        {
+            "platform": "android",
+            "version": "",
+            "locator": "android"
+        }
+    ],
+    "description": "Munchr: Personalized Munching",
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-nativestorage": {},
+            "cordova-plugin-console": {},
+            "cordova-plugin-device": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-statusbar": {},
+            "cordova-plugin-whitelist": {},
+            "cordova-sqlite-storage": {},
+            "ionic-plugin-keyboard": {}
+        }
     }
-  ],
-  "description": "MyIonic2Project: An Ionic project"
 }

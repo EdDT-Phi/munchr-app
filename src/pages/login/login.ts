@@ -85,11 +85,6 @@ export class Login {
 
 	create_account() {
 		this.navCtrl.push(Create, {login_viewctrl: this.viewCtrl});
-		// let modal = this.modalCtrl.create(Create);
-		// modal.present();
-		// modal.onDidDismiss(data => {
-			// this.viewCtrl.dismiss(data);
-		// });
 	}
 	
 	save_and_login(user) {

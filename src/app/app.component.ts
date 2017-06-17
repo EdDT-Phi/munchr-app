@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 
 import { Nav, Platform, Events } from 'ionic-angular';
-import { StatusBar, Splashscreen, NativeStorage, ScreenOrientation, Deeplinks } from 'ionic-native';
+import { StatusBar, Splashscreen, ScreenOrientation, Deeplinks } from 'ionic-native';
 
 import { Main } from '../pages/main/main';
 import { Account } from '../pages/account/account';
@@ -11,6 +11,7 @@ import { MoreInfo } from '../pages/info/info';
 import { Stars } from '../pages/stars/stars';
 import { ResSearch } from '../pages/res_search/res_search';
 import { History } from '../pages/history/history';
+import { UserService } from '../providers/user-service';
 import { Utils } from '../utils';
 
 
@@ -26,9 +27,10 @@ export class MyApp {
 
 
 	constructor(
-		private platform: Platform, 
 		private utils: Utils,
 		private events: Events,
+		private platform: Platform, 
+		private userService: UserService,
 	) {
 		this.initializeApp();
 
@@ -71,13 +73,7 @@ export class MyApp {
 
 	openPage(page) {
 		if (page.title == 'Logout') {
-		 	NativeStorage.remove("user")
-			.then(()=>{}, (error)=> {
-				// this.utils.display_error(error);
-			});
-		}
-
-		if (page.component === Main) {
+		 	this.userService.logout();
 			this.nav.setRoot(Main);
 		} else {
 			// Reset the content nav to have just this page

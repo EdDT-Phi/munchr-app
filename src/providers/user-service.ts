@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { ModalController } from 'ionic-angular';
-import { NativeStorage } from 'ionic-native';
+import { NativeStorage } from '@ionic-native/native-storage';
 import 'rxjs/add/operator/map';
 
 import { Login } from '../pages/login/login';
-
+import { Utils } from '../utils';
 
 @Injectable()
 export class UserService {
@@ -25,7 +25,12 @@ export class UserService {
 		timestamp: number, // milliseconds
 	} = null;
 
-	constructor(private http: Http, private modalCtrl: ModalController) {
+	constructor(
+		private http: Http,
+		private modalCtrl: ModalController,
+		private nativeStorage: NativeStorage,
+		private utils: Utils,
+	) {
 		// this.url = 'http://localhost:5000'; // dev
 		this.url = 'https://munchr-test.herokuapp.com'; // test
 		// this.url = 'https://munchr.herokuapp.com'; // prod
@@ -36,7 +41,7 @@ export class UserService {
 			return Promise.resolve(this.user);
 
 		return new Promise(resolve => {
-			NativeStorage.getItem('user')
+			this.nativeStorage.getItem('user')
 			.then( data => {
 				this.user = data;
 				this.user.timestamp = Date.now();
@@ -44,10 +49,11 @@ export class UserService {
 
 			}, error => {
 				// Not logged in
-				// this.get_user_login(resolve);
+				this.get_user_login(resolve);
 
-				this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:'', token:'test-token', timestamp: Date.now()}
-				resolve(this.user);
+				this.utils.display_error(error);
+				// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:'', token:'test-token', timestamp: Date.now()}
+				// resolve(this.user);
 			});
 		});
 	}
@@ -81,11 +87,12 @@ export class UserService {
 				this.user.timestamp = Date.now();
 				resolve(data.token);
 			}, error => {
-				this.user = null;
-				this.get_user()
-				.then((user) => {
-					resolve(this.user.token);
-				});
+				setTimeout(() => {
+					this.get_user_token()
+					.then(token => {
+						resolve(token);
+					});
+				}, 5000);
 			});
 		});
 	}
@@ -101,5 +108,11 @@ export class UserService {
 			this.user.timestamp = Date.now();
 			return resolve(this.user);
 		});
+	}
+
+	logout() {
+		this.user = null;
+		this.nativeStorage.remove("user")
+		.then(success => { }, error => { });
 	}
 }

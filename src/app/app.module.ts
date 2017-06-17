@@ -2,6 +2,9 @@ import { NgModule, ErrorHandler } from '@angular/core';
 
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
+import { NativeStorage } from '@ionic-native/native-storage';
+
+
 import { MyApp } from './app.component';
 import { Login } from '../pages/login/login';
 import { Main } from '../pages/main/main';
@@ -67,7 +70,7 @@ import {
 		History,
 		Liked,
 	],
-	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Utils, MunchrApi, UserService]
+	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Utils, MunchrApi, UserService, NativeStorage]
 })
 export class AppModule {
 }

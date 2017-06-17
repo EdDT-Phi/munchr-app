@@ -19,6 +19,13 @@ export class MunchrApi {
 	}
 
 	get_api_call(uri:string, saved:string): Promise<any> {
+
+
+		if (this.saved_data[saved]) {
+			// already loaded data
+			return Promise.resolve(this.saved_data[saved]);
+		}
+
 		return new Promise(resolve => {
 			// We're using Angular HTTP provider to request the data,
 			// then on the response, it'll map the JSON data to a parsed JS object.
@@ -68,11 +75,6 @@ export class MunchrApi {
 
 
 	filters() {
-
-		if (this.saved_data['filters']) {
-			// already loaded data
-			return Promise.resolve(this.saved_data['filters']);
-		}
 
 		return this.get_api_call('/restaurants/filters', 'filters');
 	}
