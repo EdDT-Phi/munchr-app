@@ -39,7 +39,7 @@
 	</ion-content>
 	<ion-item no-lines>
 		<ion-label item-left>Distance (miles)</ion-label>
-		<ion-badge item-right>{{ (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320 }} mile{{((distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320)  > 1 ? 's' : ''}} </ion-badge>
+		<ion-badge item-right>{{ distance }} mile{{ distance  > 1 ? 's' : ''}} </ion-badge>
 	</ion-item>
 	<ion-range min="1" max="20" [(ngModel)]="distance">
 		<ion-icon range-left name="walk"></ion-icon>

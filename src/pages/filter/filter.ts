@@ -16,7 +16,7 @@ export class Filter {
 	all: Array<string> = [];
 	all_recommended: Array<string> = [];
 	marked: Object = {};
-	distance: number = 8;
+	distance: number = 5;
 
 	constructor(public navCtrl: NavController, public navParams: NavParams) {
 		this.all = navParams.get('cuisines');
@@ -54,9 +54,8 @@ export class Filter {
 	}
 
 	search() {
-		const distance = this.distance;
 		this.navCtrl.push(Display, {
-			radius: (distance*distance*distance/320) + (320 - (distance*distance*distance)%320)/320,
+			radius: this.distance,
 			cuisines: this.items.filter((item) => {
 				return this.marked[item];
 			}),
