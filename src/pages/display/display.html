@@ -17,13 +17,14 @@
 
 <ion-content>
 	<div swing-stack #myswing1 [stackConfig]="stackConfig" (throwout)="throw_out($event.throwDirection)" id="card-stack">
-		<ion-card #mycards1 swing-card *ngFor="let res of cards">
+		<ion-card #mycards1 swing-card *ngFor="let res of cards; let myIndex = index">
 			<img (click)="info()" height="300" *ngIf="res.photo" [src]="res.photo">
 			
 			<ion-title>{{ res.name }} <ion-icon (click)=star_res() name="{{(res.starred)? 'star' : 'star-outline'}}"></ion-icon></ion-title>
 			<ion-card-content *ngIf="res.location">
 				{{ res.location.address }}<br>
-				{{ res.distance }} miles away<br>
+				> {{ res.distance }} miles away<br>
+				{{ get_price(myIndex) }}<br>
 			</ion-card-content>
 			<br>
 			<h2 style="color: #ff4e00;">{{ res.evidence }}</h2>

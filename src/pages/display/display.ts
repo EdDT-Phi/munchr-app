@@ -160,4 +160,10 @@ export class Display {
 	go_back() {
 		this.navCtrl.pop();
 	}
+
+	get_price(idx:number) {
+		if (this.cards[idx].price >= 1)
+			return Array(this.cards[idx].price).join('$');
+		return '';
+	}
 }

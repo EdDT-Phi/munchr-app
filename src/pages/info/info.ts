@@ -60,7 +60,7 @@ export class MoreInfo {
 
 	get_price() {
 		if (this.details.price >= 1)
-			return ' - ' + Array(this.details.price).join('$');
+			return Array(this.details.price).join('$');
 		return '';
 	}
 
