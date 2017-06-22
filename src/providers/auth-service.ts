@@ -18,12 +18,6 @@ export class AuthService {
 	last_name: string;
 	fb_id: string;
 	photo: string;
-	user: {
-		user_id: number,
-		first_name: string, 
-		last_name: string, 
-		photo_url: string,
-	} = null;
 
 	constructor(public http: Http) {
 		// this.url = 'http://localhost:5000'; // dev
@@ -107,7 +101,7 @@ export class AuthService {
 			// then on the response, it'll map the JSON data to a parsed JS object.
 			// Next, we process the data and resolve the promise with the new data.
 
-			this.http.post(this.url + '/users/', data, options)
+			this.http.post(this.url + '/users/new/', data, options)
 			.map(res => res.json())
 			.subscribe(data => {
 				// we've got back the raw data, now generate the core schedule data

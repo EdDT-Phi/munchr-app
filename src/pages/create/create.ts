@@ -63,19 +63,11 @@ export class Create {
 		this.authService.create_account(this.first_name, this.last_name, this.email, this.password)
 		.then(data => {
 			this.loading.dismiss();
-				console.log(data);
-				if (data.error) {
-					this.utils.display_error(data.error);
-				} else {
-					this.save_and_login( {
-						user_id: data.result.user_id,
-						fb_id: data.result.fb_id,
-						first_name: data.result.first_name,
-						last_name: data.result.last_name,
-						email: data.result.email,
-						photo: data.result.picture,
-					});
-				}
+			if (data.error) {
+				this.utils.display_error(data.error);
+			}
+
+			this.save_and_login(data.result);
 		});
 	}
 
