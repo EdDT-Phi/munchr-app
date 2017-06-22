@@ -151,8 +151,8 @@ export class MunchrApi {
 		return this.post_api_call('/notifications/', { });
 	}
 
-	dismiss_recommendation(user_to_id: number, res_id: string) {
-		return this.post_api_call('/notifications/dismiss/', { user_to_id, res_id });
+	dismiss_recommendation(user_from_id: number, res_id: string) {
+		return this.post_api_call('/notifications/dismiss/', { user_from_id, res_id });
 	}
 
 	get_stars() {
