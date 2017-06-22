@@ -140,7 +140,7 @@ export class MunchrApi {
 	}
 
 	friend_request(user_to_id:number) {
-		return this.post_api_call('/friends/', { user_to_id });
+		return this.post_api_call('/friends/new/', { user_to_id });
 	}
 
 	delete_friend(user_to_id:number) {

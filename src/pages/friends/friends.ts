@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, Loading, LoadingController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, Loading, LoadingController } from 'ionic-angular';
 
 import { MunchrApi } from '../../providers/munchr-api';
 import { Account } from '../account/account';
@@ -20,7 +20,6 @@ export class Friends {
 		private navParams: NavParams,
 		private munchrApi: MunchrApi,
 		private navCtrl: NavController,
-		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
 	) {
 
@@ -33,15 +32,7 @@ export class Friends {
 	}
 
 	view_account(user:any) {
-		const modal = this.modalCtrl.create(Account, { user });
-		modal.present();
-		modal.onDidDismiss(()=> {
-			this.loading = this.loadingCtrl.create({
-				content: 'Please wait...'
-			});
-			this.loading.present();
-			this.get_friends();
-		});
+		this.navCtrl.push(Account, { user });
 	}
 
 	get_friends(){
@@ -71,6 +62,6 @@ export class Friends {
 	}
 
 	search_users() {
-		this.modalCtrl.create(Search).present();
+		this.navCtrl.push(Search);
 	}
 }
