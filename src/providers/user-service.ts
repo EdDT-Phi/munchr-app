@@ -50,7 +50,7 @@ export class UserService {
 					// Not logged in
 					this.get_user_login(resolve);
 
-					// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:'', token:'test-token', timestamp: Date.now()}
+					// this.user = {user_id: 3, first_name:'Tyler', last_name:'Camp', photo_url:'', token:'test-token'}
 					// resolve(this.user);
 				});
 			});
