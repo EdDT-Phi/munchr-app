@@ -23,29 +23,40 @@
 			<ion-title>{{ res.name }} <ion-icon (click)=star_res() name="{{(res.starred)? 'star' : 'star-outline'}}"></ion-icon></ion-title>
 			<ion-card-content *ngIf="res.location">
 				{{ res.location.address }}<br>
-				> {{ res.distance }} miles away<br>
+				< {{ res.distance }} miles away<br>
 				{{ get_price(myIndex) }}<br>
 			</ion-card-content>
 			<br>
 			<h2 style="color: #ff4e00;">{{ res.evidence }}</h2>
 		</ion-card>
 	</div>
-	<div style="{text-align: center;}">
+	<div class="messages">
 		<div *ngIf="display_options && liked_cards.length != 0" class="center">
-			<button ion-button icon-right class="center" (click)="see_liked()">Show liked restaurants
-			<ion-icon name="thumbs-up"></ion-icon>
-			</button>
-				
-			<p class="center">Tip: Tap on the card or "Restaurant Details" to see more information and "Done" when you've made your choice</p>
+			<ion-card>
+				<button ion-button icon-right class="center" (click)="see_liked()">Show liked restaurants
+					<ion-icon name="thumbs-up"></ion-icon>
+				</button>
+				<ion-card-content>
+					Tip: Tap on the card or "Restaurant Details" to see more information and "Done" when you've made your choice
+				</ion-card-content>
+			</ion-card>
 		</div>
 		<div *ngIf="display_options && liked_cards.length == 0">
-			<p>Looks like you didn't swipe right on any restaurants.</p>
-			<button ion-button class="center" (click)="go_back()">Try Different Filters</button>
-			<button ion-button class="center" (click)="start_over()">View Again</button>
+			<ion-card>
+				<ion-card-content>
+					Looks like you didn't swipe right on any restaurants.
+				</ion-card-content>
+				<button ion-button class="center" (click)="go_back()">Try Different Filters</button>
+				<button ion-button class="center" (click)="start_over()">View Again</button>
+			</ion-card>
 		</div>
 		<div *ngIf="!loading && all_cards.length === 0">
-			<p>Looks like there were no results that matched those filters. You could try different filters or a larger search radius</p>
-			<button ion-button class="center" (click)="go_back()">Ok</button>
+			<ion-card>
+				<ion-card-content>
+					Looks like there were no results that matched those filters. You could try different filters or a larger search radius
+				</ion-card-content>
+				<button ion-button class="center" (click)="go_back()">Ok</button>
+			</ion-card>
 		</div>
 	</div>
 </ion-content>
