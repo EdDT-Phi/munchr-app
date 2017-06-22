@@ -8,15 +8,16 @@
 
 
 <ion-content padding>
+<h3 *ngIf="stars && stars.length === 0">You have not starred any restaurants yet</h3>
 <div *ngIf="stars && stars.length > 0">
 	<!-- <ion-title>Friend Requests</ion-title> -->
 	<ion-list>
-		<ion-item *ngFor="let res of stars">
+		<ion-item *ngFor="let res of stars; let myIndex = index">
 			<ion-avatar item-left (click)="view_details(res.res_id)">
 				<img src="{{ res.photo_url }}">
 			</ion-avatar>
 			<h2 (click)="view_restaurant(res.res_id)">{{ res.res_name }}</h2>
-			<button (click)="star_res(res.res_id)" ion-button outline item-right icon-left>
+			<button (click)="star_res(myIndex)" ion-button outline item-right icon-left>
 			    <ion-icon name='star-outline'></ion-icon>
 			    Unstar
 			</button>

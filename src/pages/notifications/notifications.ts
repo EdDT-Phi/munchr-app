@@ -71,7 +71,7 @@ export class Notifications {
 		this.munchrApi.respond_request(response, oth_user.user_id)
 		.then(data => {
 			console.log(data);
-			this.requests = data.results.requests;
+			this.requests = data.result.requests;
 			this.loading.dismiss();
 			this.loading = null;
 		}, error => {});

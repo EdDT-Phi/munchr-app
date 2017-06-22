@@ -39,17 +39,16 @@ export class Stars {
 		this.loading.present();
 		this.munchrApi.get_stars()
 		.then(data => {
-			console.log(data);
 			this.stars = data.results;
 			this.loading.dismiss();
 		}, error => { });
 	}
 
-	star_res(res_id: string) {
+	star_res(index: number) {
+		const res_id = this.stars[index].res_id;
+		this.stars.splice(index, 1);
 		this.munchrApi.unstar_res(res_id)
-		.then(data => {
-			this.stars = data.results;
-		}, error => {});
+		.then(success => {}, error => {});
 	}
 
 	view_restaurant(res_id:string) {
