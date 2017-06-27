@@ -15,7 +15,9 @@
 <ion-content *ngIf="details">
 	<br> <br> <br>
 	<ion-card> 
-		<ion-title>{{ loading? 'Loading...' : (details.name) }}</ion-title>
+		<ion-title>{{ loading? 'Loading...' : (details.name) }}
+			<div style="color: #ff4e00;" *ngIf="details.opennow"> Open Now! </div>
+		</ion-title>
 		<img *ngIf="!details.photos || details.photos.length == 0" [src]="details.photo">
 		<ion-slides *ngIf="details.photos && details.photos.length > 0" [autoplay]="5000" [loop]="true" [pager]="true" [speed]="1000" >
 			<ion-slide *ngFor="let photo of details.photos">
@@ -33,12 +35,8 @@
 			{{ details.location.address }} 
 			<p style="color: white; float: right;"> < {{ details.location.distance }} miles</p> <br>
 
-			{{ details.phone }}
-			<a href="{{details.website}}" style="float: right;">Website/Menu</a> <br>
-			
-			<p style="color: #ff4e00;" *ngIf=[details.opennow]> Open Now! </p>
-
-			<p style="color: white; float: right;">{{ details.price}}</p>
+			<a href="tel:{{ details.phone }}">{{details.phone}}</a>
+			<p style="float: right; color: white">{{ details.price? '('+details.price+')' : ''}} <a href="{{details.website}}">Website/Menu</a> </p>
 			<img class="center" [src]="map" (click)="navigate()"> <br> <br>
 		</ion-item>
 	</ion-card>
