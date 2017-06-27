@@ -21,7 +21,7 @@ export class MoreInfo {
 		name: string,
 		phone: string,
 		website: string,
-		price:number,
+		price:string,
 		opennow: boolean,
 		reviews: Array<any>,
 		photos: Array<any>,
@@ -56,12 +56,6 @@ export class MoreInfo {
 
 
 		this.get_details(this.navParams.get('res_id'));
-	}
-
-	get_price() {
-		if (this.details.price >= 1)
-			return Array(this.details.price).join('$');
-		return '';
 	}
 
 	navigate() {

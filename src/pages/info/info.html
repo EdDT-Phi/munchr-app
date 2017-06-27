@@ -38,7 +38,7 @@
 			
 			<p style="color: #ff4e00;" *ngIf=[details.opennow]> Open Now! </p>
 
-			<p style="color: white; float: right;">{{ get_price() }}</p>
+			<p style="color: white; float: right;">{{ details.price}}</p>
 			<img class="center" [src]="map" (click)="navigate()"> <br> <br>
 		</ion-item>
 	</ion-card>
