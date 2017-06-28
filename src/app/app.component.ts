@@ -58,7 +58,7 @@ export class MyApp {
 			StatusBar.styleDefault();
 			Splashscreen.hide();
 			Deeplinks.routeWithNavController(this.nav, {
-				'/restaurant/:res_id': MoreInfo
+				'/restaurants/:res_id': MoreInfo
 			}).subscribe(match => {
 				console.log('match:', match);
 			}, nomatch => {

@@ -127,7 +127,7 @@ export class MoreInfo {
 		SocialSharing.shareWithOptions({
 			message: 'Let\'s munch here!',
 			subject: 'Munchr: going out to eat',
-			url: `https://www.munchr.site/restaurant/${this.details.res_id}`
+			url: `https://www.munchr.site/restaurants/${this.details.res_id}`
 		}).then(success => {
 			if (final)
 				this.navCtrl.setRoot(Main)

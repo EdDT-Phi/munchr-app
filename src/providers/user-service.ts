@@ -4,7 +4,6 @@ import { NativeStorage } from '@ionic-native/native-storage';
 import 'rxjs/add/operator/map';
 
 import { Login } from '../pages/login/login';
-import { Utils } from '../utils';
 
 @Injectable()
 export class UserService {
@@ -27,7 +26,6 @@ export class UserService {
 		private platform: Platform,
 		private modalCtrl: ModalController,
 		private nativeStorage: NativeStorage,
-		private utils: Utils,
 	) {
 		// this.url = 'http://localhost:5000'; // dev
 		this.url = 'https://munchr-test.herokuapp.com'; // test
