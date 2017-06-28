@@ -36,7 +36,7 @@
 		<ion-list>
 			<ion-item *ngFor="let user of requests">
 				<ion-avatar item-left (click)="view_account(user)">
-					<img src="{{ user.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+					<img src="{{ user.photo_url || 'assets/imgs/person.png'}}">
 				</ion-avatar>
 				<h2 (click)="view_account(user)">{{ user.first_name }} {{user.last_name}}</h2>
 				<button (click)="respond(true, user)" ion-button outline item-right icon-left>
@@ -55,7 +55,7 @@
 		<ion-list>
 			<ion-item *ngFor="let recom of recommendations; let myIndex = index">
 				<ion-avatar item-left (click)="view_account(recom)">
-					<img src="{{ recom.photo_url || 'https://img.clipartfest.com/0a8ebfb4a70e557d07de12bce05cf5a8_male-silhouette-man-head-clipart-silhouette_1280-1024.jpeg'}}">
+					<img src="{{ recom.photo_url || 'assets/imgs/person.png'}}">
 				</ion-avatar>
 				<div (click)="view_restaurant(recom.res_id)">
 					<h2>{{ recom.first_name }} {{recom.last_name}}</h2>

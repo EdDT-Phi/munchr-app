@@ -21,7 +21,7 @@
 				<ion-label item-left>Recommended For You</ion-label>
 			</ion-item>
 			<div *ngFor="let item of recommended">
-				<ion-item *ngIf="!marked[item]">
+				<ion-item>
 					<ion-label>{{ item }}</ion-label>
 					<ion-checkbox [(ngModel)]="marked[item]" item-left></ion-checkbox>
 				</ion-item>
@@ -30,7 +30,7 @@
 				<ion-label item-left>All</ion-label>
 			</ion-item>
 			<div *ngFor="let item of items">
-				<ion-item *ngIf="!marked[item]">
+				<ion-item>
 					<ion-label>{{ item }}</ion-label>
 					<ion-checkbox [(ngModel)]="marked[item]" item-left></ion-checkbox>
 				</ion-item>
