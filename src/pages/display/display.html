@@ -4,53 +4,51 @@
 			<ion-icon name="menu"></ion-icon>
 		</button>
 		<ion-title>Results</ion-title>
-		<ion-buttons *ngIf="liked_cards.length > 0" end>
-		  <button ion-button icon-only (click)="see_liked()">
-		  	<ion-badge>
-		  	{{ liked_cards.length }}
-		  	</ion-badge>
-		    <ion-icon name="thumbs-up"></ion-icon>
-		  </button>
-		</ion-buttons>
 	</ion-navbar>
 </ion-header>
 
 <ion-content>
-	<div swing-stack #myswing1 [stackConfig]="stackConfig" (throwout)="throw_out($event.throwDirection)" id="card-stack">
-		<ion-card #mycards1 swing-card *ngFor="let res of cards; let myIndex = index">
-			<img (click)="info()" height="300" *ngIf="res.photo" [src]="res.photo">
-			
-			<ion-title>{{ res.name }} <ion-icon (click)=star_res() name="{{(res.starred)? 'star' : 'star-outline'}}"></ion-icon></ion-title>
-			<ion-card-content *ngIf="res.location">
-				{{ res.location.address }}<br>
-				< {{ res.distance }} miles away<br>
-				{{ res.price }}<br>
-			</ion-card-content>
-			<br>
-			<h2 style="color: #ff4e00;">{{ res.evidence }}</h2>
-		</ion-card>
-	</div>
+	<ion-list>
+		<ion-item-sliding *ngFor="let res of restaurants; let myIndex = index" #slidingItem (ionDrag)="throw_out($event, slidingItem, myIndex, res.res_id)">
+			<ion-item no-lines class="mainitem">
+				<ion-card class="card">
+					<img (click)="info(res.res_id)" height="300" *ngIf="res.photo" [src]="res.photo">
+					
+					<ion-title>{{ res.name }} <ion-icon (click)=star_res(myIndex) name="{{(res.starred)? 'star' : 'star-outline'}}"></ion-icon></ion-title>
+
+					<ion-item no-lines>
+						<ion-icon name="pin" item-left large></ion-icon>
+						<h2>{{ res.location.address }}</h2>
+						<p>~ {{ res.distance }} miles away</p>
+					</ion-item>
+
+					<ion-item no-lines>
+						<ion-icon name="finger-print" item-left large></ion-icon>
+						<h2>{{ res.evidence }}</h2>
+						<p>81% match</p>
+					</ion-item>
+				</ion-card>
+			</ion-item>
+			<ion-item-options side="left">
+				<button class="invicibutton" style="width: 0px" ion-button expandable></button>
+			</ion-item-options>
+
+			<ion-item-options side="right">
+				<button class="invicibutton" style="width: 0px" ion-button expandable></button>
+			</ion-item-options>
+		</ion-item-sliding>
+	</ion-list>
 	<div class="messages">
-		<div *ngIf="display_options && liked_cards.length != 0" class="center">
-			<ion-card>
-				<button ion-button icon-right class="center" (click)="see_liked()">Show liked restaurants
-					<ion-icon name="thumbs-up"></ion-icon>
-				</button>
-				<ion-card-content>
-					Tip: Tap on the card or "Restaurant Details" to see more information and "Done" when you've made your choice
-				</ion-card-content>
-			</ion-card>
-		</div>
-		<div *ngIf="display_options && liked_cards.length == 0">
+		<div *ngIf="!loading && !no_results && restaurants.length == 0">
 			<ion-card>
 				<ion-card-content>
-					Looks like you didn't swipe right on any restaurants.
+					That's all the results right now
 				</ion-card-content>
 				<button ion-button class="center" (click)="go_back()">Try Different Filters</button>
 				<button ion-button class="center" (click)="start_over()">View Again</button>
 			</ion-card>
 		</div>
-		<div *ngIf="!loading && all_cards.length === 0">
+		<div *ngIf="!loading && no_results">
 			<ion-card>
 				<ion-card-content>
 					Looks like there were no results that matched those filters. You could try different filters or a larger search radius
@@ -60,21 +58,3 @@
 		</div>
 	</div>
 </ion-content>
-
-<div class="like center" [ngStyle]="{
-		'opacity': like_opacity, 
-		'z-index': (like_opacity > 0 ? 1 : -1)
-		}">
-	<img width="200" src="assets/imgs/thumbs_up.png">
-</div>
-
-<div class="like center" [ngStyle]="{
-		'opacity': unlike_opacity, 
-		'z-index': (unlike_opacity > 0 ? 1 : -1)
-		}">
-	<img width="200" src="assets/imgs/thumbs_down.png">
-</div>
-
-<ion-footer *ngIf="!display_options">
-	<button ion-button class="center" (click)="info()" block>Restaurant Details</button>
-</ion-footer>

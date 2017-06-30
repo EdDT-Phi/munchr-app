@@ -1,28 +1,29 @@
 page-display {
-	#card-stack {
-		width: 90%;
-		height: 200px;
-		/*background: #047915;*/
-		/*border: 10px solid #4cb338;*/
-		/*margin: 100px auto 0;*/
-		position: center;
+
+	.mainitem {
+		background: color($colors, back)
 	}
 
-	#card-stack ion-card {
-		/*border-radius: 5px;*/
-		position: absolute;
+	.invicibutton {
+		background: color($colors, back)
+	}
+
+	.card  {
+		ion-item {
+			background: color($colors, dark)
+		}
+
+		h2 {
+			color: color($colors, light)
+		}
+
+		p {
+			color: color($colors, sublight)
+		}
+	}
+
+
+	.messages ion-card {
 		text-align: center;
-		top: 3%;
-		height: 90%;
-	}
-
-	#messages ion-card {
-		text-align: center;
-	}
-
-	.like {
-		position: fixed;
-		top: 25%;
-		right: 25%;
 	}
 }

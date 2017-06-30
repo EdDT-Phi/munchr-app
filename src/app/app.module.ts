@@ -19,7 +19,6 @@ import { Notifications } from '../pages/notifications/notifications';
 import { Stars } from '../pages/stars/stars';
 import { ResSearch } from '../pages/res_search/res_search';
 import { History } from '../pages/history/history';
-import { Liked } from '../pages/liked/liked';
 import { Utils } from '../utils';
 import { MunchrApi } from '../providers/munchr-api';
 import { UserService } from '../providers/user-service';
@@ -48,7 +47,6 @@ import {
 		Stars,
 		ResSearch,
 		History,
-		Liked,
 	],
 	imports: [
 		IonicModule.forRoot(MyApp),
@@ -69,7 +67,6 @@ import {
 		Stars,
 		ResSearch,
 		History,
-		Liked,
 	],
 	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, NativeStorage, 
 	Utils, MunchrApi, UserService, LocationProvider]
