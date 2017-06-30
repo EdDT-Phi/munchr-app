@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Geolocation, SocialSharing, LaunchNavigator, LaunchNavigatorOptions } from 'ionic-native';
+import { SocialSharing, LaunchNavigator, LaunchNavigatorOptions } from 'ionic-native';
 import { NavParams, ViewController, LoadingController, Loading, NavController, AlertController } from 'ionic-angular';
 
 import { Main } from '../main/main';
 
 import { MunchrApi } from '../../providers/munchr-api';
+import { LocationProvider } from '../../providers/location';
 
 import { Utils } from "../../utils";
 
@@ -42,6 +43,7 @@ export class MoreInfo {
 	constructor(
 		private utils: Utils,
 		private munchrApi: MunchrApi, 
+		private locationProvider: LocationProvider, 
 		private navParams: NavParams,
 		private navCtrl: NavController,
 		private viewCtrl: ViewController,
@@ -63,26 +65,21 @@ export class MoreInfo {
 
 		LaunchNavigator.navigate([this.details.location.lat, this.details.location.lng], options)
 		.then (
-				success => console.log('Yay! ', success),
-				error => this.utils.display_error(error)
+			success => console.log('Yay! ', success),
+			error => this.utils.display_error(error)
 		);
 	}
 
 	get_details(res_id:string) {
-		Geolocation.getCurrentPosition()
-		.then( resp => {
-			this.api_request(res_id, resp.coords.latitude, resp.coords.longitude);
-		}).catch((error) => {
-			this.utils.display_error_obj('Error getting location: ' + error.message, error);
-		});
-		
+
+		this.location = this.locationProvider.get_user_position()
+		this.api_request(res_id, this.location.lat, this.location.lng);
 	}
 
 	api_request(res_id:string, lat:number, lng:number) {
 		this.location = {lat, lng};
 		this.munchrApi.details(res_id, lat, lng)
 		.then( data => {
-			console.log(data);
 			this.loading.dismiss();
 			this.loading = null;
 

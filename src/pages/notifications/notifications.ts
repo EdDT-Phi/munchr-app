@@ -43,7 +43,6 @@ export class Notifications {
 		this.loading.present();
 		this.munchrApi.notifications()
 		.then(data => {
-			console.log(data);
 			this.requests = data.results.requests;
 			this.recommendations = data.results.recommendations;
 			this.ratings = data.results.ratings;

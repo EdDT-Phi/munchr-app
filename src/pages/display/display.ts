@@ -1,8 +1,8 @@
 import { Component, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { NavController, NavParams, ModalController, LoadingController, Loading } from 'ionic-angular';
-import { Geolocation } from 'ionic-native';
 
 import { MunchrApi } from '../../providers/munchr-api';
+import { LocationProvider } from '../../providers/location';
 import { MoreInfo } from '../info/info';
 // import { Liked } from '../liked/liked';
 
@@ -34,14 +34,15 @@ export class Display {
 	unlike_opacity: number = 0;
 	location: {
 		lat: number,
-		lon: number,
+		lng: number,
 	};
 	loading: Loading = null;
 
 	constructor(
 		private utils: Utils,
-		private navParams: NavParams,
 		private munchrApi: MunchrApi, 
+		private locationProvider: LocationProvider,
+		private navParams: NavParams,
 		private navCtrl: NavController, 
 		private modalCtrl: ModalController,
 		private loadingCtrl: LoadingController,
@@ -81,33 +82,22 @@ export class Display {
 		this.loading.present();
 		this.display_options = false;
 
-		console.log('getting geolocation');
-		Geolocation.getCurrentPosition({timeout: 10000})
-		.then( resp => {
-			this.location = {
-				lat: resp.coords.latitude,
-				lon: resp.coords.longitude,
-			};
-			console.log('have positiion, sending request');
-			this.munchrApi.restaurants(
-				resp.coords.latitude,
-				resp.coords.longitude,
-				this.navParams.get("radius"),
-				this.navParams.get("cuisines") )
-			.then( (data) => {
-				if(data.error) {
-					this.utils.display_error(data.error);
-				} else {
-					this.cards = data.results;
-					this.all_cards = this.cards.slice();
-				}
-				this.loading.dismiss();
-				this.loading = null;
-				this.utils.show_tutorial('display_page', 'This is where we narrow down your decision. Swipe restaurants left to remove them and right to save it for later. Tap on the restaurant to view more information.');
-			});
-		}).catch((error) => {
+		this.location = this.locationProvider.get_user_position();
+		this.munchrApi.restaurants(
+			this.location.lat,
+			this.location.lng,
+			this.navParams.get("radius"),
+			this.navParams.get("cuisines") )
+		.then( (data) => {
+			if(data.error) {
+				this.utils.display_error(data.error);
+			} else {
+				this.cards = data.results;
+				this.all_cards = this.cards.slice();
+			}
 			this.loading.dismiss();
-			this.utils.display_error_obj('Error getting location: ' + error.message, error);
+			this.loading = null;
+			this.utils.show_tutorial('display_page', 'This is where we narrow down your decision. Swipe restaurants left to remove them and right to save it for later. Tap on the restaurant to view more information.');
 		});
 	}
 	 

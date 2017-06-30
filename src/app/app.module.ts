@@ -23,6 +23,7 @@ import { Liked } from '../pages/liked/liked';
 import { Utils } from '../utils';
 import { MunchrApi } from '../providers/munchr-api';
 import { UserService } from '../providers/user-service';
+import { LocationProvider } from '../providers/location';
 
 import {
 	SwingStackComponent,
@@ -70,7 +71,8 @@ import {
 		History,
 		Liked,
 	],
-	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, Utils, MunchrApi, UserService, NativeStorage]
+	providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, NativeStorage, 
+	Utils, MunchrApi, UserService, LocationProvider]
 })
 export class AppModule {
 }

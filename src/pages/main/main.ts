@@ -8,6 +8,7 @@ import { Search } from '../search/search';
 import { Notifications } from '../notifications/notifications';
 import { UserService } from '../../providers/user-service';
 import { MunchrApi } from '../../providers/munchr-api';
+import { LocationProvider } from '../../providers/location';
 import { Utils } from '../../utils'
 
 @Component({
@@ -29,7 +30,8 @@ export class Main {
 	constructor(
 		private utils: Utils,
 		private munchrApi: MunchrApi,
-		public userService: UserService,
+		private userService: UserService,
+		private locationProvider: LocationProvider,
 		private events: Events,
 		private navCtrl: NavController,
 	) {

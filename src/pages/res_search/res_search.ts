@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { Geolocation } from 'ionic-native';
 
 import { MoreInfo } from '../info/info';
 import { MunchrApi } from '../../providers/munchr-api';
+import { LocationProvider } from '../../providers/location';
 
 import { Utils } from "../../utils";
 
@@ -14,29 +14,24 @@ import { Utils } from "../../utils";
 })
 export class ResSearch {
 
-	lat: number;
-	lng: number;
+	location:{
+		lat: number,
+		lng: number,
+	};
 	restaurants: Array<any>;
 
 	constructor(
 		private utils: Utils,
 		private munchrApi: MunchrApi,
+		private locationProvider: LocationProvider,
 		private navCtrl: NavController,
 	) {
-
-		Geolocation.getCurrentPosition()
-		.then( resp => {
-			this.lat = resp.coords.latitude;
-			this.lng = resp.coords.longitude;
-		}).catch((error) => {
-			this.utils.display_error_obj('Error getting location: ' + error.message, error);
-		});
-		
+		this.location = locationProvider.get_user_position();
 	}
 
 	search_restaurants(event) {
 		if (event.target.value == '')  return;
-		this.munchrApi.search_restaurants(this.lat, this.lng, event.target.value)
+		this.munchrApi.search_restaurants(this.location.lat, this.location.lng, event.target.value)
 		.then(data => {
 			this.restaurants = data.results;
 		});
